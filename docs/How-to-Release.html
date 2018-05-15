@@ -1,0 +1,108 @@
+<html><head><title>scio: How to release</title><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="docs" /><meta name="description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><meta name="og:image" content="/scio/img/poster.png" /><meta name="og:title" content="scio: How to release" /><meta name="og:site_name" content="scio" /><meta name="og:url" content="https://regadas.github.io/scio/" /><meta name="og:type" content="website" /><meta name="og:description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><link rel="icon" type="image/png" href="/scio/img/favicon.png" /><meta name="twitter:title" content="scio: How to release" /><meta name="twitter:image" content="https://regadas.github.io/scio/img/poster.png" /><meta name="twitter:description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><meta name="twitter:card" content="summary_large_image" /><link rel="icon" type="image/png" sizes="16x16" href="/scio/img/favicon16x16.png" /><link rel="icon" type="image/png" sizes="24x24" href="/scio/img/favicon24x24.png" /><link rel="icon" type="image/png" sizes="32x32" href="/scio/img/favicon32x32.png" /><link rel="icon" type="image/png" sizes="48x48" href="/scio/img/favicon48x48.png" /><link rel="icon" type="image/png" sizes="57x57" href="/scio/img/favicon57x57.png" /><link rel="icon" type="image/png" sizes="60x60" href="/scio/img/favicon60x60.png" /><link rel="icon" type="image/png" sizes="64x64" href="/scio/img/favicon64x64.png" /><link rel="icon" type="image/png" sizes="70x70" href="/scio/img/favicon70x70.png" /><link rel="icon" type="image/png" sizes="72x72" href="/scio/img/favicon72x72.png" /><link rel="icon" type="image/png" sizes="76x76" href="/scio/img/favicon76x76.png" /><link rel="icon" type="image/png" sizes="96x96" href="/scio/img/favicon96x96.png" /><link rel="icon" type="image/png" sizes="114x114" href="/scio/img/favicon114x114.png" /><link rel="icon" type="image/png" sizes="120x120" href="/scio/img/favicon120x120.png" /><link rel="icon" type="image/png" sizes="128x128" href="/scio/img/favicon128x128.png" /><link rel="icon" type="image/png" sizes="144x144" href="/scio/img/favicon144x144.png" /><link rel="icon" type="image/png" sizes="150x150" href="/scio/img/favicon150x150.png" /><link rel="icon" type="image/png" sizes="152x152" href="/scio/img/favicon152x152.png" /><link rel="icon" type="image/png" sizes="196x196" href="/scio/img/favicon196x196.png" /><link rel="icon" type="image/png" sizes="310x310" href="/scio/img/favicon310x310.png" /><link rel="icon" type="image/png" sizes="310x150" href="/scio/img/favicon310x150.png" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" /><link rel="stylesheet" href="/scio/highlight/styles/atom-one-light.css" /><link rel="stylesheet" href="/scio/css/style.css" /><link rel="stylesheet" href="/scio/css/palette.css" /><link rel="stylesheet" href="/scio/css/codemirror.css" /><link rel="stylesheet" href="/scio/css/override.css" /></head><body class="docs"><div id="wrapper"><div id="sidebar-wrapper"><ul id="sidebar" class="sidebar-nav"><li class="sidebar-brand"><a href="/scio/" class="brand"><div class="brand-wrapper"><span>scio</span></div></a></li> <li><a href="/scio/docs/index.html" class="">Getting Started</a></li> <li><a href="/scio/docs/Scio-REPL.html" class="">REPL</a></li> <li><a href="/scio/docs/Scio,-Beam-and-Dataflow.html" class="">Scio, Beam and Dataflow</a></li> <li><a href="/scio/docs/Scio,-Scalding-and-Spark.html" class="">Scio, Scalding and Spark</a></li> <li><a href="/scio/docs/Apache-Beam.html" class="">Apache Beam</a></li> <li><a href="/scio/docs/Runners.html" class="">Runners</a></li> <li><a href="/scio/docs/Scio-data-guideline.html" class="">Scio data guideline</a></li> <li><a href="/scio/docs/FAQ.html" class="">FAQ</a></li> <li><a href="/scio/docs/Powered-By.html" class="">Powered By</a></li> <li><a href="/scio/docs/HDFS.html" class="">IO</a> <ul class="sub_section"> <li><a href="/scio/docs/HDFS.html" class="">HDFS</a></li> <li><a href="/scio/docs/Avro.html" class="">Avro</a></li> <li><a href="/scio/docs/Bigtable.html" class="">Bigtable</a></li> <li><a href="/scio/docs/Protobuf.html" class="">Protobuf</a></li> <li><a href="/scio/docs/Parquet.html" class="">Parquet</a></li></ul></li> <li><a href="/scio/docs/Algebird.html" class="">Extras</a> <ul class="sub_section"> <li><a href="/scio/docs/Algebird.html" class="">Algebird</a></li></ul></li></ul></div><div id="page-content-wrapper"><div class="nav"><div class="container-fluid"><div class="row"><div class="col-lg-12"><div class="action-menu pull-left clearfix"><a href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a></div><ul class="pull-right"><li id="gh-eyes-item" class="hidden-xs"><a href="https://github.com/regadas/scio"><i class="fa fa-eye"></i><span>WATCH<span id="eyes" class="label label-default">--</span></span></a></li><li id="gh-stars-item" class="hidden-xs"><a href="https://github.com/regadas/scio"><i class="fa fa-star-o"></i><span>STARS<span id="stars" class="label label-default">--</span></span></a></li><li><a href="#" onclick="shareSiteTwitter('scio Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding.');"><i class="fa fa-twitter"></i></a></li><li><a href="#" onclick="shareSiteFacebook('scio Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding.');"><i class="fa fa-facebook"></i></a></li><li><a href="#" onclick="shareSiteGoogle();"><i class="fa fa-google-plus"></i></a></li></ul></div></div></div></div><div id="content" data-github-owner="regadas" data-github-repo="scio"><div class="content-wrapper"><section><h2 id="prerequisites">Prerequisites</h2>
+
+<ul>
+  <li>Sign up for a Sonatype account <a href="https://issues.sonatype.org/secure/Signup!default.jspa">here</a></li>
+  <li>Ask for permissions to push to com.spotify domain like in this <a href="https://issues.sonatype.org/browse/OSSRH-20689">ticket</a></li>
+  <li>Add Sonatype credentials to <code class="highlighter-rouge">~/.sbt/1.0/credentials.sbt</code>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>credentials ++= Seq(
+Credentials(
+  "Sonatype Nexus Repository Manager",
+  "oss.sonatype.org",
+  "$USERNAME",
+  "$PASSWORD"))
+</code></pre></div>    </div>
+  </li>
+  <li>Create a PGP key, for example on <a href="https://keybase.io/">keybase.io</a></li>
+</ul>
+
+<h2 id="release-procedure">Release procedure</h2>
+<ul>
+  <li>Run the slow integration tests with <code class="highlighter-rouge">SLOW=true sbt it:test</code></li>
+  <li>Run <code class="highlighter-rouge">release skip-tests</code> in sbt console and follow the instructions</li>
+  <li>Go to <a href="https://oss.sonatype.org/">oss.sonatype.org</a>, find the staging repository, “close” and “release”</li>
+  <li>Run <code class="highlighter-rouge">./scripts/make-site.sh</code> to update documentation</li>
+  <li>Pick a release name from <a href="https://en.wikipedia.org/wiki/List_of_Latin_phrases_(full)">here</a>, <a href="https://en.wikipedia.org/wiki/List_of_songs_with_Latin_lyrics">here</a> or other interesting sources</li>
+  <li>Update the list of release names below</li>
+  <li>When the tag build completes, update release notes with name and change log</li>
+  <li>If the release includes a Beam version bump, update the <a href="https://github.com/spotify/scio/wiki/Apache-Beam">version matrix</a></li>
+  <li>Update <a href="https://github.com/spotify/homebrew-public/blob/master/scio.rb">homebrew formula</a></li>
+  <li>Bump version in the public <a href="https://github.com/spotify/scio.g8">scio.g8</a> and the internal cookie</li>
+  <li>Send internal announcement to scio-users@spotify.com and flatmap-announce@spotify.com</li>
+  <li>Send external announcement to scio-users@googlegroups.com and user@beam.apache.org</li>
+  <li>Announce on internal Slack and public Gitter <a href="gitter.im/spotify/scio">room</a></li>
+  <li>Announce on Twitter</li>
+</ul>
+
+<h2 id="past-release-names">Past release names</h2>
+
+<h3 id="05x">0.5.x</h3>
+<ul>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.5.4">v0.5.4</a> - <em>“Marmota Monax”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.5.3">v0.5.3</a> - <em>“Lasiorhinus latifrons”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.5.2">v0.5.2</a> - <em>“Kobus kob”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.5.1">v0.5.1</a> - <em>“Jaculus jerboa”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.5.0">v0.5.0</a> - <em>“Ia io”</em></li>
+</ul>
+
+<h3 id="04x">0.4.x</h3>
+<ul>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.4.7">v0.4.7</a> - <em>“Hydrochoerus hydrochaeris”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.4.6">v0.4.6</a> - <em>“Galago gallarum”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.4.5">v0.4.5</a> - <em>“Felis ferus”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.4.4">v0.4.4</a> - <em>“Erinaceus europaeus”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.4.3">v0.4.3</a> - <em>“Dendrohyrax dorsalis”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.4.2">v0.4.2</a> - <em>“Castor canadensis”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.4.1">v0.4.1</a> - <em>“Blarina brevicauda”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.4.0">v0.4.0</a> - <em>“Atelerix albiventris”</em></li>
+</ul>
+
+<h3 id="03x">0.3.x</h3>
+<ul>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.3.6">v0.3.6</a> - <em>“Veritas odit moras”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.3.5">v0.3.5</a> - <em>“Unitas, veritas, carnitas”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.3.4">v0.3.4</a> - <em>“Sectumsempra”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.3.3">v0.3.3</a> - <em>“Petrificus totalus”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.3.2">v0.3.2</a> - <em>“Ut tensio sic vis”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.3.1">v0.3.1</a> - <em>“Expecto patronum”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.3.0">v0.3.0</a> - <em>“Lux et veritas”</em></li>
+</ul>
+
+<h3 id="02x">0.2.x</h3>
+<ul>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.2.13">v0.2.13</a> - <em>“Ex luna scientia”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.2.12">v0.2.12</a> - <em>“In extremo”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.2.11">v0.2.11</a> - <em>“Saltatio mortis”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.2.10">v0.2.10</a> - <em>“De Mysteriis Dom Sathanas”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.2.9">v0.2.9</a> - <em>“Hoc tempore atque nunc et semper”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.2.8">v0.2.8</a> - <em>“Consummatum est”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.2.7">v0.2.7</a> - <em>“Crescat scientia vita excolatur”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.2.6">v0.2.6</a> - <em>“Sensu lato”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.2.5">v0.2.5</a> - <em>“Imperium in imperio”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.2.4">v0.2.4</a> - <em>“Ab imo pectore”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.2.3">v0.2.3</a> - <em>“Aurea mediocritas”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.2.2">v0.2.2</a> - <em>“Intelligenti pauca”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.2.1">v0.2.1</a> - <em>“Sedes incertae”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.2.0">v0.2.0</a> - <em>“Nulli secundus”</em></li>
+</ul>
+
+<h3 id="01x">0.1.x</h3>
+<ul>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.1.11">v0.1.11</a> - <em>“In silico”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.1.10">v0.1.10</a> - <em>“Memento vivere”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.1.9">v0.1.9</a> - <em>“Lucem sequimur”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.1.8">v0.1.8</a> - <em>“Nemo saltat sobrius”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.1.7">v0.1.7</a> - <em>“Spem gregis”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.1.6">v0.1.6</a> - <em>“Sic infit”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.1.5">v0.1.5</a> - <em>“Ad astra”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.1.4">v0.1.4</a> - <em>“Ad arbitrium”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.1.3">v0.1.3</a> - <em>“Ut cognoscant te”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.1.2">v0.1.2</a> - <em>“Sapere aude”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.1.1">v0.1.1</a> - <em>“Festina lente”</em></li>
+  <li><a href="https://github.com/spotify/scio/releases/tag/v0.1.0">v0.1.0</a> - <em>“Scio me nihil scire”</em></li>
+</ul>
+</section></div></div></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/scio/highlight/highlight.pack.js"></script><script>hljs.configure({
+languages:['scala','java','bash']
+});
+hljs.initHighlighting();
+             </script><script>((window.gitter = {}).chat = {}).options = {
+room: 'regadas/scio'};</script><script src="https://sidecar.gitter.im/dist/sidecar.v1.js"></script><script src="/scio/js/main.js"></script></body></html>

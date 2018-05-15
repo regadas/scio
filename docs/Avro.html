@@ -1,0 +1,62 @@
+<html><head><title>scio: Avro</title><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="docs" /><meta name="description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><meta name="og:image" content="/scio/img/poster.png" /><meta name="og:title" content="scio: Avro" /><meta name="og:site_name" content="scio" /><meta name="og:url" content="https://regadas.github.io/scio/" /><meta name="og:type" content="website" /><meta name="og:description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><link rel="icon" type="image/png" href="/scio/img/favicon.png" /><meta name="twitter:title" content="scio: Avro" /><meta name="twitter:image" content="https://regadas.github.io/scio/img/poster.png" /><meta name="twitter:description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><meta name="twitter:card" content="summary_large_image" /><link rel="icon" type="image/png" sizes="16x16" href="/scio/img/favicon16x16.png" /><link rel="icon" type="image/png" sizes="24x24" href="/scio/img/favicon24x24.png" /><link rel="icon" type="image/png" sizes="32x32" href="/scio/img/favicon32x32.png" /><link rel="icon" type="image/png" sizes="48x48" href="/scio/img/favicon48x48.png" /><link rel="icon" type="image/png" sizes="57x57" href="/scio/img/favicon57x57.png" /><link rel="icon" type="image/png" sizes="60x60" href="/scio/img/favicon60x60.png" /><link rel="icon" type="image/png" sizes="64x64" href="/scio/img/favicon64x64.png" /><link rel="icon" type="image/png" sizes="70x70" href="/scio/img/favicon70x70.png" /><link rel="icon" type="image/png" sizes="72x72" href="/scio/img/favicon72x72.png" /><link rel="icon" type="image/png" sizes="76x76" href="/scio/img/favicon76x76.png" /><link rel="icon" type="image/png" sizes="96x96" href="/scio/img/favicon96x96.png" /><link rel="icon" type="image/png" sizes="114x114" href="/scio/img/favicon114x114.png" /><link rel="icon" type="image/png" sizes="120x120" href="/scio/img/favicon120x120.png" /><link rel="icon" type="image/png" sizes="128x128" href="/scio/img/favicon128x128.png" /><link rel="icon" type="image/png" sizes="144x144" href="/scio/img/favicon144x144.png" /><link rel="icon" type="image/png" sizes="150x150" href="/scio/img/favicon150x150.png" /><link rel="icon" type="image/png" sizes="152x152" href="/scio/img/favicon152x152.png" /><link rel="icon" type="image/png" sizes="196x196" href="/scio/img/favicon196x196.png" /><link rel="icon" type="image/png" sizes="310x310" href="/scio/img/favicon310x310.png" /><link rel="icon" type="image/png" sizes="310x150" href="/scio/img/favicon310x150.png" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" /><link rel="stylesheet" href="/scio/highlight/styles/atom-one-light.css" /><link rel="stylesheet" href="/scio/css/style.css" /><link rel="stylesheet" href="/scio/css/palette.css" /><link rel="stylesheet" href="/scio/css/codemirror.css" /><link rel="stylesheet" href="/scio/css/override.css" /></head><body class="docs"><div id="wrapper"><div id="sidebar-wrapper"><ul id="sidebar" class="sidebar-nav"><li class="sidebar-brand"><a href="/scio/" class="brand"><div class="brand-wrapper"><span>scio</span></div></a></li> <li><a href="/scio/docs/index.html" class="">Getting Started</a></li> <li><a href="/scio/docs/Scio-REPL.html" class="">REPL</a></li> <li><a href="/scio/docs/Scio,-Beam-and-Dataflow.html" class="">Scio, Beam and Dataflow</a></li> <li><a href="/scio/docs/Scio,-Scalding-and-Spark.html" class="">Scio, Scalding and Spark</a></li> <li><a href="/scio/docs/Apache-Beam.html" class="">Apache Beam</a></li> <li><a href="/scio/docs/Runners.html" class="">Runners</a></li> <li><a href="/scio/docs/Scio-data-guideline.html" class="">Scio data guideline</a></li> <li><a href="/scio/docs/FAQ.html" class="">FAQ</a></li> <li><a href="/scio/docs/Powered-By.html" class="">Powered By</a></li> <li><a href="/scio/docs/HDFS.html" class="">IO</a> <ul class="sub_section"> <li><a href="/scio/docs/HDFS.html" class="">HDFS</a></li> <li><a href="/scio/docs/Avro.html" class=" active ">Avro</a></li> <li><a href="/scio/docs/Bigtable.html" class="">Bigtable</a></li> <li><a href="/scio/docs/Protobuf.html" class="">Protobuf</a></li> <li><a href="/scio/docs/Parquet.html" class="">Parquet</a></li></ul></li> <li><a href="/scio/docs/Algebird.html" class="">Extras</a> <ul class="sub_section"> <li><a href="/scio/docs/Algebird.html" class="">Algebird</a></li></ul></li></ul></div><div id="page-content-wrapper"><div class="nav"><div class="container-fluid"><div class="row"><div class="col-lg-12"><div class="action-menu pull-left clearfix"><a href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a></div><ul class="pull-right"><li id="gh-eyes-item" class="hidden-xs"><a href="https://github.com/regadas/scio"><i class="fa fa-eye"></i><span>WATCH<span id="eyes" class="label label-default">--</span></span></a></li><li id="gh-stars-item" class="hidden-xs"><a href="https://github.com/regadas/scio"><i class="fa fa-star-o"></i><span>STARS<span id="stars" class="label label-default">--</span></span></a></li><li><a href="#" onclick="shareSiteTwitter('scio Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding.');"><i class="fa fa-twitter"></i></a></li><li><a href="#" onclick="shareSiteFacebook('scio Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding.');"><i class="fa fa-facebook"></i></a></li><li><a href="#" onclick="shareSiteGoogle();"><i class="fa fa-google-plus"></i></a></li></ul></div></div></div></div><div id="content" data-github-owner="regadas" data-github-repo="scio"><div class="content-wrapper"><section><h2 id="read-avro-files">Read Avro files</h2>
+
+<p>Scio comes with support for reading Avro files. Avro supports generic or specific records, Scio supports both via the same method (<code class="highlighter-rouge">avroFile</code>), but depending on the type parameter.</p>
+
+<h3 id="specific-record">Specific record:</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># SpecificRecordClass is compiled from Avro schema files
+sc.avroFile[SpecificRecordClass]("gs://path-to-data/lake/part-*.avro")
+  .map(record =&gt; ???)
+# `record` is of your SpecificRecordClass type
+</code></pre></div></div>
+
+<h3 id="generic-record">Generic record:</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import org.apache.avro.generic.GenericRecord
+sc.avroFile[GenericRecord]("gs://path-to-data/lake/part-*.avro", yourAvroSchema)
+  .map(record =&gt; ???)
+# `record` is of GenericRecord type
+</code></pre></div></div>
+
+<h2 id="write-avro-files">Write Avro files</h2>
+
+<p>Scio comes with support for writing Avro files. Avro supports generic or specific records, Scio supports both via the same method (<code class="highlighter-rouge">saveAsAvroFile</code>), but depending on the type of the content of <code class="highlighter-rouge">SCollection</code>.</p>
+
+<h3 id="specific-record-1">Specific record:</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># type of Avro specific records will hold information about schema,
+# therefor Scio will figure out the schema by itself
+sc.map(&lt;build Avro specific records&gt;)
+  .saveAsAvroFile("gs://path-to-data/lake/output")
+</code></pre></div></div>
+
+<h3 id="generic-record-1">Generic record:</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># writing Avro generic records requires additional argument `schema`
+sc.map(&lt;build Avro generic records&gt;)
+  .saveAsAvroFile("gs://path-to-data/lake/output", schema = yourAvroSchema)
+</code></pre></div></div>
+
+<h2 id="rules-for-schema-evolution">Rules for schema evolution</h2>
+
+<ul>
+  <li>Unless impossible, provide default values for your fields.</li>
+  <li>New field must have a default value.</li>
+  <li>You can only delete field which has default value.</li>
+  <li>Do not change data type of an existing fields. If needed add a new field to the schema.</li>
+  <li>Do not rename existing fields. If needed use aliases.</li>
+</ul>
+
+<h2 id="common-issuesguidelines">Common issues/guidelines</h2>
+
+<ul>
+  <li>Follow Avro <a href="http://avro.apache.org/docs/current/spec.html">guidelines</a>, especially the one about <a href="https://github.com/spotify/scio/wiki/Avro#rules-for-schema-evolution">schema evolution</a></li>
+  <li>Wherever possible use specific records</li>
+  <li>Use <code class="highlighter-rouge">Builder</code> pattern to construct Avro records</li>
+</ul>
+</section></div></div></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/scio/highlight/highlight.pack.js"></script><script>hljs.configure({
+languages:['scala','java','bash']
+});
+hljs.initHighlighting();
+             </script><script>((window.gitter = {}).chat = {}).options = {
+room: 'regadas/scio'};</script><script src="https://sidecar.gitter.im/dist/sidecar.v1.js"></script><script src="/scio/js/main.js"></script></body></html>

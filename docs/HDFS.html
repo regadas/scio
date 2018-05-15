@@ -1,0 +1,95 @@
+<html><head><title>scio: HDFS</title><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="docs" /><meta name="description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><meta name="og:image" content="/scio/img/poster.png" /><meta name="og:title" content="scio: HDFS" /><meta name="og:site_name" content="scio" /><meta name="og:url" content="https://regadas.github.io/scio/" /><meta name="og:type" content="website" /><meta name="og:description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><link rel="icon" type="image/png" href="/scio/img/favicon.png" /><meta name="twitter:title" content="scio: HDFS" /><meta name="twitter:image" content="https://regadas.github.io/scio/img/poster.png" /><meta name="twitter:description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><meta name="twitter:card" content="summary_large_image" /><link rel="icon" type="image/png" sizes="16x16" href="/scio/img/favicon16x16.png" /><link rel="icon" type="image/png" sizes="24x24" href="/scio/img/favicon24x24.png" /><link rel="icon" type="image/png" sizes="32x32" href="/scio/img/favicon32x32.png" /><link rel="icon" type="image/png" sizes="48x48" href="/scio/img/favicon48x48.png" /><link rel="icon" type="image/png" sizes="57x57" href="/scio/img/favicon57x57.png" /><link rel="icon" type="image/png" sizes="60x60" href="/scio/img/favicon60x60.png" /><link rel="icon" type="image/png" sizes="64x64" href="/scio/img/favicon64x64.png" /><link rel="icon" type="image/png" sizes="70x70" href="/scio/img/favicon70x70.png" /><link rel="icon" type="image/png" sizes="72x72" href="/scio/img/favicon72x72.png" /><link rel="icon" type="image/png" sizes="76x76" href="/scio/img/favicon76x76.png" /><link rel="icon" type="image/png" sizes="96x96" href="/scio/img/favicon96x96.png" /><link rel="icon" type="image/png" sizes="114x114" href="/scio/img/favicon114x114.png" /><link rel="icon" type="image/png" sizes="120x120" href="/scio/img/favicon120x120.png" /><link rel="icon" type="image/png" sizes="128x128" href="/scio/img/favicon128x128.png" /><link rel="icon" type="image/png" sizes="144x144" href="/scio/img/favicon144x144.png" /><link rel="icon" type="image/png" sizes="150x150" href="/scio/img/favicon150x150.png" /><link rel="icon" type="image/png" sizes="152x152" href="/scio/img/favicon152x152.png" /><link rel="icon" type="image/png" sizes="196x196" href="/scio/img/favicon196x196.png" /><link rel="icon" type="image/png" sizes="310x310" href="/scio/img/favicon310x310.png" /><link rel="icon" type="image/png" sizes="310x150" href="/scio/img/favicon310x150.png" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" /><link rel="stylesheet" href="/scio/highlight/styles/atom-one-light.css" /><link rel="stylesheet" href="/scio/css/style.css" /><link rel="stylesheet" href="/scio/css/palette.css" /><link rel="stylesheet" href="/scio/css/codemirror.css" /><link rel="stylesheet" href="/scio/css/override.css" /></head><body class="docs"><div id="wrapper"><div id="sidebar-wrapper"><ul id="sidebar" class="sidebar-nav"><li class="sidebar-brand"><a href="/scio/" class="brand"><div class="brand-wrapper"><span>scio</span></div></a></li> <li><a href="/scio/docs/index.html" class="">Getting Started</a></li> <li><a href="/scio/docs/Scio-REPL.html" class="">REPL</a></li> <li><a href="/scio/docs/Scio,-Beam-and-Dataflow.html" class="">Scio, Beam and Dataflow</a></li> <li><a href="/scio/docs/Scio,-Scalding-and-Spark.html" class="">Scio, Scalding and Spark</a></li> <li><a href="/scio/docs/Apache-Beam.html" class="">Apache Beam</a></li> <li><a href="/scio/docs/Runners.html" class="">Runners</a></li> <li><a href="/scio/docs/Scio-data-guideline.html" class="">Scio data guideline</a></li> <li><a href="/scio/docs/FAQ.html" class="">FAQ</a></li> <li><a href="/scio/docs/Powered-By.html" class="">Powered By</a></li> <li><a href="/scio/docs/HDFS.html" class="">IO</a> <ul class="sub_section"> <li><a href="/scio/docs/HDFS.html" class=" active ">HDFS</a></li> <li><a href="/scio/docs/Avro.html" class="">Avro</a></li> <li><a href="/scio/docs/Bigtable.html" class="">Bigtable</a></li> <li><a href="/scio/docs/Protobuf.html" class="">Protobuf</a></li> <li><a href="/scio/docs/Parquet.html" class="">Parquet</a></li></ul></li> <li><a href="/scio/docs/Algebird.html" class="">Extras</a> <ul class="sub_section"> <li><a href="/scio/docs/Algebird.html" class="">Algebird</a></li></ul></li></ul></div><div id="page-content-wrapper"><div class="nav"><div class="container-fluid"><div class="row"><div class="col-lg-12"><div class="action-menu pull-left clearfix"><a href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a></div><ul class="pull-right"><li id="gh-eyes-item" class="hidden-xs"><a href="https://github.com/regadas/scio"><i class="fa fa-eye"></i><span>WATCH<span id="eyes" class="label label-default">--</span></span></a></li><li id="gh-stars-item" class="hidden-xs"><a href="https://github.com/regadas/scio"><i class="fa fa-star-o"></i><span>STARS<span id="stars" class="label label-default">--</span></span></a></li><li><a href="#" onclick="shareSiteTwitter('scio Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding.');"><i class="fa fa-twitter"></i></a></li><li><a href="#" onclick="shareSiteFacebook('scio Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding.');"><i class="fa fa-facebook"></i></a></li><li><a href="#" onclick="shareSiteGoogle();"><i class="fa fa-google-plus"></i></a></li></ul></div></div></div></div><div id="content" data-github-owner="regadas" data-github-repo="scio"><div class="content-wrapper"><section><h2 id="settings-for-scio-version--040">Settings for Scio version &gt;= <code class="highlighter-rouge">0.4.0</code></h2>
+
+<p>Hadoop configuration is loaded from ‘core-site.xml’ and ‘hdfs-site.xml’ files based upon the <code class="highlighter-rouge">HADOOP_CONF_DIR</code> and <code class="highlighter-rouge">YARN_CONF_DIR</code> environment variables. Set one of them to the location of your Hadoop configuration directory.</p>
+
+<h2 id="settings-for-scio-version--040-1">Settings for Scio version &lt; <code class="highlighter-rouge">0.4.0</code></h2>
+
+<p>To access HDFS from a Scio job, Hadoop configuration files (<code class="highlighter-rouge">core-site.xml</code>, <code class="highlighter-rouge">hdfs-site.xml</code>, etc.) must be available in classpath of both runner’s client and workers. There is multiple ways to achieve it:</p>
+
+<ul>
+  <li>place your configuration files in java startup classpath via <code class="highlighter-rouge">java -cp &lt;classpath&gt;</code></li>
+  <li>place your configuration files in <code class="highlighter-rouge">src/main/resources</code></li>
+</ul>
+
+<p>The following example handles local, GCS and HDFS in the same job code.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">com.spotify.scio.hdfs._</span>
+
+<span class="k">val</span> <span class="n">input</span> <span class="k">=</span> <span class="n">args</span><span class="o">(</span><span class="s">"input"</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">output</span> <span class="k">=</span> <span class="n">args</span><span class="o">(</span><span class="s">"output"</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">pipe</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="n">input</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">"hdfs://"</span><span class="o">))</span> <span class="o">{</span>
+  <span class="n">sc</span><span class="o">.</span><span class="n">hdfsTextFile</span><span class="o">(</span><span class="n">input</span><span class="o">)</span>  <span class="c1">// HDFS
+</span><span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+  <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="o">(</span><span class="n">input</span><span class="o">)</span>  <span class="c1">// local or GCS
+</span><span class="o">}</span>
+
+<span class="k">val</span> <span class="n">result</span> <span class="k">=</span> <span class="n">pipe</span>
+  <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="cm">/*...*/</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">reduce</span><span class="o">(</span><span class="cm">/*...*/</span><span class="o">)</span>
+
+<span class="k">if</span> <span class="o">(</span><span class="n">output</span><span class="o">.</span><span class="n">startsWith</span><span class="o">(</span><span class="s">"hdfs://"</span><span class="o">))</span> <span class="o">{</span>
+  <span class="n">result</span><span class="o">.</span><span class="n">saveAsHdfsTextFile</span><span class="o">(</span><span class="n">output</span><span class="o">)</span>  <span class="c1">// HDFS
+</span><span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+  <span class="n">result</span><span class="o">.</span><span class="n">saveAsTextFile</span><span class="o">(</span><span class="n">output</span><span class="o">)</span>  <span class="c1">// local or GCS
+</span><span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="running-locally">Running locally</h3>
+<p>You local environment needs access to the name and data nodes in the Hadoop cluster when running a job locally.</p>
+
+<h3 id="running-on-dataflow-service">Running on Dataflow service</h3>
+<p>When running a job on the Dataflow managed service, worker VM instances need access to the Hadoop cluster. Set <code class="highlighter-rouge">--network</code>/<code class="highlighter-rouge">--subnetwork</code> to one that has proper setup, e.g. VPN to your on-premise cluster or another cloud provider.</p>
+
+<h3 id="use-hdfs-from-scio-repl">Use HDFS from Scio REPL</h3>
+
+<p>Assuming that you have your configuration files in <code class="highlighter-rouge">hadoop-conf.jar</code>, for example:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ jar -tf hadoop-conf.jar
+META-INF/
+META-INF/MANIFEST.MF
+core-site.xml
+hdfs-site.xml
+</code></pre></div></div>
+<p>Assembly HDFS submodule:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sbt 'project scio-hdfs' assembly
+</code></pre></div></div>
+<p>Start Scio REPL:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ java -cp scio-repl/target/scala-2.11/scio-repl-0.3.4-SNAPSHOT.jar:scio-hdfs/target/scala-2.11/scio-hdfs-assembly-0.3.4-SNAPSHOT.jar:hadoop-conf.jar com.spotify.scio.repl.ScioShell
+</code></pre></div></div>
+
+<h2 id="common-issues">Common issues</h2>
+
+<h4 id="permission-denied-userroot-accesswrite-inode">Permission denied: user=root, access=WRITE, inode=…</h4>
+
+<p><code class="highlighter-rouge">org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.security.AccessControlException): Permission denied: user=root, access=WRITE, inode=...</code></p>
+
+<p>By default your Dataflow job is run as <code class="highlighter-rouge">root</code> user on worker containers. If you are using Simple Authentication for HDFS, Scio provides a parameter in HDFS sink methods to specify remote user via <code class="highlighter-rouge">username</code> parameter.</p>
+
+<h4 id="javaioioexception-no-filesystem-for-scheme-hdfs">java.io.IOException: No FileSystem for scheme: hdfs</h4>
+
+<p>This is a common issue with fat jars built with <a href="https://github.com/sbt/sbt-assembly">sbt-assembly</a> plugin. It’s related to Hadoop filesystem registration services file - there are multiple jars that provide the same file with configuration, in your case most probably only one is picked (and it’s not the one holding configuration for HDFS filesystem).</p>
+
+<h6 id="possible-solutions">Possible solutions</h6>
+
+<ul>
+  <li>1st solution - if you are using <a href="https://github.com/sbt/sbt-assembly">sbt-assembly</a> plugin - merge those service files, so in your sbt merge configuration add strategy to filter distinct lines, like this:</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mergeStrategy in assembly &lt;&lt;= (mergeStrategy in assembly) { (old) =&gt; {
+    case PathList("META-INF", "services", "org.apache.hadoop.fs.FileSystem") =&gt; MergeStrategy.filterDistinctLines
+    case s =&gt; old(s)
+  }
+}
+</code></pre></div></div>
+
+<ul>
+  <li>2nd solution - give <a href="https://github.com/xerial/sbt-pack">sbt-pack</a> a try, it creates a directory/tarball of all dependency jars without explicit merging/fatjars.</li>
+</ul>
+
+<p>More on this/related issues <a href="http://stackoverflow.com/questions/17265002/hadoop-no-filesystem-for-scheme-file">here</a>.</p>
+</section></div></div></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/scio/highlight/highlight.pack.js"></script><script>hljs.configure({
+languages:['scala','java','bash']
+});
+hljs.initHighlighting();
+             </script><script>((window.gitter = {}).chat = {}).options = {
+room: 'regadas/scio'};</script><script src="https://sidecar.gitter.im/dist/sidecar.v1.js"></script><script src="/scio/js/main.js"></script></body></html>

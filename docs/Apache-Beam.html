@@ -1,0 +1,156 @@
+<html><head><title>scio: Apache Beam</title><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="docs" /><meta name="description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><meta name="og:image" content="/scio/img/poster.png" /><meta name="og:title" content="scio: Apache Beam" /><meta name="og:site_name" content="scio" /><meta name="og:url" content="https://regadas.github.io/scio/" /><meta name="og:type" content="website" /><meta name="og:description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><link rel="icon" type="image/png" href="/scio/img/favicon.png" /><meta name="twitter:title" content="scio: Apache Beam" /><meta name="twitter:image" content="https://regadas.github.io/scio/img/poster.png" /><meta name="twitter:description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><meta name="twitter:card" content="summary_large_image" /><link rel="icon" type="image/png" sizes="16x16" href="/scio/img/favicon16x16.png" /><link rel="icon" type="image/png" sizes="24x24" href="/scio/img/favicon24x24.png" /><link rel="icon" type="image/png" sizes="32x32" href="/scio/img/favicon32x32.png" /><link rel="icon" type="image/png" sizes="48x48" href="/scio/img/favicon48x48.png" /><link rel="icon" type="image/png" sizes="57x57" href="/scio/img/favicon57x57.png" /><link rel="icon" type="image/png" sizes="60x60" href="/scio/img/favicon60x60.png" /><link rel="icon" type="image/png" sizes="64x64" href="/scio/img/favicon64x64.png" /><link rel="icon" type="image/png" sizes="70x70" href="/scio/img/favicon70x70.png" /><link rel="icon" type="image/png" sizes="72x72" href="/scio/img/favicon72x72.png" /><link rel="icon" type="image/png" sizes="76x76" href="/scio/img/favicon76x76.png" /><link rel="icon" type="image/png" sizes="96x96" href="/scio/img/favicon96x96.png" /><link rel="icon" type="image/png" sizes="114x114" href="/scio/img/favicon114x114.png" /><link rel="icon" type="image/png" sizes="120x120" href="/scio/img/favicon120x120.png" /><link rel="icon" type="image/png" sizes="128x128" href="/scio/img/favicon128x128.png" /><link rel="icon" type="image/png" sizes="144x144" href="/scio/img/favicon144x144.png" /><link rel="icon" type="image/png" sizes="150x150" href="/scio/img/favicon150x150.png" /><link rel="icon" type="image/png" sizes="152x152" href="/scio/img/favicon152x152.png" /><link rel="icon" type="image/png" sizes="196x196" href="/scio/img/favicon196x196.png" /><link rel="icon" type="image/png" sizes="310x310" href="/scio/img/favicon310x310.png" /><link rel="icon" type="image/png" sizes="310x150" href="/scio/img/favicon310x150.png" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" /><link rel="stylesheet" href="/scio/highlight/styles/atom-one-light.css" /><link rel="stylesheet" href="/scio/css/style.css" /><link rel="stylesheet" href="/scio/css/palette.css" /><link rel="stylesheet" href="/scio/css/codemirror.css" /><link rel="stylesheet" href="/scio/css/override.css" /></head><body class="docs"><div id="wrapper"><div id="sidebar-wrapper"><ul id="sidebar" class="sidebar-nav"><li class="sidebar-brand"><a href="/scio/" class="brand"><div class="brand-wrapper"><span>scio</span></div></a></li> <li><a href="/scio/docs/index.html" class="">Getting Started</a></li> <li><a href="/scio/docs/Scio-REPL.html" class="">REPL</a></li> <li><a href="/scio/docs/Scio,-Beam-and-Dataflow.html" class="">Scio, Beam and Dataflow</a></li> <li><a href="/scio/docs/Scio,-Scalding-and-Spark.html" class="">Scio, Scalding and Spark</a></li> <li><a href="/scio/docs/Apache-Beam.html" class=" active ">Apache Beam</a></li> <li><a href="/scio/docs/Runners.html" class="">Runners</a></li> <li><a href="/scio/docs/Scio-data-guideline.html" class="">Scio data guideline</a></li> <li><a href="/scio/docs/FAQ.html" class="">FAQ</a></li> <li><a href="/scio/docs/Powered-By.html" class="">Powered By</a></li> <li><a href="/scio/docs/HDFS.html" class="">IO</a> <ul class="sub_section"> <li><a href="/scio/docs/HDFS.html" class="">HDFS</a></li> <li><a href="/scio/docs/Avro.html" class="">Avro</a></li> <li><a href="/scio/docs/Bigtable.html" class="">Bigtable</a></li> <li><a href="/scio/docs/Protobuf.html" class="">Protobuf</a></li> <li><a href="/scio/docs/Parquet.html" class="">Parquet</a></li></ul></li> <li><a href="/scio/docs/Algebird.html" class="">Extras</a> <ul class="sub_section"> <li><a href="/scio/docs/Algebird.html" class="">Algebird</a></li></ul></li></ul></div><div id="page-content-wrapper"><div class="nav"><div class="container-fluid"><div class="row"><div class="col-lg-12"><div class="action-menu pull-left clearfix"><a href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a></div><ul class="pull-right"><li id="gh-eyes-item" class="hidden-xs"><a href="https://github.com/regadas/scio"><i class="fa fa-eye"></i><span>WATCH<span id="eyes" class="label label-default">--</span></span></a></li><li id="gh-stars-item" class="hidden-xs"><a href="https://github.com/regadas/scio"><i class="fa fa-star-o"></i><span>STARS<span id="stars" class="label label-default">--</span></span></a></li><li><a href="#" onclick="shareSiteTwitter('scio Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding.');"><i class="fa fa-twitter"></i></a></li><li><a href="#" onclick="shareSiteFacebook('scio Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding.');"><i class="fa fa-facebook"></i></a></li><li><a href="#" onclick="shareSiteGoogle();"><i class="fa fa-google-plus"></i></a></li></ul></div></div></div></div><div id="content" data-github-owner="regadas" data-github-repo="scio"><div class="content-wrapper"><section><p>Starting from version 0.3.0, Scio moved from Google Cloud <a href="https://github.com/GoogleCloudPlatform/DataflowJavaSDK">Dataflow Java SDK</a> to <a href="https://beam.apache.org/">Apache Beam</a> as its core dependencies and introduced a few breaking changes.</p>
+
+<ul>
+  <li>Dataflow Java SDK 1.x.x uses <code class="highlighter-rouge">com.google.cloud.dataflow.sdk</code> namespace.</li>
+  <li>Apache Beam uses <code class="highlighter-rouge">org.apache.beam.sdk</code> namespace.</li>
+  <li>Dataflow Java SDK 2.x.x is also based on Apache Beam 2.x.x and uses <code class="highlighter-rouge">org.apache.beam.sdk</code>.</li>
+</ul>
+
+<p>Scio 0.3.x depends on Beam 0.6.0 (last pre-stable release) and Scio 0.4.x depends on Beam 2.0.0 (first stable release). Breaking changes in these releases are documented below.</p>
+
+<h2 id="version-matrices">Version matrices</h2>
+
+<p>Early Scio releases depend on Google Cloud <a href="https://github.com/GoogleCloudPlatform/DataflowJavaSDK">Dataflow Java SDK</a> while later ones depend on <a href="https://github.com/apache/beam">Apache Beam</a>. Check out the [[Apache Beam]] page for migration guides.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Scio</strong></th>
+      <th style="text-align: center"><strong>SDK Dependency</strong></th>
+      <th style="text-align: left"><strong>Description</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">0.5.x</td>
+      <td style="text-align: center">Apache Beam 2.x.x</td>
+      <td style="text-align: left">Better type-safe Avro and BigQuery IO</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0.3.x</td>
+      <td style="text-align: center">Apache Beam 0.6.0</td>
+      <td style="text-align: left">Pre-release Beam</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0.2.x</td>
+      <td style="text-align: center">Dataflow Java SDK</td>
+      <td style="text-align: left">SQL-2011 support</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0.1.x</td>
+      <td style="text-align: center">Dataflow Java SDK</td>
+      <td style="text-align: left">First releases</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Scio Version</strong></th>
+      <th style="text-align: center"><strong>Beam Version</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">0.5.1+</td>
+      <td style="text-align: center">2.4.0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0.5.0</td>
+      <td style="text-align: center">2.2.0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0.4.6+</td>
+      <td style="text-align: center">2.2.0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0.4.1+</td>
+      <td style="text-align: center">2.1.0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0.4.0</td>
+      <td style="text-align: center">2.0.0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0.3.0+</td>
+      <td style="text-align: center">0.6.0</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="breaking-changes-since-scio-050">Breaking changes since Scio 0.5.0</h2>
+
+<ul>
+  <li><code class="highlighter-rouge">BigQueryIO</code> in <code class="highlighter-rouge">JobTest</code> now requires a type parameter which could be either <code class="highlighter-rouge">TableRow</code> for JSON or <code class="highlighter-rouge">T</code> for type-safe API where <code class="highlighter-rouge">T</code> is a type annotated with <code class="highlighter-rouge">@BigQueryType</code>. Explicit <code class="highlighter-rouge">.map(T.toTableRow)</code> of test data is no longer needed. See changes in <a href="https://github.com/spotify/scio/commit/6ded455ba7506e619c484a05db5746cbee6d4dcd#diff-0d0a594c72b702523d4ad2e740253dcc">BigQueryTornadoesTest</a> and <a href="https://github.com/spotify/scio/commit/6ded455ba7506e619c484a05db5746cbee6d4dcd?diff=split#diff-0aae85e1d761a72c5ab1587fcc797b12">TypedBigQueryTornadoesTest</a> for more.</li>
+  <li>Typed <code class="highlighter-rouge">AvroIO</code> now accepts case classes instead of Avro records in <code class="highlighter-rouge">JobTest</code>. Explicit <code class="highlighter-rouge">.map(T.toGenericRecord)</code> of test data is no longer needed. See this <a href="https://github.com/spotify/scio/commit/19fee4716f71827ac4affbd23d753bc074c529b8">change</a> for more.</li>
+  <li>Package <code class="highlighter-rouge">com.spotify.scio.extra.transforms</code> is moved from <code class="highlighter-rouge">scio-extra</code> to <code class="highlighter-rouge">scio-core</code>, under <code class="highlighter-rouge">com.spotify.scio.transforms</code>.</li>
+</ul>
+
+<h2 id="breaking-changes-since-scio-040">Breaking changes since Scio 0.4.0</h2>
+
+<ul>
+  <li>Accumulators are replaced by the new metrics API, see <a href="https://github.com/spotify/scio/blob/master/scio-examples/src/main/scala/com/spotify/scio/examples/extra/MetricsExample.scala">MetricsExample.scala</a> for more</li>
+  <li><code class="highlighter-rouge">com.spotify.scio.hdfs</code> package and related APIs (<code class="highlighter-rouge">ScioContext#hdfs*</code>, <code class="highlighter-rouge">SCollection#saveAsHdfs*</code>) are removed, regular file IO API should now support both GCS and HDFS (if <code class="highlighter-rouge">scio-hdfs</code> is included as a dependency).</li>
+  <li>Starting Scio 0.4.4, Beam runner is completely decoupled from <code class="highlighter-rouge">scio-core</code>. See [[Runners]] page for more details.</li>
+</ul>
+
+<h2 id="breaking-changes-since-scio-030">Breaking changes since Scio 0.3.0</h2>
+
+<ul>
+  <li>See this <a href="https://cloud.google.com/dataflow/release-notes/release-notes-java-2">page</a> for a list of breaking changes from Dataflow Java SDK to Beam</li>
+  <li>Scala 2.10 is dropped, 2.11 and 2.12 are the supported Scala binary versions</li>
+  <li>Java 7 is dropped and Java 8+ is required</li>
+  <li><code class="highlighter-rouge">DataflowPipelineRunner</code> is renamed to <code class="highlighter-rouge">DataflowRunner</code></li>
+  <li><code class="highlighter-rouge">DirectPipelineRunner</code> is renamed to <code class="highlighter-rouge">DirectRunner</code></li>
+  <li><code class="highlighter-rouge">BlockingDataflowPipelineRunner</code> is removed and <code class="highlighter-rouge">ScioContext#close()</code> will not block execution; use <code class="highlighter-rouge">sc.close().waitUntilDone()</code> to retain the blocking behavior, i.e. if you launch job from an orchestration engine like <a href="http://airflow.apache.org/">Airflow</a> or <a href="https://github.com/spotify/luigi">Luigi</a></li>
+  <li>You should set <code class="highlighter-rouge">tempLocation</code> instead of <code class="highlighter-rouge">stagingLocation</code> regardless of runner; set it to a local path for <code class="highlighter-rouge">DirectRunner</code> or a GCS path for <code class="highlighter-rouge">DataflowRunner</code>; if not set, <code class="highlighter-rouge">DataflowRunner</code> will create a default bucket for the project</li>
+  <li>Type safe BigQuery is now stable API; use <code class="highlighter-rouge">import com.spotify.scio.bigquery._</code> instead of <code class="highlighter-rouge">import com.spotify.scio.experimental._</code></li>
+  <li><code class="highlighter-rouge">scio-bigtable</code> no longer depends on HBase and uses Protobuf based Bigtable API; check out the updated <a href="https://github.com/spotify/scio/blob/master/scio-examples/src/main/scala/com/spotify/scio/examples/extra/BigtableExample.scala">example</a></li>
+  <li>Custom IO, i.e. <code class="highlighter-rouge">ScioContext#customInput</code> and <code class="highlighter-rouge">SCollection#saveAsCustomOutput</code> require a <code class="highlighter-rouge">name: String</code> parameter</li>
+</ul>
+
+<h2 id="release-cycle-and-backport-procedures">Release cycle and backport procedures</h2>
+
+<p>Scio has a frequent release cycle, roughly every 2-4 weeks, as compared to months for the upstream Apache Beam. We also aim to stay a step ahead by pulling changes from upstream and contributing new ones back.</p>
+
+<p>Let’s call the Beam version that Scio depends on <code class="highlighter-rouge">current</code>, and upstream master <code class="highlighter-rouge">latest</code>. Here’re the procedures for backporting changes.</p>
+
+<p>For changes available in <code class="highlighter-rouge">latest</code> but not in <code class="highlighter-rouge">current</code>:</p>
+<ul>
+  <li>Copy Java files from <code class="highlighter-rouge">latest</code> to Scio repo</li>
+  <li>Rename classes and modify as necessary</li>
+  <li>Release Scio</li>
+  <li>Update checklist for the next <code class="highlighter-rouge">current</code> version like <a href="https://github.com/spotify/scio/issues/633">#633</a></li>
+  <li>Remove change once <code class="highlighter-rouge">current</code> is updated</li>
+</ul>
+
+<p>For changes we want to make to <code class="highlighter-rouge">latest</code>:</p>
+<ul>
+  <li>Submit pull request to <code class="highlighter-rouge">latest</code></li>
+  <li>Follow the steps above once merged</li>
+</ul>
+
+<h2 id="beam-master-nightly-build">Beam master nightly build</h2>
+
+<p>To keep up with upstream changes, <a href="https://github.com/spotify/scio/tree/beam-master">beam-master</a> branch is built nightly and depends on latest Beam SNAPSHOT.</p>
+
+<p>We should do the following periodically to reduce work when upgrading Beam release version.</p>
+<ul>
+  <li>rebase <code class="highlighter-rouge">beam-master</code> on <code class="highlighter-rouge">master</code></li>
+  <li>fix for breaking changes in <code class="highlighter-rouge">beam-master</code></li>
+  <li>rebase <code class="highlighter-rouge">master</code> on <code class="highlighter-rouge">beam-master</code> when upgrading Beam release version.</li>
+</ul>
+
+<p>To work on a breaking change:</p>
+<ul>
+  <li>checkout <code class="highlighter-rouge">beam-master</code> branch</li>
+  <li>run <code class="highlighter-rouge">./scripts/circleci_snapshot.sh</code> to change <code class="highlighter-rouge">beamVersion</code> to the latest SNAPSHOT</li>
+  <li>run <code class="highlighter-rouge">sbt test it:test</code> and fix errors</li>
+</ul>
+</section></div></div></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/scio/highlight/highlight.pack.js"></script><script>hljs.configure({
+languages:['scala','java','bash']
+});
+hljs.initHighlighting();
+             </script><script>((window.gitter = {}).chat = {}).options = {
+room: 'regadas/scio'};</script><script src="https://sidecar.gitter.im/dist/sidecar.v1.js"></script><script src="/scio/js/main.js"></script></body></html>

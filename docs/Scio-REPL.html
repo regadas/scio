@@ -1,0 +1,366 @@
+<html><head><title>scio: Scio REPL</title><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="docs" /><meta name="description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><meta name="og:image" content="/scio/img/poster.png" /><meta name="og:title" content="scio: Scio REPL" /><meta name="og:site_name" content="scio" /><meta name="og:url" content="https://regadas.github.io/scio/" /><meta name="og:type" content="website" /><meta name="og:description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><link rel="icon" type="image/png" href="/scio/img/favicon.png" /><meta name="twitter:title" content="scio: Scio REPL" /><meta name="twitter:image" content="https://regadas.github.io/scio/img/poster.png" /><meta name="twitter:description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><meta name="twitter:card" content="summary_large_image" /><link rel="icon" type="image/png" sizes="16x16" href="/scio/img/favicon16x16.png" /><link rel="icon" type="image/png" sizes="24x24" href="/scio/img/favicon24x24.png" /><link rel="icon" type="image/png" sizes="32x32" href="/scio/img/favicon32x32.png" /><link rel="icon" type="image/png" sizes="48x48" href="/scio/img/favicon48x48.png" /><link rel="icon" type="image/png" sizes="57x57" href="/scio/img/favicon57x57.png" /><link rel="icon" type="image/png" sizes="60x60" href="/scio/img/favicon60x60.png" /><link rel="icon" type="image/png" sizes="64x64" href="/scio/img/favicon64x64.png" /><link rel="icon" type="image/png" sizes="70x70" href="/scio/img/favicon70x70.png" /><link rel="icon" type="image/png" sizes="72x72" href="/scio/img/favicon72x72.png" /><link rel="icon" type="image/png" sizes="76x76" href="/scio/img/favicon76x76.png" /><link rel="icon" type="image/png" sizes="96x96" href="/scio/img/favicon96x96.png" /><link rel="icon" type="image/png" sizes="114x114" href="/scio/img/favicon114x114.png" /><link rel="icon" type="image/png" sizes="120x120" href="/scio/img/favicon120x120.png" /><link rel="icon" type="image/png" sizes="128x128" href="/scio/img/favicon128x128.png" /><link rel="icon" type="image/png" sizes="144x144" href="/scio/img/favicon144x144.png" /><link rel="icon" type="image/png" sizes="150x150" href="/scio/img/favicon150x150.png" /><link rel="icon" type="image/png" sizes="152x152" href="/scio/img/favicon152x152.png" /><link rel="icon" type="image/png" sizes="196x196" href="/scio/img/favicon196x196.png" /><link rel="icon" type="image/png" sizes="310x310" href="/scio/img/favicon310x310.png" /><link rel="icon" type="image/png" sizes="310x150" href="/scio/img/favicon310x150.png" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" /><link rel="stylesheet" href="/scio/highlight/styles/atom-one-light.css" /><link rel="stylesheet" href="/scio/css/style.css" /><link rel="stylesheet" href="/scio/css/palette.css" /><link rel="stylesheet" href="/scio/css/codemirror.css" /><link rel="stylesheet" href="/scio/css/override.css" /></head><body class="docs"><div id="wrapper"><div id="sidebar-wrapper"><ul id="sidebar" class="sidebar-nav"><li class="sidebar-brand"><a href="/scio/" class="brand"><div class="brand-wrapper"><span>scio</span></div></a></li> <li><a href="/scio/docs/index.html" class="">Getting Started</a></li> <li><a href="/scio/docs/Scio-REPL.html" class="">REPL</a></li> <li><a href="/scio/docs/Scio,-Beam-and-Dataflow.html" class="">Scio, Beam and Dataflow</a></li> <li><a href="/scio/docs/Scio,-Scalding-and-Spark.html" class="">Scio, Scalding and Spark</a></li> <li><a href="/scio/docs/Apache-Beam.html" class="">Apache Beam</a></li> <li><a href="/scio/docs/Runners.html" class="">Runners</a></li> <li><a href="/scio/docs/Scio-data-guideline.html" class="">Scio data guideline</a></li> <li><a href="/scio/docs/FAQ.html" class="">FAQ</a></li> <li><a href="/scio/docs/Powered-By.html" class="">Powered By</a></li> <li><a href="/scio/docs/HDFS.html" class="">IO</a> <ul class="sub_section"> <li><a href="/scio/docs/HDFS.html" class="">HDFS</a></li> <li><a href="/scio/docs/Avro.html" class="">Avro</a></li> <li><a href="/scio/docs/Bigtable.html" class="">Bigtable</a></li> <li><a href="/scio/docs/Protobuf.html" class="">Protobuf</a></li> <li><a href="/scio/docs/Parquet.html" class="">Parquet</a></li></ul></li> <li><a href="/scio/docs/Algebird.html" class="">Extras</a> <ul class="sub_section"> <li><a href="/scio/docs/Algebird.html" class="">Algebird</a></li></ul></li></ul></div><div id="page-content-wrapper"><div class="nav"><div class="container-fluid"><div class="row"><div class="col-lg-12"><div class="action-menu pull-left clearfix"><a href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a></div><ul class="pull-right"><li id="gh-eyes-item" class="hidden-xs"><a href="https://github.com/regadas/scio"><i class="fa fa-eye"></i><span>WATCH<span id="eyes" class="label label-default">--</span></span></a></li><li id="gh-stars-item" class="hidden-xs"><a href="https://github.com/regadas/scio"><i class="fa fa-star-o"></i><span>STARS<span id="stars" class="label label-default">--</span></span></a></li><li><a href="#" onclick="shareSiteTwitter('scio Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding.');"><i class="fa fa-twitter"></i></a></li><li><a href="#" onclick="shareSiteFacebook('scio Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding.');"><i class="fa fa-facebook"></i></a></li><li><a href="#" onclick="shareSiteGoogle();"><i class="fa fa-google-plus"></i></a></li></ul></div></div></div></div><div id="content" data-github-owner="regadas" data-github-repo="scio"><div class="content-wrapper"><section><p>The Scio REPL is an extension of the Scala REPL, with added functionality that allows you to interactively experiment with Scio. Think of it as a playground to try out things.</p>
+
+<h2 id="quick-start">Quick start</h2>
+
+<p>You can either install Scio REPL via our <a href="https://github.com/spotify/homebrew-public">Homebrew tap</a> on a Mac or download the pre-built jar on other platforms.</p>
+
+<h3 id="homebrew">Homebrew</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew tap spotify/public
+brew <span class="nb">install </span>scio
+scio-repl
+</code></pre></div></div>
+
+<h3 id="pre-built-jar">Pre-built jar</h3>
+
+<p>To download pre-built jar of Scio REPL, find version you are interested in on the <a href="https://github.com/spotify/scio/releases">release page</a>, and download the REPL jar from <code class="highlighter-rouge">Downloads</code> section.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ java -jar scio-repl-&lt;version&gt;.jar
+Welcome to
+                 _____
+    ________________(_)_____
+    __  ___/  ___/_  /_  __ \
+    _(__  )/ /__ _  / / /_/ /
+    /____/ \___/ /_/  \____/   version 0.3.4
+
+Using Scala version 2.11.11 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_131)
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+BigQuery client available as 'bq'
+Scio context available as 'sc'
+
+scio&gt;
+</code></pre></div></div>
+
+<p>A <a href="http://spotify.github.io/scio/api/com/spotify/scio/ScioContext.html"><code class="highlighter-rouge">ScioContext</code></a> is created on REPL startup as <code class="highlighter-rouge">sc</code> and a starting point to most operations. Use <code class="highlighter-rouge">tab</code> completion, history and other REPL goodies to play around.</p>
+
+<h3 id="start-from-sbt-console-scala-211x-only">Start from SBT console (Scala <code class="highlighter-rouge">2.11.x</code> only)</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git clone git@github.com:spotify/scio.git
+Cloning into 'scio'...
+remote: Counting objects: 9336, done.
+remote: Compressing objects: 100% (275/275), done.
+remote: Total 9336 (delta 139), reused 0 (delta 0), pack-reused 8830
+Receiving objects: 100% (9336/9336), 1.76 MiB | 0 bytes/s, done.
+Resolving deltas: 100% (3509/3509), done.
+Checking connectivity... done.
+$ cd scio
+$ sbt scio-repl/run
+</code></pre></div></div>
+
+<h3 id="build-repl-jar-manually">Build REPL jar manually</h3>
+
+<p>You can also build REPL jar from source.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git clone git@github.com:spotify/scio.git
+Cloning into 'scio'...
+remote: Counting objects: 9336, done.
+remote: Compressing objects: 100% (275/275), done.
+remote: Total 9336 (delta 139), reused 0 (delta 0), pack-reused 8830
+Receiving objects: 100% (9336/9336), 1.76 MiB | 0 bytes/s, done.
+Resolving deltas: 100% (3509/3509), done.
+Checking connectivity... done.
+$ cd scio
+$ sbt scio-repl/assembly
+</code></pre></div></div>
+
+<h3 id="sbt-project-from-scio-template">sbt project from scio-template</h3>
+
+<p>Projects generated from <a href="https://github.com/spotify/scio-template.g8">scio-template.g8</a> have built-in REPL. Run <code class="highlighter-rouge">sbt repl/run</code> from the project root.</p>
+
+<h2 id="tutorial">Tutorial</h2>
+
+<h3 id="local-pipeline">Local pipeline</h3>
+
+<p>Let’s start with simple local-mode word count example:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scio&gt; val wordCount = sc.textFile("README.md").flatMap(_.split("[^a-zA-Z']+").filter(_.nonEmpty)).countByValue.map(_.toString).saveAsTextFile("/tmp/local_wordcount")
+scio&gt; sc.close()
+scio&gt; wordCount.waitForResult().value.take(3).foreach(println)
+(but,4)
+(via,4)
+(Hadoop,6)
+</code></pre></div></div>
+
+<p>Make sure <code class="highlighter-rouge">README.md</code> is in the current directory. This example counts words in local file using a local runner (<a href="https://beam.apache.org/documentation/sdks/javadoc/2.0.0/org/apache/beam/runners/direct/DirectRunner.html"><code class="highlighter-rouge">DirectRunner</code></a> and writes result in a local file. The pipeline and actual computation starts on <code class="highlighter-rouge">sc.close()</code>. The last command take 3 lines from results and prints them.</p>
+
+<h3 id="local-pipeline-">Local pipeline ++</h3>
+
+<p>In the next example we will spice things up a bit and read data from GCS:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scio&gt; :newScio
+scio&gt; val shakespeare = sc.textFile("gs://dataflow-samples/shakespeare/hamlet.txt")
+scio&gt; val wordCount = shakespeare.flatMap(_.split("[^a-zA-Z']+").filter(_.nonEmpty)).countByValue.map(_.toString).saveAsTextFile("/tmp/gcs-wordcount")
+scio&gt; sc.close()
+scio&gt; wordCount.waitForResult().value.take(3).foreach(println)
+(frown'st,1)
+(comfortable,13)
+(diversity,1)
+</code></pre></div></div>
+
+<p>Each Scio context is associated with one and only one pipeline. The previous instance of <code class="highlighter-rouge">sc</code> was used for the local pipeline example and cannot be reused anymore. The first magic command, <code class="highlighter-rouge">:newScio</code> creates a new context as <code class="highlighter-rouge">sc</code>. The pipeline still performs computation locally, but reads data from Google Cloud Storage (it could also be BigQuery, Datastore, etc). This example may take a bit longer due to additional network overhead.</p>
+
+<h3 id="dataflow-service-pipeline">Dataflow service pipeline</h3>
+
+<p>To create a Scio context for Google Cloud Dataflow service, add Dataflow pipeline options when starting the REPL. The same options will also be used by <code class="highlighter-rouge">:newScio</code> when creating new context. For example:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ java -jar scio-repl-0.3.4.jar \
+&gt; --project=&lt;project-id&gt; \
+&gt; --stagingLocation=&lt;stagin-dir&gt; \
+&gt; --runner=DataflowRunner
+Welcome to
+                 _____
+    ________________(_)_____
+    __  ___/  ___/_  /_  __ \
+    _(__  )/ /__ _  / / /_/ /
+    /____/ \___/ /_/  \____/   version 0.3.4
+
+Using Scala version 2.11.11 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_131)
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+BigQuery client available as 'bq'
+Scio context available as 'sc'
+
+scio&gt; val shakespeare = sc.textFile("gs://dataflow-samples/shakespeare/*")
+scio&gt; val wordCount = shakespeare.flatMap(_.split("[^a-zA-Z']+").filter(_.nonEmpty)).countByValue.map(_.toString).saveAsTextFile("gs://&lt;gcs-output-dir&gt;")
+scio&gt; sc.close()
+scio&gt; wordCount.waitForResult().value.take(3).foreach(println)
+(decreased,1)
+('shall',2)
+(War,4)
+</code></pre></div></div>
+
+<p>In this case we are reading data from GCS and performing computation in GCE virtual machines managed by Dataflow service. The last line is an example of reading data from GCS files to local memory after a context is closed. Most write operations in Scio return <code class="highlighter-rouge">Future[Tap[T]]</code> where a <a href="http://spotify.github.io/scio/api/com/spotify/scio/io/Tap.html"><code class="highlighter-rouge">Tap[T]</code></a> encapsulates some dataset that can be re-opened in another context or directly.</p>
+
+<p>Use <code class="highlighter-rouge">:scioOpts</code> to view or update Dataflow options inside the REPL. New options will be applied the next time you create a context.</p>
+
+<h3 id="ad-hoc-local-mode">Ad-hoc local mode</h3>
+
+<p>You may start the REPL in distributed mode and run pipelines to aggregate from large datasets, and play around the results in local mode. You can create a local Scio context any time with <code class="highlighter-rouge">:newLocalScio &lt;name&gt;</code> and use it for local computations.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scio&gt; :newLocalScio lsc
+Local Scio context available as 'lsc'
+</code></pre></div></div>
+
+<h3 id="bigquery-example">BigQuery example</h3>
+
+<p>In this example we will read some data from BigQuery and process it in Dataflow. We shall count number of tornadoes per month from a public sample dataset. Scio will do its best to find your configured Google Cloud project, but you can also specify it explicitly via <code class="highlighter-rouge">-Dbigquery.project</code> option.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ java -jar -Dbigquery.project=&lt;project-id&gt; scio-repl-0.3.4.jar \
+&gt; --project=&lt;project-id&gt; \
+&gt; --stagingLocation=&lt;stagin-dir&gt; \
+&gt; --runner=DataflowRunner
+Welcome to
+                 _____
+    ________________(_)_____
+    __  ___/  ___/_  /_  __ \
+    _(__  )/ /__ _  / / /_/ /
+    /____/ \___/ /_/  \____/   version 0.3.4
+
+Using Scala version 2.11.11 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_131)
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+BigQuery client available as 'bq'
+Scio context available as 'sc'
+
+scio&gt; val tornadoes = sc.bigQuerySelect("SELECT tornado, month FROM [clouddataflow-readonly:samples.weather_stations]")
+scio&gt; val counts = tornadoes.flatMap(r =&gt; if (r.getBoolean("tornado")) Seq(r.getLong("month")) else Nil).countByValue.map(kv =&gt; TableRow("month" -&gt; kv._1, "tornado_count" -&gt; kv._2))
+scio&gt; val result = counts.take(3).materialize
+scio&gt; sc.close()
+scio&gt; result.waitForResult().value.foreach(println)
+{month=4, tornado_count=5}
+{month=3, tornado_count=6}
+{month=5, tornado_count=6}
+</code></pre></div></div>
+
+<p>In this example we combine power of BigQuery and flexibility of Dataflow. We first query BigQuery table, perform a couple of transformations and take (<code class="highlighter-rouge">take(3)</code>) some data back locally (<code class="highlighter-rouge">materialize</code>) to view the results.</p>
+
+<h3 id="bigquery-project-id">BigQuery project id</h3>
+
+<p>Scio REPL will do its best to find your configured Google Cloud project, without the need to explicitly specifying <code class="highlighter-rouge">bigquery.project</code> property. It will search for project-id in this specific order:</p>
+
+<ol>
+  <li><code class="highlighter-rouge">bigquery.project</code> java system property</li>
+  <li><code class="highlighter-rouge">GCLOUD_PROJECT</code> java system property</li>
+  <li><code class="highlighter-rouge">GCLOUD_PROJECT</code> environmental variable</li>
+  <li><a href="https://cloud.google.com/sdk/gcloud/">gcloud</a> config files:</li>
+  <li><code class="highlighter-rouge">scio</code> <a href="https://cloud.google.com/sdk/gcloud/reference/topic/configurations">named configuration</a></li>
+  <li>default configuration</li>
+</ol>
+
+<p>This means that you can always set <code class="highlighter-rouge">bigquery.project</code> and it will take precedence over other configurations. Read more about gcloud configuration <a href="https://cloud.google.com/sdk/gcloud/reference/config/">here</a>.</p>
+
+<h3 id="io-commands">I/O Commands</h3>
+
+<p>There are few built-in commands for simple file I/O.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Read from an Avro, text, CSV or TSV file on local filesystem or GCS.
+</span><span class="k">def</span> <span class="n">readAvro</span><span class="o">[</span><span class="kt">T</span> <span class="kt">:</span> <span class="kt">ClassTag</span><span class="o">](</span><span class="n">path</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Iterator</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+<span class="k">def</span> <span class="n">readText</span><span class="o">(</span><span class="n">path</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Iterator</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span>
+<span class="k">def</span> <span class="n">readCsv</span><span class="o">[</span><span class="kt">T:</span> <span class="kt">RowDecoder</span><span class="o">](</span><span class="n">path</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+                           <span class="n">sep</span><span class="k">:</span> <span class="kt">Char</span> <span class="o">=</span> <span class="sc">','</span><span class="o">,</span>
+                           <span class="n">header</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span><span class="k">:</span> <span class="kt">Iterator</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+<span class="k">def</span> <span class="n">readTsv</span><span class="o">[</span><span class="kt">T:</span> <span class="kt">RowDecoder</span><span class="o">](</span><span class="n">path</span><span class="k">:</span> <span class="kt">String</span>
+                           <span class="n">sep</span><span class="k">:</span> <span class="kt">Char</span> <span class="o">=</span> <span class="sc">'\t'</span><span class="o">,</span>
+                           <span class="n">header</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span><span class="k">:</span> <span class="kt">Iterator</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+
+<span class="c1">// Write to an Avro, text, CSV or TSV file on local filesystem or GCS.
+</span><span class="k">def</span> <span class="n">writeAvro</span><span class="o">[</span><span class="kt">T:</span> <span class="kt">ClassTag</span><span class="o">](</span><span class="n">path</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">data</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span>
+<span class="k">def</span> <span class="n">writeText</span><span class="o">(</span><span class="n">path</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">data</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span>
+<span class="k">def</span> <span class="n">writeCsv</span><span class="o">[</span><span class="kt">T:</span> <span class="kt">RowEncoder</span><span class="o">](</span><span class="n">path</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">data</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span>
+                            <span class="n">sep</span><span class="k">:</span> <span class="kt">Char</span> <span class="o">=</span> <span class="sc">','</span><span class="o">,</span>
+                            <span class="n">header</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Seq</span><span class="o">.</span><span class="n">empty</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span>
+<span class="k">def</span> <span class="n">writeTsv</span><span class="o">[</span><span class="kt">T:</span> <span class="kt">RowEncoder</span><span class="o">](</span><span class="n">path</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">data</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">T</span><span class="o">],</span>
+                            <span class="n">sep</span><span class="k">:</span> <span class="kt">Char</span> <span class="o">=</span> <span class="sc">'\t'</span><span class="o">,</span>
+                            <span class="n">header</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Seq</span><span class="o">.</span><span class="n">empty</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span>
+</code></pre></div></div>
+
+<h2 id="tips">Tips</h2>
+
+<h3 id="multi-line-code">Multi-line code</h3>
+
+<p>While in the REPL, use <code class="highlighter-rouge">:paste</code> magic command to paste or write multi-line code</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scio&gt; :paste
+// Entering paste mode (ctrl-D to finish)
+
+def evenNumber(x: Int) = x % 2 == 0
+val evenNumbers = sc.parallelize(1 to 100).filter(evenNumber)
+
+// Exiting paste mode, now interpreting.
+
+evenNumber: (x: Int)Boolean
+evenNumbers: com.spotify.scio.values.SCollection[Int] = com.spotify.scio.values.SCollectionImpl@14fe085b
+
+scio&gt; evenNumbers.saveAsTextFile("/tmp/even")
+scio&gt; sc.close()
+</code></pre></div></div>
+
+<h3 id="running-jobs-asynchronously">Running jobs asynchronously</h3>
+
+<p>When using REPL and Dataflow service consider using the non-blocking <a href="https://beam.apache.org/documentation/sdks/javadoc/2.0.0/org/apache/beam/runners/dataflow/DataflowRunner.html"><code class="highlighter-rouge">DataflowRunner</code></a> for a more interactive experience. To start:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java -jar scio-repl-0.3.4.jar \
+&gt; --project=&lt;project-id&gt; \
+&gt; --stagingLocation=&lt;stagin-dir&gt; \
+&gt; --runner=DataflowRunner
+Welcome to
+                 _____
+    ________________(_)_____
+    __  ___/  ___/_  /_  __ \
+    _(__  )/ /__ _  / / /_/ /
+    /____/ \___/ /_/  \____/   version 0.3.4
+
+Using Scala version 2.11.11 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_131)
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+BigQuery client available as 'bq'
+Scio context available as 'sc'
+
+scio&gt; sc.parallelize(1 to 100).map( _.toString ).saveAsTextFile("gs://&lt;output&gt;")
+res0: scala.concurrent.Future[com.spotify.scio.io.Tap[String]] = scala.concurrent.impl.Promise$DefaultPromise@1399ad68
+scio&gt; val result = sc.close()
+[main] INFO org.apache.beam.runners.dataflow.DataflowRunner - Executing pipeline on the Dataflow Service, which will have billing implications related to Google Compute Engine usage and other Google Cloud Services.
+[main] INFO org.apache.beam.runners.dataflow.util.PackageUtil - Uploading 3 files from PipelineOptions.filesToStage to staging location to prepare for execution.
+[main] INFO org.apache.beam.runners.dataflow.util.PackageUtil - Uploading PipelineOptions.filesToStage complete: 2 files newly uploaded, 1 files cached
+Dataflow SDK version: 1.5.0
+scio&gt; result.state
+res1: org.apache.beam.sdk.PipelineResult.State = RUNNING
+</code></pre></div></div>
+
+<p>Note that now <code class="highlighter-rouge">sc.close()</code> doesn’t block and wait until job completes and gives back control of the REPL right away. Use <a href="http://spotify.github.io/scio/api/com/spotify/scio/ScioResult.html"><code class="highlighter-rouge">ScioResult</code></a> and <code class="highlighter-rouge">Future[Tap[T]]</code>s to check for progress, results and orchestrate jobs.</p>
+
+<h3 id="multiple-scio-contexts">Multiple Scio contexts</h3>
+
+<p>You can use multiple Scio context objects to work with several pipelines at the same time, simply
+use magic <code class="highlighter-rouge">:newScio &lt;context name&gt;</code>, for example:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scio&gt; :newScio c1
+Scio context available as 'c1'
+scio&gt; :newScio c2
+Scio context available as 'c2'
+scio&gt; :newLocalScio lc
+Scio context available as 'lc'
+</code></pre></div></div>
+
+<p>You can use those in combination with <code class="highlighter-rouge">DataflowRunner</code> to run multiple pipelines in the same session or wire them with for comprehension over futures.</p>
+
+<h3 id="bigquery-client">BigQuery client</h3>
+
+<p>Whenever possible leverage BigQuery! <a href="http://spotify.github.io/scio/api/com/spotify/scio/bigquery/types/BigQueryType.html"><code class="highlighter-rouge">@BigQueryType</code></a> annotations enable type safe and civilized
+ integration with BigQuery inside Scio. Here is example of using the annotations and BigQuery client to read and write typed data directly without Scio context.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ java -jar -Dbigquery.project=&lt;project-id&gt; scio-repl-0.3.4.jar
+Welcome to
+                 _____
+    ________________(_)_____
+    __  ___/  ___/_  /_  __ \
+    _(__  )/ /__ _  / / /_/ /
+    /____/ \___/ /_/  \____/   version 0.3.4
+
+Using Scala version 2.11.11 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_131)
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+BigQuery client available as 'bq'
+Scio context available as 'sc'
+
+scio&gt; @BigQueryType.fromQuery("SELECT tornado, month FROM [clouddataflow-readonly:samples.weather_stations]") class Row
+scio&gt; val tornadoes = bq.getTypedRows[Row]()
+scio&gt; tornadoes.next.month
+res0: Option[Long] = Some(5)
+scio&gt; bq.writeTypedRows("project-id:dataset-id.table-id", tornadoes.take(100).toList)
+</code></pre></div></div>
+
+<h3 id="out-of-memory-exception">Out of memory exception</h3>
+
+<p>In case of OOM exceptions, like for example:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scio&gt; res1.waitForResult().value.next
+Exception in thread "main"
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "main"
+</code></pre></div></div>
+
+<p>simply increase the size of the heap - be reasonable about the amount of data and heap size though.</p>
+
+<p>Example of REPL startup with 2GiB of heap size:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ java -Xmx2g -jar scio-repl-0.3.4.jar
+Welcome to
+                 _____
+    ________________(_)_____
+    __  ___/  ___/_  /_  __ \
+    _(__  )/ /__ _  / / /_/ /
+    /____/ \___/ /_/  \____/   version 0.3.4
+
+Using Scala version 2.11.11 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_131)
+
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+BigQuery client available as 'bq'
+Scio context available as 'sc'
+
+scio&gt; Runtime.getRuntime().maxMemory();
+res1: Long = 1908932608
+</code></pre></div></div>
+
+<h3 id="what-is-the-type-of-an-expression">What is the type of an expression?</h3>
+
+<p>Use build in <code class="highlighter-rouge">:t</code> magic, <code class="highlighter-rouge">:t</code> displays the type of an expression without evaluating it. Example:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scio&gt; :t sc.textFile("README").flatMap(_.split("[^a-zA-Z']+")).filter(_.nonEmpty).map(_.length)
+com.spotify.scio.values.SCollection[Int]
+</code></pre></div></div>
+
+<p>Learn more about magic keywords via <code class="highlighter-rouge">scio&gt; :help</code></p>
+</section></div></div></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/scio/highlight/highlight.pack.js"></script><script>hljs.configure({
+languages:['scala','java','bash']
+});
+hljs.initHighlighting();
+             </script><script>((window.gitter = {}).chat = {}).options = {
+room: 'regadas/scio'};</script><script src="https://sidecar.gitter.im/dist/sidecar.v1.js"></script><script src="/scio/js/main.js"></script></body></html>

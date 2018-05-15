@@ -1,0 +1,622 @@
+<html><head><title>scio: FAQ</title><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="docs" /><meta name="description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><meta name="og:image" content="/scio/img/poster.png" /><meta name="og:title" content="scio: FAQ" /><meta name="og:site_name" content="scio" /><meta name="og:url" content="https://regadas.github.io/scio/" /><meta name="og:type" content="website" /><meta name="og:description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><link rel="icon" type="image/png" href="/scio/img/favicon.png" /><meta name="twitter:title" content="scio: FAQ" /><meta name="twitter:image" content="https://regadas.github.io/scio/img/poster.png" /><meta name="twitter:description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><meta name="twitter:card" content="summary_large_image" /><link rel="icon" type="image/png" sizes="16x16" href="/scio/img/favicon16x16.png" /><link rel="icon" type="image/png" sizes="24x24" href="/scio/img/favicon24x24.png" /><link rel="icon" type="image/png" sizes="32x32" href="/scio/img/favicon32x32.png" /><link rel="icon" type="image/png" sizes="48x48" href="/scio/img/favicon48x48.png" /><link rel="icon" type="image/png" sizes="57x57" href="/scio/img/favicon57x57.png" /><link rel="icon" type="image/png" sizes="60x60" href="/scio/img/favicon60x60.png" /><link rel="icon" type="image/png" sizes="64x64" href="/scio/img/favicon64x64.png" /><link rel="icon" type="image/png" sizes="70x70" href="/scio/img/favicon70x70.png" /><link rel="icon" type="image/png" sizes="72x72" href="/scio/img/favicon72x72.png" /><link rel="icon" type="image/png" sizes="76x76" href="/scio/img/favicon76x76.png" /><link rel="icon" type="image/png" sizes="96x96" href="/scio/img/favicon96x96.png" /><link rel="icon" type="image/png" sizes="114x114" href="/scio/img/favicon114x114.png" /><link rel="icon" type="image/png" sizes="120x120" href="/scio/img/favicon120x120.png" /><link rel="icon" type="image/png" sizes="128x128" href="/scio/img/favicon128x128.png" /><link rel="icon" type="image/png" sizes="144x144" href="/scio/img/favicon144x144.png" /><link rel="icon" type="image/png" sizes="150x150" href="/scio/img/favicon150x150.png" /><link rel="icon" type="image/png" sizes="152x152" href="/scio/img/favicon152x152.png" /><link rel="icon" type="image/png" sizes="196x196" href="/scio/img/favicon196x196.png" /><link rel="icon" type="image/png" sizes="310x310" href="/scio/img/favicon310x310.png" /><link rel="icon" type="image/png" sizes="310x150" href="/scio/img/favicon310x150.png" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" /><link rel="stylesheet" href="/scio/highlight/styles/atom-one-light.css" /><link rel="stylesheet" href="/scio/css/style.css" /><link rel="stylesheet" href="/scio/css/palette.css" /><link rel="stylesheet" href="/scio/css/codemirror.css" /><link rel="stylesheet" href="/scio/css/override.css" /></head><body class="docs"><div id="wrapper"><div id="sidebar-wrapper"><ul id="sidebar" class="sidebar-nav"><li class="sidebar-brand"><a href="/scio/" class="brand"><div class="brand-wrapper"><span>scio</span></div></a></li> <li><a href="/scio/docs/index.html" class="">Getting Started</a></li> <li><a href="/scio/docs/Scio-REPL.html" class="">REPL</a></li> <li><a href="/scio/docs/Scio,-Beam-and-Dataflow.html" class="">Scio, Beam and Dataflow</a></li> <li><a href="/scio/docs/Scio,-Scalding-and-Spark.html" class="">Scio, Scalding and Spark</a></li> <li><a href="/scio/docs/Apache-Beam.html" class="">Apache Beam</a></li> <li><a href="/scio/docs/Runners.html" class="">Runners</a></li> <li><a href="/scio/docs/Scio-data-guideline.html" class="">Scio data guideline</a></li> <li><a href="/scio/docs/FAQ.html" class=" active ">FAQ</a></li> <li><a href="/scio/docs/Powered-By.html" class="">Powered By</a></li> <li><a href="/scio/docs/HDFS.html" class="">IO</a> <ul class="sub_section"> <li><a href="/scio/docs/HDFS.html" class="">HDFS</a></li> <li><a href="/scio/docs/Avro.html" class="">Avro</a></li> <li><a href="/scio/docs/Bigtable.html" class="">Bigtable</a></li> <li><a href="/scio/docs/Protobuf.html" class="">Protobuf</a></li> <li><a href="/scio/docs/Parquet.html" class="">Parquet</a></li></ul></li> <li><a href="/scio/docs/Algebird.html" class="">Extras</a> <ul class="sub_section"> <li><a href="/scio/docs/Algebird.html" class="">Algebird</a></li></ul></li></ul></div><div id="page-content-wrapper"><div class="nav"><div class="container-fluid"><div class="row"><div class="col-lg-12"><div class="action-menu pull-left clearfix"><a href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a></div><ul class="pull-right"><li id="gh-eyes-item" class="hidden-xs"><a href="https://github.com/regadas/scio"><i class="fa fa-eye"></i><span>WATCH<span id="eyes" class="label label-default">--</span></span></a></li><li id="gh-stars-item" class="hidden-xs"><a href="https://github.com/regadas/scio"><i class="fa fa-star-o"></i><span>STARS<span id="stars" class="label label-default">--</span></span></a></li><li><a href="#" onclick="shareSiteTwitter('scio Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding.');"><i class="fa fa-twitter"></i></a></li><li><a href="#" onclick="shareSiteFacebook('scio Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding.');"><i class="fa fa-facebook"></i></a></li><li><a href="#" onclick="shareSiteGoogle();"><i class="fa fa-google-plus"></i></a></li></ul></div></div></div></div><div id="content" data-github-owner="regadas" data-github-repo="scio"><div class="content-wrapper"><section><h1 id="table-of-contents">Table of Contents</h1>
+
+<ul>
+  <li><a href="#general-questions">General questions</a>
+    <ul>
+      <li><a href="#whats-the-status-of-scio">What’s the status of Scio?</a></li>
+      <li><a href="#whos-using-scio">Who’s using Scio?</a></li>
+      <li><a href="#whats-the-relationship-between-scio-and-apache-beam">What’s the relationship between Scio and Apache Beam?</a></li>
+      <li><a href="#whats-the-relationship-between-scio-and-google-cloud-dataflow">What’s the relationship between Scio and Google Cloud Dataflow?</a></li>
+      <li><a href="#how-does-scio-compare-to-scalding-or-spark">How does Scio compare to Scalding or Spark?</a></li>
+      <li><a href="#what-are-gce-availability-zone-and-gcs-bucket-location">What are GCE availability zone and GCS bucket location?</a></li>
+    </ul>
+  </li>
+  <li><a href="#programming-questions">Programming questions</a>
+    <ul>
+      <li><a href="#how-do-i-setup-a-new-sbt-project">How do I setup a new SBT project?</a></li>
+      <li><a href="#how-do-i-deploy-scio-jobs-to-dataflow">How do I deploy Scio jobs to Dataflow?</a></li>
+      <li><a href="#how-do-i-use-the-snapshot-builds-of-scio">How do I use the SNAPSHOT builds of Scio?</a></li>
+      <li><a href="#how-do-i-unit-test-pipelines">How do I unit test pipelines?</a></li>
+      <li><a href="#how-do-i-combine-multiple-input-sources">How do I combine multiple input sources?</a></li>
+      <li><a href="#how-do-i-log-in-a-job">How do I log in a job?</a></li>
+      <li><a href="#how-do-i-use-beams-java-api-in-scio">How do I use Beam’s Java API in Scio?</a></li>
+      <li><a href="#what-are-the-different-types-of-joins-and-performance-implication">What are the different types of joins and performance implication?</a></li>
+      <li><a href="#how-to-create-dataflow-job-template">How to create Dataflow job template?</a></li>
+      <li><a href="#how-do-i-cancel-a-job-after-certain-time-period">How do I cancel a job after certain time period?</a></li>
+      <li><a href="#why-cant-i-have-an-scollection-inside-another-scollection">Why can’t I have an SCollection inside another SCollection?</a></li>
+    </ul>
+  </li>
+  <li><a href="#bigquery-questions">BigQuery questions</a>
+    <ul>
+      <li><a href="#what-is-bigquery-dataset-location">What is BigQuery dataset location?</a></li>
+      <li><a href="#how-stable-is-the-type-safe-bigquery-api">How stable is the type safe BigQuery API?</a></li>
+      <li><a href="#how-do-i-work-with-nested-options-in-type-safe-bigquery">How do I work with nested Options in type safe BigQuery?</a></li>
+      <li><a href="#how-do-i-unit-test-bigquery-queries">How do I unit test BigQuery queries?</a></li>
+      <li><a href="#how-do-i-stream-to-a-partitioned-bigquery-table">How do I stream to a partitioned BigQuery table?</a></li>
+      <li><a href="#how-do-i-invalidate-cached-bigquery-results-or-disable-cache">How do I invalidate cached BigQuery results or disable cache?</a></li>
+      <li><a href="#how-does-bigquery-determines-job-priority">How does BigQuery determines job priority?</a></li>
+    </ul>
+  </li>
+  <li><a href="#streaming-questions">Streaming questions</a>
+    <ul>
+      <li><a href="#how-do-i-update-a-streaming-job">How do I update a streaming job?</a></li>
+      <li><a href="#how-do-i-read-pubsub-input-in-a-local-pipeline">How do I read Pubsub input in a local pipeline?</a></li>
+    </ul>
+  </li>
+  <li><a href="#other-io-components">Other IO components</a>
+    <ul>
+      <li><a href="#how-do-i-access-various-files-outside-of-a-sciocontext">How do I access various files outside of a ScioContext?</a></li>
+      <li><a href="#how-do-i-reduce-datastore-boilerplate">How do I reduce Datastore boilerplate?</a></li>
+      <li><a href="#how-do-i-throttle-bigtable-writes">How do I throttle Bigtable writes?</a></li>
+      <li><a href="#how-do-i-use-custom-kryo-serializers">How do I use custom Kryo serializers?</a></li>
+      <li><a href="#what-kryo-tuning-options-are-there">What Kryo tuning options are there?</a></li>
+    </ul>
+  </li>
+  <li><a href="#development-environment-issues">Development environment issues</a>
+    <ul>
+      <li><a href="#how-do-i-keep-sbt-from-running-out-of-memory">How do I keep SBT from running out of memory?</a></li>
+      <li><a href="#how-do-i-fix-unable-to-create-parent-directories-error-in-intellij">How do I fix “Unable to create parent directories” error in IntelliJ?</a></li>
+      <li><a href="#how-to-make-intellij-idea-work-with-type-safe-bigquery-classes">How to make IntelliJ IDEA work with type safe BigQuery classes?</a></li>
+    </ul>
+  </li>
+  <li><a href="#common-issues">Common issues</a>
+    <ul>
+      <li><a href="#what-does-cannot-prove-that-t1--t2-mean">What does “Cannot prove that T1 &lt;:&lt; T2” mean?</a></li>
+      <li><a href="#how-do-i-fix-invalid-default-bigquery-credentials">How do I fix invalid default BigQuery credentials?</a></li>
+      <li><a href="#why-are-my-typed-bigquery-case-classes-not-up-to-date">Why are my typed BigQuery case classes not up to date?</a></li>
+      <li><a href="#how-do-i-fix-sockettimeoutexception-with-bigquery">How do I fix “SocketTimeoutException” with BigQuery?</a></li>
+      <li><a href="#why-do-i-see-names-like-mainnativemethodaccessorimpl-in-the-ui">Why do I see names like “main@{NativeMethodAccessorImpl…}” in the UI?</a></li>
+      <li><a href="#how-do-i-fix-resource_exhausted-error">How do I fix “RESOURCE_EXHAUSTED” error?</a></li>
+      <li><a href="#can-i-use-scalaapp-trait-instead-of-main-method">Can I use “scala.App” trait instead of “main” method?</a></li>
+      <li><a href="#how-to-inspect-the-content-of-an-scollection">How to inspect the content of an SCollection?</a></li>
+      <li><a href="#how-do-i-improve-side-input-performance">How do I improve side input performance?</a></li>
+      <li><a href="#how-do-i-control-concurrency-number-of-dofn-threads-in-dataflow-workers">How do I control concurrency (number of DoFn threads) in Dataflow workers</a></li>
+      <li><a href="#how-to-manually-investigate-a-cloud-dataflow-worker">How to manually investigate a Cloud Dataflow worker</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="general-questions">General questions</h3>
+
+<h4 id="whats-the-status-of-scio">What’s the status of Scio?</h4>
+
+<p>Scio is widely being used for production data pipelines at Spotify and is our preferred framework for building new pipelines on Google Cloud. We run Scio on <a href="https://cloud.google.com/dataflow/">Google Cloud Dataflow</a> service in both batch and streaming modes. However it’s still under heavy development and there might be minor breaking API changes from time to time.</p>
+
+<h4 id="whos-using-scio">Who’s using Scio?</h4>
+
+<p>Spotify uses Scio for all new data pipelines running on Google Cloud Platform, including music recommendation, monetization, artist insights and business analysis. We also use BigQuery, Bigtable and Datastore heavily with Scio. We use Scio in both batch and streaming mode.</p>
+
+<p>As of mid 2017, there’re 200+ developers and 700+ production pipelines. The largest batch job we’ve seen uses 800 n1-highmem-32 workers (25600 CPUs, 166.4TB RAM) and processes 325 billion rows from Bigtable (240TB). We also have numerous jobs that process 10TB+ of BigQuery data daily. On the streaming front, we have many jobs with 30+ n1-standard-16 workers (480 CPUs, 1.8TB RAM) and SSD disks for real time machine learning or reporting.</p>
+
+<p>For a incomplete list of users, see the [[Powered By]] page.</p>
+
+<h4 id="whats-the-relationship-between-scio-and-apache-beam">What’s the relationship between Scio and Apache Beam?</h4>
+
+<p>Scio is a Scala API built on top of <a href="https://beam.apache.org/">Apache Beam</a>’s Java SDK. Scio aims to offer a concise, idiomatic Scala API for a subset of Beam’s features, plus extras we find useful, like REPL, type safe BigQuery, and IO taps.</p>
+
+<h4 id="whats-the-relationship-between-scio-and-google-cloud-dataflow">What’s the relationship between Scio and Google Cloud Dataflow?</h4>
+
+<p>Scio (version before 0.3.0) was originally built on top of Google Cloud Dataflow’s <a href="https://github.com/GoogleCloudPlatform/DataflowJavaSDK">Java SDK</a>. Google donated the code base to Apache and renamed it Beam. Cloud Dataflow became one of the supported runners, alongside Apache Flink &amp; Apache Spark. Scio 0.3.x is built on top of Beam 0.6.0 and 0.4.x is built on top of Beam 2.x. Many users run Scio on the Dataflow runner today.</p>
+
+<h4 id="how-does-scio-compare-to-scalding-or-spark">How does Scio compare to Scalding or Spark?</h4>
+
+<p>Check out the wiki page on [[Scio, Scalding and Spark]]. Also check out <a href="https://github.com/spotify/big-data-rosetta-code">Big Data Rosetta Code</a> for some snippets.</p>
+
+<h4 id="what-are-gce-availability-zone-and-gcs-bucket-location">What are GCE availability zone and GCS bucket location?</h4>
+
+<ul>
+  <li>GCE <a href="https://cloud.google.com/compute/docs/zones">availability zone</a> is where the Google Cloud Dataflow service spins up VM instances for your job, e.g. <code class="highlighter-rouge">us-east1-a</code>.</li>
+  <li>Each GCS bucket (<code class="highlighter-rouge">gs://bucket</code>) has a <a href="https://cloud.google.com/storage/docs/storage-classes">storage class</a> and <a href="https://cloud.google.com/storage/docs/bucket-locations">bucket location</a> that affects availability, latency and price. The location should be close to GCE availability zone. Dataflow uses <code class="highlighter-rouge">--stagingLocation</code> for job jars, temporary files and BigQuery I/O.</li>
+</ul>
+
+<h3 id="programming-questions">Programming questions</h3>
+
+<h4 id="how-do-i-setup-a-new-sbt-project">How do I setup a new SBT project?</h4>
+
+<p>Read the <a href="https://github.com/spotify/scio/wiki/Getting-Started#sbt-project-setup">documentation</a>.</p>
+
+<h4 id="how-do-i-deploy-scio-jobs-to-dataflow">How do I deploy Scio jobs to Dataflow?</h4>
+
+<p>When developing locally, you can do <code class="highlighter-rouge">sbt "runMain MyClass ...</code> or just <code class="highlighter-rouge">runMain MyClass ...</code> in the SBT console without building any artifacts.</p>
+
+<p>When deploying to the cloud, we recommend using <a href="https://github.com/xerial/sbt-pack">sbt-pack</a> or <a href="https://github.com/sbt/sbt-native-packager">sbt-native-packager</a> plugin instead of <a href="https://github.com/sbt/sbt-assembly">sbt-assembly</a>. Unlike assembly, they pack dependency jars in a directory instead of merging them, so that we don’t have to deal with merge strategy and dependency jars can be cached by Dataflow service.</p>
+
+<p>At Spotify we pack jars with sbt-pack, build docker images with <a href="https://github.com/marcuslonnberg/sbt-docker">sbt-docker</a> together with orchestration components e.g. <a href="https://github.com/spotify/luigi">Luigi</a> or <a href="https://github.com/apache/incubator-airflow">Airflow</a> and deploy them with <a href="https://github.com/spotify/styx">Styx</a>.</p>
+
+<h4 id="how-do-i-use-the-snapshot-builds-of-scio">How do I use the SNAPSHOT builds of Scio?</h4>
+
+<p>Commits to Scio master are automatically published to Sonatype via continuous integration. To use the latest SNAPSHOT artifact, add the following line to your <code class="highlighter-rouge">build.sbt</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">resolvers</span> <span class="o">+=</span> <span class="nc">Resolver</span><span class="o">.</span><span class="n">sonatypeRepo</span><span class="o">(</span><span class="s">"snapshots"</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>Or you can configure SBT globally by adding the following to <code class="highlighter-rouge">~/.sbt/0.13/global.sbt</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">resolvers</span> <span class="o">++=</span> <span class="nc">Seq</span><span class="o">(</span>
+  <span class="nc">Resolver</span><span class="o">.</span><span class="n">sonatypeRepo</span><span class="o">(</span><span class="s">"snapshots"</span><span class="o">)</span>
+  <span class="c1">// other resolvers
+</span><span class="o">)</span>
+</code></pre></div></div>
+
+<h4 id="how-do-i-unit-test-pipelines">How do I unit test pipelines?</h4>
+
+<p>Any Scala or Java unit testing frameworks can be used with Scio but we provide some utilities for <a href="http://www.scalatest.org/">ScalaTest</a>.</p>
+
+<ul>
+  <li><a href="https://github.com/spotify/scio/blob/master/scio-test/src/main/scala/com/spotify/scio/testing/PipelineTestUtils.scala">PipelineTestUtils</a> - utilities for testing parts of a pipeline</li>
+  <li><a href="https://github.com/spotify/scio/blob/master/scio-core/src/main/scala/com/spotify/scio/testing/JobTest.scala">JobTest</a> - for testing pipelines end-to-end with complete arguments and IO coverage</li>
+  <li><a href="https://github.com/spotify/scio/blob/master/scio-test/src/main/scala/com/spotify/scio/testing/SCollectionMatchers.scala">SCollectionMatchers</a> - ScalaTest matchers for <code class="highlighter-rouge">SCollection</code></li>
+  <li><a href="https://github.com/spotify/scio/blob/master/scio-test/src/main/scala/com/spotify/scio/testing/PipelineSpec.scala">PipelineSpec</a> - shortcut for ScalaTest <code class="highlighter-rouge">FlatSpec</code> with utilities and matchers</li>
+</ul>
+
+<p>The best place to find example useage of <code class="highlighter-rouge">JobTest</code> and <code class="highlighter-rouge">SCollectionMatchers</code> are their respective tests in <a href="https://github.com/spotify/scio/blob/master/scio-test/src/test/scala/com/spotify/scio/testing/JobTestTest.scala">JobTestTest</a> and <a href="https://github.com/spotify/scio/blob/master/scio-test/src/test/scala/com/spotify/scio/testing/SCollectionMatchersTest.scala">SCollectionMatchersTest</a>.
+For more examples see:</p>
+
+<ul>
+  <li>https://github.com/spotify/scio/tree/master/scio-examples/src/test/scala/com/spotify/scio/examples</li>
+  <li>https://github.com/spotify/big-data-rosetta-code/tree/master/src/test/scala/com/spotify/bdrc/testing</li>
+</ul>
+
+<h4 id="how-do-i-combine-multiple-input-sources">How do I combine multiple input sources?</h4>
+
+<p>How do I combine multiple input sources, e.g. different BigQuery tables, files located in different GCS buckets?
+You can combine <code class="highlighter-rouge">SCollection</code>s from different sources into one using the companion method <code class="highlighter-rouge">SCollection.unionAll</code>, for example:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="o">(</span><span class="n">sc</span><span class="o">,</span> <span class="n">args</span><span class="o">)</span> <span class="k">=</span> <span class="nc">ContextAndArgs</span><span class="o">(</span><span class="n">cmdlineArgs</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">collections</span> <span class="k">=</span> <span class="nc">Seq</span><span class="o">(</span><span class="s">"gs://bucket1/data/*.avro"</span><span class="o">,</span> <span class="s">"gs://bucket2/data/*.avro"</span><span class="o">)</span>
+    <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">sc</span><span class="o">.</span><span class="n">avroFile</span><span class="o">[</span><span class="kt">SchemaType</span><span class="o">](</span><span class="k">_</span><span class="o">))</span>
+<span class="k">val</span> <span class="n">all</span> <span class="k">=</span> <span class="nc">SCollection</span><span class="o">.</span><span class="n">unionAll</span><span class="o">(</span><span class="n">collections</span><span class="o">)</span>
+</code></pre></div></div>
+
+<h4 id="how-do-i-log-in-a-job">How do I log in a job?</h4>
+
+<p>You can log in a Scio job with most common logging libraries but <code class="highlighter-rouge">slf4j</code> is included as a dependency. Define the logger instance as a member of the job <code class="highlighter-rouge">object</code> and use it inside a lambda.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.slf4j.LoggerFactory</span>
+<span class="k">object</span> <span class="nc">MyJob</span> <span class="o">{</span>
+  <span class="k">private</span> <span class="k">val</span> <span class="n">logger</span> <span class="k">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="n">getLogger</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="n">getClass</span><span class="o">)</span>
+  <span class="k">def</span> <span class="n">main</span><span class="o">(</span><span class="n">cmdlineArgs</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="c1">// ...
+</span>    <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="o">(</span><span class="mi">1</span> <span class="n">to</span> <span class="mi">100</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">map</span> <span class="o">{</span> <span class="n">i</span> <span class="k">=&gt;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="o">(</span><span class="n">s</span><span class="s">"Element $i"</span><span class="o">)</span>
+        <span class="n">i</span> <span class="o">*</span> <span class="n">i</span>
+      <span class="o">}</span>
+    <span class="c1">// ...
+</span>  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="how-do-i-use-beams-java-api-in-scio">How do I use Beam’s Java API in Scio?</h4>
+
+<p>Scio exposes a few things to allow easy integration with native Beam Java API, notably:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">ScioContext#customInput</code> to apply a <code class="highlighter-rouge">PTransform[_ &gt;: PBegin, PCollection[T]]</code> (source) and get a <code class="highlighter-rouge">SCollection[T]</code>.</li>
+  <li><code class="highlighter-rouge">SCollection#applyTransform</code> to apply a <code class="highlighter-rouge">PTransform[_ &gt;: PCollection[T], PCollection[U]]</code> and get a <code class="highlighter-rouge">SCollection[U]</code></li>
+  <li><code class="highlighter-rouge">SCollection#saveAsCustomOutput</code> to apply a <code class="highlighter-rouge">PTransform[_ &gt;: PCollection[T], PDone]</code> (sink) and get a <code class="highlighter-rouge">Future[Tap[T]]</code>.</li>
+</ul>
+
+<p>See <a href="https://github.com/spotify/scio/blob/master/scio-examples/src/main/scala/com/spotify/scio/examples/extra/BeamExample.scala">BeamExample.scala</a> for more details. Custom I/O can also be tested via the <a href="http://spotify.github.io/scio/api/com/spotify/scio/testing/JobTest$.html"><code class="highlighter-rouge">JobTest</code></a> harness.</p>
+
+<h4 id="what-are-the-different-types-of-joins-and-performance-implication">What are the different types of joins and performance implication?</h4>
+
+<ul>
+  <li>Inner (<code class="highlighter-rouge">a.join(b)</code>), left (<code class="highlighter-rouge">a.leftOuterJoin(b)</code>), outer (<code class="highlighter-rouge">a.fullOuterJoin(b)</code>) performs better with a large LHS. So <code class="highlighter-rouge">a</code> should be the larger data set with potentially more hot keys, i.e. key with many values. Every key-value pair from every input is shuffled.</li>
+  <li><code class="highlighter-rouge">join</code>/<code class="highlighter-rouge">leftOuterJoin</code> may be replaced by <code class="highlighter-rouge">hashJoin</code>/<code class="highlighter-rouge">leftHashJoin</code> if the RHS is small enough to fit in memory (e.g. &lt; 1GB). The RHS is used as a multi-map side input for the LHS. No shuffle is performed.</li>
+  <li>Consider <code class="highlighter-rouge">skewedJoin</code> if some keys on the LHS are extremely hot.</li>
+  <li>Consider <code class="highlighter-rouge">sparseOuterJoin</code> if you want a full outer join where RHS is much smaller than LHS, but may not fit in memory.</li>
+  <li>Consider <code class="highlighter-rouge">cogroup</code> if you need to access value groups of each key.</li>
+  <li><a href="http://spotify.github.io/scio/api/com/spotify/scio/util/MultiJoin$.html"><code class="highlighter-rouge">MultiJoin</code></a> supports inner, left, outer join and cogroup of up to 22 inputs.</li>
+  <li>For multi-joins larger inputs should be on the left, e.g. <code class="highlighter-rouge">size(a) &gt;= size(b) &gt;= size(c) &gt;= size(d)</code> in <code class="highlighter-rouge">MultiJoin(a, b, c, d)</code>.</li>
+  <li>Check out these <a href="http://www.lyh.me/slides/joins.html">slides</a> for more information on joins.</li>
+</ul>
+
+<h4 id="how-to-create-dataflow-job-template">How to create Dataflow job template?</h4>
+
+<p>For Apache Beam based Scio (version &gt;= <code class="highlighter-rouge">0.3.0</code>) use <code class="highlighter-rouge">DataflowRunner</code> and specify <code class="highlighter-rouge">templateLocation</code> option. For example in CLI <code class="highlighter-rouge">--templateLocation=gs://&lt;bucket&gt;/job1</code>. Read more about templates <a href="https://cloud.google.com/dataflow/docs/templates/overview">here</a>.</p>
+
+<h4 id="how-do-i-cancel-a-job-after-certain-time-period">How do I cancel a job after certain time period?</h4>
+
+<p>You can wait on the <code class="highlighter-rouge">ScioResult</code> and call the internal <code class="highlighter-rouge">PipelineResult#cancel()</code> method if a timeout exception happens.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">r</span> <span class="k">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">close</span><span class="o">()</span>
+<span class="k">import</span> <span class="nn">scala.concurrent.duration._</span>
+<span class="k">if</span> <span class="o">(</span><span class="nc">Try</span><span class="o">(</span><span class="n">r</span><span class="o">.</span><span class="n">waitUntilFinish</span><span class="o">(</span><span class="mf">1.</span><span class="n">minute</span><span class="o">)).</span><span class="n">isFailure</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">r</span><span class="o">.</span><span class="n">internal</span><span class="o">.</span><span class="n">cancel</span><span class="o">()</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="why-cant-i-have-an-scollection-inside-another-scollection">Why can’t I have an SCollection inside another SCollection?</h4>
+
+<p>You cannot have an SCollection inside another SCollection, i.e. anything with type <code class="highlighter-rouge">SCollection[SCollection[T]]</code>. To explain this we have to go back to the relationship between <code class="highlighter-rouge">ScioContext</code> and <code class="highlighter-rouge">SCollection</code>. Every <code class="highlighter-rouge">ScioContext</code> represents a unique pipeline and every <code class="highlighter-rouge">SCollection</code> represents a stage in the pipeline execution, i.e. the state of the pipeline after some transforms has be applied. We start a pipeline code with <code class="highlighter-rouge">val sc = ...</code>, create new <code class="highlighter-rouge">SCollection</code>s with methods on <code class="highlighter-rouge">sc</code>, e.g. <code class="highlighter-rouge">sc.textFile</code>, and transform them with methods like <code class="highlighter-rouge">.map</code>, <code class="highlighter-rouge">.filter</code>, <code class="highlighter-rouge">.join</code>. Therefore each <code class="highlighter-rouge">SCollection</code> can trace its root to one single <code class="highlighter-rouge">sc</code>. The pipeline is submitted for execution when we call <code class="highlighter-rouge">sc.close()</code>. Hence we cannot have an <code class="highlighter-rouge">SCollection</code> inside another <code class="highlighter-rouge">SCollection</code> just as we cannot have a pipeline inside another pipeline.</p>
+
+<h3 id="bigquery-questions">BigQuery questions</h3>
+
+<h4 id="what-is-bigquery-dataset-location">What is BigQuery dataset location?</h4>
+
+<ul>
+  <li>Each BigQuery dataset has a location (e.g. <code class="highlighter-rouge">US</code>, <code class="highlighter-rouge">EU</code>) and every table inside are stored in the same location. Tables in a <code class="highlighter-rouge">JOIN</code> must be from the same region. Also one can only import/export tables to a GCS bucket in the same location. Starting from v0.2.1, Scio will detect the dataset location of a query and create a staging dataset for <code class="highlighter-rouge">ScioContext#bigQuerySelect</code> and <code class="highlighter-rouge">@BigQueryType.fromQuery</code>. This location should be the same as that of your <code class="highlighter-rouge">--stagingLocation</code> GCS bucket. The old <code class="highlighter-rouge">-Dbigquery.staging_dataset.location</code> flag is removed.</li>
+</ul>
+
+<p>Because of these limitations and performance reasons, make sure <code class="highlighter-rouge">--zone</code>, <code class="highlighter-rouge">--stagingLocation</code> and <del><code class="highlighter-rouge">-Dbigquery.staging_dataset.location</code></del> location of BigQuery datasets are consistent.</p>
+
+<h4 id="how-stable-is-the-type-safe-bigquery-api">How stable is the type safe BigQuery API?</h4>
+
+<p>[[Type Safe BigQuery]] API is considered stable and widely used at Spotify. There are several caveats however.</p>
+
+<ul>
+  <li>Both <a href="https://cloud.google.com/bigquery/query-reference">legacy</a> and <a href="https://cloud.google.com/bigquery/sql-reference/">SQL</a> syntax are supported although the SQL syntax is <strong>highly recommended</strong></li>
+  <li>The system will detect legacy or SQL syntax and choose the correct one</li>
+  <li>To override auto-detection, start the query with either <code class="highlighter-rouge">#legacysql</code> or <code class="highlighter-rouge">#standardsql</code> comment line</li>
+  <li>Legacy syntax is less predictable, especially for complex queries and may be disabled in the future</li>
+  <li>Case classes generated by <code class="highlighter-rouge">@BigQueryType.fromTable</code> or <code class="highlighter-rouge">@BigQueryType.fromQuery</code> are not recognized in IntelliJ IDEA but see [[FAQ#how-to-make-intellij-idea-work-with-type-safe-bigquery-classes]] for a workaround</li>
+</ul>
+
+<h4 id="how-do-i-work-with-nested-options-in-type-safe-bigquery">How do I work with nested Options in type safe BigQuery?</h4>
+
+<p>Any nullable field in BigQuery is translated to <code class="highlighter-rouge">Option[T]</code> by the type safe BigQuery API and it can be clunky to work with rows with multiple or nested fields. For example:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">(</span><span class="n">row</span><span class="o">.</span><span class="n">getUser</span><span class="o">.</span><span class="n">isDefined</span><span class="o">)</span> <span class="o">{</span>  <span class="c1">// Option[User]
+</span>  <span class="k">val</span> <span class="n">email</span> <span class="k">=</span> <span class="n">row</span><span class="o">.</span><span class="n">getUser</span><span class="o">.</span><span class="n">get</span><span class="o">.</span><span class="n">getEmail</span>  <span class="c1">// Option[String]
+</span>  <span class="k">if</span> <span class="o">(</span><span class="n">email</span><span class="o">.</span><span class="n">isDefined</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">doSomething</span><span class="o">(</span><span class="n">email</span><span class="o">.</span><span class="n">get</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>For comprehension is a nicer alternative in these cases:</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">e</span> <span class="k">=</span> <span class="k">for</span> <span class="o">(</span><span class="n">u</span> <span class="k">&lt;-</span> <span class="n">row</span><span class="o">.</span><span class="n">getUser</span><span class="o">;</span> <span class="n">e</span> <span class="k">&lt;-</span> <span class="n">u</span><span class="o">.</span><span class="n">getUser</span><span class="o">)</span> <span class="k">yield</span> <span class="n">e</span>  <span class="c1">// Option[String]
+</span><span class="n">e</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="n">doSomething</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>Also see these <a href="http://www.lyh.me/slides/for-yield.html">slides</a> and this <a href="https://dzone.com/articles/scala-comprehensions-options">blog article</a>.</p>
+
+<h4 id="how-do-i-unit-test-bigquery-queries">How do I unit test BigQuery queries?</h4>
+
+<p>BigQuery doesn’t provide a way to unit test query logic locally, but we can query the service directly in an integration test. Take a look at <a href="https://github.com/spotify/scio/blob/master/scio-bigquery/src/it/scala/com/spotify/scio/bigquery/BigQueryIT.scala">BigQueryIT.scala</a>. <code class="highlighter-rouge">MockBigQuery</code> will create temporary tables on the service, feed them with mock data, and substitute table references in your query string with the mocked ones.</p>
+
+<h4 id="how-do-i-stream-to-a-partitioned-bigquery-table">How do I stream to a partitioned BigQuery table?</h4>
+
+<p>Currently there is no way to create a <a href="https://cloud.google.com/bigquery/docs/partitioned-tables">partitioned</a> BigQuery table via Scio/Beam when streaming, however it is possible to stream to a partitioned table if it is already created.</p>
+
+<p>This can be done by using fixed windows and using the window bounds to infer date. As of Scio 0.4.0-beta2 this looks as follows:</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">DayPartitionFunction</span><span class="o">()</span> <span class="k">extends</span> <span class="nc">SerializableFunction</span><span class="o">[</span><span class="kt">ValueInSingleWindow</span><span class="o">[</span><span class="kt">TableRow</span><span class="o">]</span>, <span class="kt">TableDestination</span><span class="o">]</span> <span class="o">{</span>
+  <span class="k">override</span> <span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">input</span><span class="k">:</span> <span class="kt">ValueInSingleWindow</span><span class="o">[</span><span class="kt">TableRow</span><span class="o">])</span><span class="k">:</span> <span class="kt">TableDestination</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">partition</span> <span class="k">=</span> <span class="nc">DateTimeFormat</span><span class="o">.</span><span class="n">forPattern</span><span class="o">(</span><span class="s">"yyyyMMdd"</span><span class="o">).</span><span class="n">withZone</span><span class="o">(</span><span class="nc">DateTimeZone</span><span class="o">.</span><span class="nc">UTC</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">print</span><span class="o">(</span><span class="n">input</span><span class="o">.</span><span class="n">getWindow</span><span class="o">.</span><span class="n">asInstanceOf</span><span class="o">[</span><span class="kt">IntervalWindow</span><span class="o">].</span><span class="n">start</span><span class="o">())</span>
+    <span class="k">new</span> <span class="nc">TableDestination</span><span class="o">(</span><span class="s">"project:dataset.partitioned$"</span> <span class="o">+</span> <span class="n">partition</span><span class="o">,</span> <span class="s">""</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="n">sc</span><span class="o">.</span><span class="n">pubsubSubscription</span><span class="o">(</span><span class="s">"projects/data-university/topics/data-university"</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">withFixedWindows</span><span class="o">(</span><span class="mi">30L</span><span class="o">)</span>
+<span class="c1">// Convert to `TableRow`
+</span>  <span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">myStringToTableRowConversion</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=&gt;</span> <span class="nc">TableRow</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">saveAsCustomOutput</span><span class="o">(</span>
+    <span class="s">"SaveAsDayPartitionedBigQuery"</span><span class="o">,</span>
+    <span class="nc">BigQueryIO</span><span class="o">.</span><span class="n">writeTableRows</span><span class="o">().</span><span class="n">to</span><span class="o">(</span>
+      <span class="k">new</span> <span class="nc">DayPartitionFunction</span><span class="o">())</span>
+      <span class="o">.</span><span class="n">withWriteDisposition</span><span class="o">(</span><span class="nc">WriteDisposition</span><span class="o">.</span><span class="nc">WRITE_APPEND</span><span class="o">)</span>
+      <span class="o">.</span><span class="n">withCreateDisposition</span><span class="o">(</span><span class="nc">CreateDisposition</span><span class="o">.</span><span class="nc">CREATE_NEVER</span><span class="o">)</span>
+  <span class="o">)</span>
+</code></pre></div></div>
+
+<p>In Scio 0.3.X it is possible to achieve the same behaviour using <code class="highlighter-rouge">SerializableFunction[BoundedWindow, String]</code> and <code class="highlighter-rouge">BigQueryIO.Write.to</code>. It is also possible to stream to separate tables with a Date suffix by modifying <code class="highlighter-rouge">DayPartitionFunction</code>, specifying the Schema, and changing the CreateDisposition to <code class="highlighter-rouge">CreateDisposition.CREATE_IF_NEEDED</code>.</p>
+
+<h4 id="how-do-i-invalidate-cached-bigquery-results-or-disable-cache">How do I invalidate cached BigQuery results or disable cache?</h4>
+
+<p><a href="https://github.com/spotify/scio/blob/master/scio-bigquery/src/main/scala/com/spotify/scio/bigquery/BigQueryClient.scala">BigQueryClient</a> in Scio caches query result in system property <code class="highlighter-rouge">bigquery.cache.directory</code>, which defaults to <code class="highlighter-rouge">$PWD/.bigquery</code>. Use <code class="highlighter-rouge">rm -rf .bigquery</code> to invalidate all cached results. To disable caching, set system property <code class="highlighter-rouge">bigquery.cache.enabled</code> to <code class="highlighter-rouge">false</code>.</p>
+
+<h4 id="how-does-bigquery-determines-job-priority">How does BigQuery determines job priority?</h4>
+
+<p>By default Scio runs BigQuery jobs with <code class="highlighter-rouge">BATCH</code> priority except when in the REPL where it runs with <code class="highlighter-rouge">INTERACTIVE</code>. To override this, set system property <code class="highlighter-rouge">bigquery.priority</code> to either <code class="highlighter-rouge">BATCH</code> or <code class="highlighter-rouge">INTERACTIVE</code>.</p>
+
+<h3 id="streaming-questions">Streaming questions</h3>
+
+<h4 id="how-do-i-update-a-streaming-job">How do I update a streaming job?</h4>
+
+<p>Dataflow allows streaming jobs to be updated on the fly by specifying <code class="highlighter-rouge">--update</code>, along with <code class="highlighter-rouge">--jobName=[your_job]</code> on the command line. See https://cloud.google.com/dataflow/pipelines/updating-a-pipeline for detailed docs. Note that for this to work, Dataflow needs to be able to identify which transformations from the original job map to those in the replacement job. The easiest way to do so is to give unique names to transforms in the code itself. In Scio, this can be achieved by calling <code class="highlighter-rouge">.withName()</code> before applying the transform. For example:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sc.textFile(...)
+   .withName("MakeUpper").map(_.toUpperCase)
+   .withName("BigWords").filter(_.length &gt; 6)
+</code></pre></div></div>
+
+<p>In this example, the <code class="highlighter-rouge">map</code>’s transform name is “MakeUpper” and the <code class="highlighter-rouge">filter</code>’s is “BigWords”. If we later decided that we want to count 6 letter words as “big” too, then we can change it to <code class="highlighter-rouge">_.length &gt; 5</code>, and because the transform name is the same the job can be updated on the fly.</p>
+
+<h4 id="how-do-i-read-pubsub-input-in-a-local-pipeline">How do I read Pubsub input in a local pipeline?</h4>
+
+<p>You can use a custom <a href="https://beam.apache.org/documentation/sdks/javadoc/2.0.0/org/apache/beam/sdk/io/gcp/pubsub/PubsubIO.html"><code class="highlighter-rouge">PubsubIO</code></a> transform and specify <code class="highlighter-rouge">maxNumRecord</code> &amp; <code class="highlighter-rouge">maxReadTime</code> in order not to blow up local JVM.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sc</span><span class="o">.</span><span class="n">customInput</span><span class="o">(</span><span class="s">"ReadFromPubsub"</span><span class="o">,</span>
+  <span class="nc">PubsubIO</span><span class="o">.</span><span class="n">read</span><span class="o">()</span>
+    <span class="o">.</span><span class="n">topic</span><span class="o">(</span><span class="s">"projects/data-university/topics/data-university"</span><span class="o">)</span>
+    <span class="o">.</span><span class="n">idLabel</span><span class="o">(</span><span class="s">"id"</span><span class="o">)</span>
+    <span class="o">.</span><span class="n">timestampLabel</span><span class="o">(</span><span class="s">"ts"</span><span class="o">)</span>
+    <span class="o">.</span><span class="n">withCoder</span><span class="o">(</span><span class="nc">StringUtf8Coder</span><span class="o">.</span><span class="n">of</span><span class="o">())</span>
+    <span class="o">.</span><span class="n">maxNumRecords</span><span class="o">(</span><span class="mi">50</span><span class="o">)</span>
+    <span class="o">.</span><span class="n">maxReadTime</span><span class="o">(</span><span class="nc">Duration</span><span class="o">.</span><span class="n">standardMinutes</span><span class="o">(</span><span class="mi">10</span><span class="o">))</span>
+</code></pre></div></div>
+
+<h3 id="other-io-components">Other IO components</h3>
+
+<h4 id="how-do-i-access-various-files-outside-of-a-sciocontext">How do I access various files outside of a ScioContext?</h4>
+
+<ul>
+  <li>For Scio version &gt;= <code class="highlighter-rouge">0.4.0</code></li>
+</ul>
+
+<p>Starting from Scio <code class="highlighter-rouge">0.4.0</code> you can use Apache Beam <a href="https://beam.apache.org/documentation/sdks/javadoc/2.0.0/org/apache/beam/sdk/io/FileSystems.html">Filesystems</a> abstraction:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// the path can be any of the supported Filesystems, e.g. local, GCS, HDFS
+</span><span class="k">val</span> <span class="n">readmeResource</span> <span class="k">=</span> <span class="nc">FileSystems</span><span class="o">.</span><span class="n">matchNewResource</span><span class="o">(</span><span class="s">"gs://&lt;bucket&gt;/README.md"</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">readme</span> <span class="k">=</span> <span class="nc">FileSystems</span><span class="o">.</span><span class="n">open</span><span class="o">(</span><span class="n">readmeResource</span><span class="o">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>For Scio version &lt; <code class="highlighter-rouge">0.4.0</code></li>
+</ul>
+
+<p>Note: this part is GCS specific.</p>
+
+<p>You can get a <a href="https://beam.apache.org/documentation/sdks/javadoc/0.6.0/org/apache/beam/sdk/util/GcsUtil.html"><code class="highlighter-rouge">GcsUtil</code></a> instance from <code class="highlighter-rouge">ScioContext</code>, which can be used to open GCS files in read or write mode.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">gcsUtil</span> <span class="k">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">optionsAs</span><span class="o">[</span><span class="kt">GcsOptions</span><span class="o">].</span><span class="n">getGcsUtil</span>
+</code></pre></div></div>
+
+<h4 id="how-do-i-reduce-datastore-boilerplate">How do I reduce Datastore boilerplate?</h4>
+
+<p>Datastore <code class="highlighter-rouge">Entity</code> class is actually generated from <a href="https://github.com/googleapis/googleapis/blob/master/google/datastore/v1/entity.proto">Protobuf</a> which uses the builder pattern and very boilerplate heavy. You can use the <a href="https://github.com/nevillelyh/shapeless-datatype#datastoretype">shapeless-datatype</a> library to seamlessly convert bewteen case classes and <code class="highlighter-rouge">Entity</code>s. See <a href="https://github.com/spotify/scio/blob/master/scio-examples/src/main/scala/com/spotify/scio/examples/extra/ShapelessDatastoreExample.scala">ShapelessDatastoreExample.scala</a> for an example job and <a href="https://github.com/spotify/scio/blob/a254de70962ec6df6d42884e7f213c88313a4e96/scio-examples/src/test/scala/com/spotify/scio/examples/extra/ShapelessDatastoreExampleTest.scala">ShapelessDatastoreExampleTest.scala</a> for tests.</p>
+
+<h4 id="how-do-i-throttle-bigtable-writes">How do I throttle Bigtable writes?</h4>
+
+<p>Currently Dataflow autoscaling may not work well with large writes BigtableIO. Specifically It does not take into account Bigtable IO rate limits and may scale up more workers and end up hitting the limit and eventually fail the job. As a workaround, you can enable throttling for Bigtable writes in Scio 0.4.0-alpha2 or later.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="n">btOptions</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">BigtableOptions</span><span class="o">.</span><span class="nc">Builder</span><span class="o">()</span>
+  <span class="o">.</span><span class="n">setProjectId</span><span class="o">(</span><span class="n">btProjectId</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">setInstanceId</span><span class="o">(</span><span class="n">btInstanceId</span><span class="o">)</span>
+  <span class="o">.</span><span class="n">setBulkOptions</span><span class="o">(</span><span class="k">new</span> <span class="nc">BulkOptions</span><span class="o">.</span><span class="nc">Builder</span><span class="o">()</span>
+    <span class="o">.</span><span class="n">enableBulkMutationThrottling</span><span class="o">()</span>
+    <span class="o">.</span><span class="n">setBulkMutationRpcTargetMs</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span> <span class="c1">// lower latency threshold, default is 100
+</span>    <span class="o">.</span><span class="n">build</span><span class="o">())</span>
+  <span class="o">.</span><span class="n">build</span><span class="o">()</span>
+<span class="n">data</span><span class="o">.</span><span class="n">saveAsBigtable</span><span class="o">(</span><span class="n">btOptions</span><span class="o">,</span> <span class="n">btTableId</span><span class="o">)</span>
+</code></pre></div></div>
+
+<h4 id="how-do-i-use-custom-kryo-serializers">How do I use custom Kryo serializers?</h4>
+
+<p>Define a registrar class that extends <code class="highlighter-rouge">IKryoRegistrar</code> and annotate it with <code class="highlighter-rouge">@KryoRegistrar</code>. Note that the class name must ends with <code class="highlighter-rouge">KryoRegistrar</code>, i.e. <code class="highlighter-rouge">MyKryoRegistrar</code> for Scio to find it.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">com.twitter.chill._</span>
+
+<span class="nd">@KryoRegistrar</span>
+<span class="k">class</span> <span class="nc">MyKryoRegistrar</span> <span class="k">extends</span> <span class="nc">IKryoRegistrar</span> <span class="o">{</span>
+  <span class="k">override</span> <span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">k</span><span class="k">:</span> <span class="kt">Kryo</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="c1">// register serializers for additional classes here
+</span>    <span class="n">k</span><span class="o">.</span><span class="n">forClass</span><span class="o">(</span><span class="k">new</span> <span class="nc">UserRecordSerializer</span><span class="o">)</span>
+    <span class="n">k</span><span class="o">.</span><span class="n">forClass</span><span class="o">(</span><span class="k">new</span> <span class="nc">AccountRecordSerializer</span><span class="o">)</span>
+    <span class="o">...</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Registering just the classes can also improve Kryo performance. By registering, classes will be serialized as numeric IDs instead of fully qualified class names, hence saving space and network IO while shuffling.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">com.twitter.chill._</span>
+
+<span class="nd">@KryoRegistrar</span>
+<span class="k">class</span> <span class="nc">MyKryoRegistrar</span> <span class="k">extends</span> <span class="nc">IKryoRegistrar</span> <span class="o">{</span>
+  <span class="k">override</span> <span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">k</span><span class="k">:</span> <span class="kt">Kryo</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">k</span><span class="o">.</span><span class="n">registerClasses</span><span class="o">(</span><span class="nc">List</span><span class="o">(</span><span class="n">classOf</span><span class="o">[</span><span class="kt">MyRecord1</span><span class="o">],</span> <span class="n">classOf</span><span class="o">[</span><span class="kt">MyRecord2</span><span class="o">]))</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="what-kryo-tuning-options-are-there">What Kryo tuning options are there?</h4>
+
+<p>See <a href="https://github.com/spotify/scio/blob/master/scio-core/src/main/java/com/spotify/scio/options/KryoOptions.java">KryoOptions.java</a> for a complete list of available Kryo tuning options. These can be passed via command line, for example:</p>
+
+<p><code class="highlighter-rouge">--kryoBufferSize=1024 --kryoMaxBufferSize=8192 --kryoReferenceTracking=false --kryoRegistrationRequired=true</code></p>
+
+<p>Among these, <code class="highlighter-rouge">--kryoRegistrationRequired==true</code> might be useful when developing to ensure that all data types in the pipeline are registered.</p>
+
+<h3 id="development-environment-issues">Development environment issues</h3>
+
+<h4 id="how-do-i-keep-sbt-from-running-out-of-memory">How do I keep SBT from running out of memory?</h4>
+
+<p>SBT might run out of memory sometimes and show an <code class="highlighter-rouge">OutOfMemoryError: Metaspace</code> error. Override default memory setting with <code class="highlighter-rouge">-mem &lt;integer&gt;</code>, e.g. <code class="highlighter-rouge">sbt -mem 1024</code>.</p>
+
+<h4 id="how-do-i-fix-unable-to-create-parent-directories-error-in-intellij">How do I fix “Unable to create parent directories” error in IntelliJ?</h4>
+
+<p>You might get an error message like <code class="highlighter-rouge">java.io.IOException: Unable to create parent directories of /Applications/IntelliJ IDEA CE.app/Contents/bin/.bigquery/012345abcdef.schema.json</code>. This usually happens to people who run IntelliJ IDEA with its bundled JVM. There are two solutions.</p>
+
+<ul>
+  <li>Install JDK from <a href="http://www.java.com/">java.com</a> and switch to it by following the “All platforms: switch between installed runtimes” section in this <a href="https://intellij-support.jetbrains.com/hc/en-us/articles/206544879-Selecting-the-JDK-version-the-IDE-will-run-under">page</a>.</li>
+  <li>Override the bigquery <code class="highlighter-rouge">.cache</code> directory as a JVM compiler parameter. On the bottom right of the IntelliJ window, click the icon that looks like a clock, and then “Configure…”. Then, edit the JVM parameters to include the line <code class="highlighter-rouge">-Dbigquery.cache.directory=&lt;/path/to/repository&gt;/.bigquery</code>. Then, restart the compile server by clicking on the clock icon -&gt; Stop, and then Start.</li>
+</ul>
+
+<h4 id="how-to-make-intellij-idea-work-with-type-safe-bigquery-classes">How to make IntelliJ IDEA work with type safe BigQuery classes?</h4>
+
+<p>Due to issue <a href="https://youtrack.jetbrains.com/oauth?state=%2Fissue%2FSCL-8834">SCL-8834</a> case classes generated by <code class="highlighter-rouge">@BigQueryType.fromTable</code> or <code class="highlighter-rouge">@BigQueryType.fromQuery</code> are not recognized in IntelliJ IDEA. There are two workarounds. The first, IDEA plugin solution, is highly recommended.</p>
+
+<ul>
+  <li>IDEA Plugin</li>
+</ul>
+
+<p>Inside IntelliJ, <code class="highlighter-rouge">Preferences</code> -&gt; <code class="highlighter-rouge">Plugins</code> -&gt; <code class="highlighter-rouge">Browse repositories ...</code> and search <code class="highlighter-rouge">Scio</code>. Install the plugin, restart IntelliJ, recompile the project (use SBT or <a href="https://github.com/spotify/scio-idea-plugin#bigquery-location">IntelliJ</a>). You have to recompile the project each time you add/edit <code class="highlighter-rouge">@BigQueryType</code> macro. Plugin requires Scio &gt;= <code class="highlighter-rouge">0.2.2</code>. <a href="https://github.com/spotify/scio-idea-plugin#scio-idea-plugin">Documentation</a>.</p>
+
+<ul>
+  <li>Use case class from <code class="highlighter-rouge">@BigQueryType.toTable</code></li>
+</ul>
+
+<p>First start Scio REPL and generate case classes from your query or table.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scio&gt; @BigQueryType.fromQuery("SELECT tornado, month FROM [publicdata:samples.gsod]") class Tornado
+defined class Tornado
+defined object Tornado
+</code></pre></div></div>
+
+<p>Next print Scala code of the generated classes.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scio&gt; Tornado.toPrettyString()
+res1: String =
+@BigQueryType.toTable
+case class Tornado(tornado: Option[Boolean], month: Long)
+</code></pre></div></div>
+
+<p>You can then paste the <code class="highlighter-rouge">@BigQueryType.toTable</code> code into your pipeline and use it with <code class="highlighter-rouge">sc.typedBigQuery</code>.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@BigQueryType</span><span class="o">.</span><span class="n">toTable</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Tornado</span><span class="o">(</span><span class="n">tornado</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Boolean</span><span class="o">],</span> <span class="n">month</span><span class="k">:</span> <span class="kt">Long</span><span class="o">)</span>
+
+<span class="k">def</span> <span class="n">main</span><span class="o">(</span><span class="n">cmdlineArgs</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="c1">// ...
+</span>  <span class="n">sc</span><span class="o">.</span><span class="n">typedBigQuery</span><span class="o">[</span><span class="kt">Tornado</span><span class="o">](</span><span class="s">"SELECT tornado, month FROM [publicdata:samples.gsod]"</span><span class="o">)</span>
+  <span class="c1">// ...
+</span><span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="common-issues">Common issues</h3>
+
+<h4 id="what-does-cannot-prove-that-t1--t2-mean">What does “Cannot prove that T1 &lt;:&lt; T2” mean?</h4>
+
+<p>Sometimes you get an error message like <code class="highlighter-rouge">Cannot prove that T1 &lt;:&lt; T2</code> when saving an <code class="highlighter-rouge">SCollection</code>. This is because some sink methods have an implicit argument like this which means element type <code class="highlighter-rouge">T</code> of <code class="highlighter-rouge">SCollection[T]</code> must be a sub-type of <code class="highlighter-rouge">TableRow</code> in order to save it to BigQuery. You have to map out elements to the required type before saving.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">saveAsBigQuery</span><span class="o">(</span><span class="n">tableSpec</span><span class="k">:</span> <span class="kt">String</span><span class="o">)(</span><span class="k">implicit</span> <span class="n">ev</span><span class="k">:</span> <span class="kt">T</span> <span class="k">&lt;:</span><span class="kt">&lt;</span> <span class="kt">TableRow</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>In the case of <code class="highlighter-rouge">saveAsTypedBigQuery</code> you might get an <code class="highlighter-rouge">Cannot prove that T &lt;:&lt; com.spotify.scio.bigquery.types.BigQueryType.HasAnnotation.</code> error message. This API requires an <code class="highlighter-rouge">SCollection[T]</code> where <code class="highlighter-rouge">T</code> is a case class annotated with <code class="highlighter-rouge">@BigQueryType.toTable</code>. For example:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@BigQueryType</span><span class="o">.</span><span class="n">toTable</span>
+<span class="k">case</span> <span class="k">class</span> <span class="nc">Result</span><span class="o">(</span><span class="n">user</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">score</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">kv</span> <span class="k">=&gt;</span> <span class="nc">Result</span><span class="o">(</span><span class="n">kv</span><span class="o">.</span><span class="n">_1</span><span class="o">,</span> <span class="n">kv</span><span class="o">.</span><span class="n">_2</span><span class="o">)).</span><span class="n">saveAsTypedBigQuery</span><span class="o">(</span><span class="n">args</span><span class="o">(</span><span class="s">"output"</span><span class="o">))</span>
+</code></pre></div></div>
+
+<p>Note that Scio uses <a href="http://docs.scala-lang.org/overviews/macros/annotations.html">Macro Annotations</a> and <a href="http://docs.scala-lang.org/overviews/macros/paradise.html">Macro Paradise</a> plugin to implement annotations. You need to add Macro Paradise plugin to your scala compiler as described <a href="http://docs.scala-lang.org/overviews/macros/paradise.html">here</a>.</p>
+
+<h4 id="how-do-i-fix-invalid-default-bigquery-credentials">How do I fix invalid default BigQuery credentials?</h4>
+
+<p>If you don’t specify a secret credential file for BigQuery <code class="highlighter-rouge">[1]</code>, Scio will use your default credentials (via <a href="https://github.com/google/google-auth-library-java/blob/master/oauth2_http/java/com/google/auth/oauth2/GoogleCredentials.java#L57">GoogleCredential.getApplicationDefault</a>), which:</p>
+
+<blockquote>
+  <p>Returns the Application Default Credentials which are used to identify and authorize the whole application. The following are searched (in order) to find the Application Default Credentials:</p>
+  <ul>
+    <li>Credentials file pointed to by the <code class="highlighter-rouge">GOOGLE_APPLICATION_CREDENTIALS</code> environment variable</li>
+    <li>Credentials provided by the Google Cloud SDK</li>
+    <li><code class="highlighter-rouge">gcloud auth application-default login</code> command</li>
+    <li>Google App Engine built-in credentials</li>
+    <li>Google Cloud Shell built-in credentials</li>
+    <li>Google Compute Engine built-in credentials</li>
+  </ul>
+</blockquote>
+
+<p>The easiest way to configure it on your local machine is to use the <code class="highlighter-rouge">gcloud auth application-default login</code> command.</p>
+
+<p><code class="highlighter-rouge">[1]</code> Keep in mind that you can specify your credential file via <code class="highlighter-rouge">-Dbigquery.secret</code>.</p>
+
+<h4 id="why-are-my-typed-bigquery-case-classes-not-up-to-date">Why are my typed BigQuery case classes not up to date?</h4>
+
+<p>Case classes generated by <code class="highlighter-rouge">@BigQueryType.fromTable</code> or other macros might not update after table schema change. To solve this problem, remove the cached BigQuery metadata by deleting the <code class="highlighter-rouge">.bigquery</code> directory in your project root. If you would rather avoid any issues resulting from caching and schema evolution entirely, you can disable caching by setting the system property <code class="highlighter-rouge">bigquery.cache.enabled</code> to <code class="highlighter-rouge">false</code>.</p>
+
+<h4 id="how-do-i-fix-sockettimeoutexception-with-bigquery">How do I fix “SocketTimeoutException” with BigQuery?</h4>
+
+<p>BigQuery requests may sometimes timeout, i.e. for complex queries over many tables.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>exception during macro expansion:
+[error] java.net.SocketTimeoutException: Read timed out
+</code></pre></div></div>
+
+<p>It can be fixed by increasing the timeout settings (default 20s).</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sbt <span class="nt">-Dbigquery</span>.connect_timeout<span class="o">=</span>30000 <span class="nt">-Dbigquery</span>.read_timeout<span class="o">=</span>30000
+</code></pre></div></div>
+
+<h4 id="why-do-i-see-names-like-mainnativemethodaccessorimpl-in-the-ui">Why do I see names like “main@{NativeMethodAccessorImpl…}” in the UI?</h4>
+
+<p>Scio traverses JVM stack trace to figure out the proper name of each transform, i.e. <code class="highlighter-rouge">flatMap@{UserAnalysis.scala:30}</code> but may get confused if your jobs are under the <code class="highlighter-rouge">com.spotify.scio</code> package. Move them to a different package, e.g. <code class="highlighter-rouge">com.spotify.analytics</code> to fix the issue.</p>
+
+<h4 id="how-do-i-fix-resource_exhausted-error">How do I fix “RESOURCE_EXHAUSTED” error?</h4>
+
+<p>You might see errors like <code class="highlighter-rouge">RESOURCE_EXHAUSTED: IO error: No space left on disk</code> in a job. They usually indicate that you have allocated insufficient local disk space to process your job. If you are running your job with default settings, your job is running on 3 workers, each with 250 GB of local disk space. Consider modifying the default settings to increase the number of workers available to your job (via <code class="highlighter-rouge">--numWorkers</code>), to increase the default disk size per worker (via <code class="highlighter-rouge">--diskSizeGb</code>).</p>
+
+<h4 id="can-i-use-scalaapp-trait-instead-of-main-method">Can I use “scala.App” trait instead of “main” method?</h4>
+
+<p>Your Scio applications should define a <code class="highlighter-rouge">main</code> method instead of extending <code class="highlighter-rouge">scala.App</code>. Applications extending <code class="highlighter-rouge">scala.App</code> due to delayed initialization and closure cleaning may not work properly.</p>
+
+<h4 id="how-to-inspect-the-content-of-an-scollection">How to inspect the content of an <code class="highlighter-rouge">SCollection</code>?</h4>
+
+<p>There is multiple options here:</p>
+<ul>
+  <li>Use <code class="highlighter-rouge">debug()</code> method on an <code class="highlighter-rouge">SCollection</code> to print its content as the data flows through the DAG during the execution (after the <code class="highlighter-rouge">close</code> or <code class="highlighter-rouge">closeAndCollect</code>)</li>
+  <li>Use a debugger and setup break points - make sure to break inside of your functions to stop control at the execution not the pipeline construction time</li>
+  <li>In <a href="https://github.com/spotify/scio/wiki/Scio-REPL">scio-repl</a>, use <code class="highlighter-rouge">closeAndCollect()</code> to close the context and materialize the content of an <code class="highlighter-rouge">SCollection</code></li>
+</ul>
+
+<h4 id="how-do-i-improve-side-input-performance">How do I improve side input performance?</h4>
+
+<p>By default Dataflow workers allocate 100MB (see <a href="https://beam.apache.org/documentation/sdks/javadoc/2.0.0/org/apache/beam/runners/dataflow/options/DataflowWorkerHarnessOptions.html#getWorkerCacheMb--">DataflowWorkerHarnessOptions#getWorkerCacheMb</a>) of memory for caching side inputs, and falls back to disk or network. Therefore jobs with large side inputs may be slow. To override this default, register <code class="highlighter-rouge">DataflowWorkerHarnessOptions</code> before parsing command line arguments and then pass <code class="highlighter-rouge">--workerCacheMb=N</code> when submitting the job.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">PipelineOptionsFactory</span><span class="o">.</span><span class="n">register</span><span class="o">(</span><span class="n">classOf</span><span class="o">[</span><span class="kt">DataflowWorkerHarnessOptions</span><span class="o">])</span>
+<span class="k">val</span> <span class="o">(</span><span class="n">sc</span><span class="o">,</span> <span class="n">args</span><span class="o">)</span> <span class="k">=</span> <span class="nc">ContextAndArgs</span><span class="o">(</span><span class="n">cmdlineArgs</span><span class="o">)</span>
+</code></pre></div></div>
+
+<h4 id="how-do-i-control-concurrency-number-of-dofn-threads-in-dataflow-workers">How do I control concurrency (number of DoFn threads) in Dataflow workers</h4>
+
+<p>By default Google Cloud Dataflow will use as many threads (concurrent DoFns) per worker as appropriate (precise definition is an implementation detail), in same cases you might want to control this. Use <code class="highlighter-rouge">NumberOfWorkerHarnessThreads</code> option from <code class="highlighter-rouge">DataflowPipelineDebugOptions</code>. For example to use a single thread per worker on 8 vCPU machine, simply specify 8 vCPU worker machine type, and <code class="highlighter-rouge">--numberOfWorkerHarnessThreads=1</code> in CLI or set corresponding option in <code class="highlighter-rouge">DataflowPipelineDebugOptions</code>.</p>
+
+<h4 id="how-to-manually-investigate-a-cloud-dataflow-worker">How to manually investigate a Cloud Dataflow worker</h4>
+
+<p>First find the VM of the worker, the easiest place is through the GCE instance groups:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcloud compute ssh --project=&lt;project&gt; --zone=&lt;zone&gt; &lt;VM&gt;
+</code></pre></div></div>
+
+<p>To find the id of batch (for <code class="highlighter-rouge">batch</code> job) container:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker ps | grep "batch\|streaming" | awk '{print $1}'
+</code></pre></div></div>
+
+<p>To get into the harness container:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker exec -it &lt;container-id&gt; /bin/bash
+</code></pre></div></div>
+
+<p>To install java jdk tools:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get update
+apt-get install default-jdk -y
+</code></pre></div></div>
+
+<p>To find java process:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jps
+</code></pre></div></div>
+
+<p>To get GC stats:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jstat -gcutil &lt;pid&gt; 1000 1000
+</code></pre></div></div>
+
+<p>To get stacktrace:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jstack &lt;pid&gt;
+</code></pre></div></div>
+
+<hr />
+
+<p>For maintainers, follow the following steps to update the table of contents.</p>
+
+<ul>
+  <li>Clone wiki repo <code class="highlighter-rouge">git clone git@github.com:spotify/scio.wiki</code></li>
+  <li>Create a new personal access token under https://github.com/settings/tokens</li>
+  <li>Save new token in <code class="highlighter-rouge">scripts/token.txt</code></li>
+  <li>Run <code class="highlighter-rouge">./scripts/faq.sh</code></li>
+  <li>Commit and push changes to <code class="highlighter-rouge">FAQ.md</code></li>
+</ul>
+</section></div></div></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/scio/highlight/highlight.pack.js"></script><script>hljs.configure({
+languages:['scala','java','bash']
+});
+hljs.initHighlighting();
+             </script><script>((window.gitter = {}).chat = {}).options = {
+room: 'regadas/scio'};</script><script src="https://sidecar.gitter.im/dist/sidecar.v1.js"></script><script src="/scio/js/main.js"></script></body></html>

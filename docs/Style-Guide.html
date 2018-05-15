@@ -1,0 +1,209 @@
+<html><head><title>scio: Style Guide</title><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="docs" /><meta name="description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><meta name="og:image" content="/scio/img/poster.png" /><meta name="og:title" content="scio: Style Guide" /><meta name="og:site_name" content="scio" /><meta name="og:url" content="https://regadas.github.io/scio/" /><meta name="og:type" content="website" /><meta name="og:description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><link rel="icon" type="image/png" href="/scio/img/favicon.png" /><meta name="twitter:title" content="scio: Style Guide" /><meta name="twitter:image" content="https://regadas.github.io/scio/img/poster.png" /><meta name="twitter:description" content="Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding." /><meta name="twitter:card" content="summary_large_image" /><link rel="icon" type="image/png" sizes="16x16" href="/scio/img/favicon16x16.png" /><link rel="icon" type="image/png" sizes="24x24" href="/scio/img/favicon24x24.png" /><link rel="icon" type="image/png" sizes="32x32" href="/scio/img/favicon32x32.png" /><link rel="icon" type="image/png" sizes="48x48" href="/scio/img/favicon48x48.png" /><link rel="icon" type="image/png" sizes="57x57" href="/scio/img/favicon57x57.png" /><link rel="icon" type="image/png" sizes="60x60" href="/scio/img/favicon60x60.png" /><link rel="icon" type="image/png" sizes="64x64" href="/scio/img/favicon64x64.png" /><link rel="icon" type="image/png" sizes="70x70" href="/scio/img/favicon70x70.png" /><link rel="icon" type="image/png" sizes="72x72" href="/scio/img/favicon72x72.png" /><link rel="icon" type="image/png" sizes="76x76" href="/scio/img/favicon76x76.png" /><link rel="icon" type="image/png" sizes="96x96" href="/scio/img/favicon96x96.png" /><link rel="icon" type="image/png" sizes="114x114" href="/scio/img/favicon114x114.png" /><link rel="icon" type="image/png" sizes="120x120" href="/scio/img/favicon120x120.png" /><link rel="icon" type="image/png" sizes="128x128" href="/scio/img/favicon128x128.png" /><link rel="icon" type="image/png" sizes="144x144" href="/scio/img/favicon144x144.png" /><link rel="icon" type="image/png" sizes="150x150" href="/scio/img/favicon150x150.png" /><link rel="icon" type="image/png" sizes="152x152" href="/scio/img/favicon152x152.png" /><link rel="icon" type="image/png" sizes="196x196" href="/scio/img/favicon196x196.png" /><link rel="icon" type="image/png" sizes="310x310" href="/scio/img/favicon310x310.png" /><link rel="icon" type="image/png" sizes="310x150" href="/scio/img/favicon310x150.png" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" /><link rel="stylesheet" href="/scio/highlight/styles/atom-one-light.css" /><link rel="stylesheet" href="/scio/css/style.css" /><link rel="stylesheet" href="/scio/css/palette.css" /><link rel="stylesheet" href="/scio/css/codemirror.css" /><link rel="stylesheet" href="/scio/css/override.css" /></head><body class="docs"><div id="wrapper"><div id="sidebar-wrapper"><ul id="sidebar" class="sidebar-nav"><li class="sidebar-brand"><a href="/scio/" class="brand"><div class="brand-wrapper"><span>scio</span></div></a></li> <li><a href="/scio/docs/index.html" class="">Getting Started</a></li> <li><a href="/scio/docs/Scio-REPL.html" class="">REPL</a></li> <li><a href="/scio/docs/Scio,-Beam-and-Dataflow.html" class="">Scio, Beam and Dataflow</a></li> <li><a href="/scio/docs/Scio,-Scalding-and-Spark.html" class="">Scio, Scalding and Spark</a></li> <li><a href="/scio/docs/Apache-Beam.html" class="">Apache Beam</a></li> <li><a href="/scio/docs/Runners.html" class="">Runners</a></li> <li><a href="/scio/docs/Scio-data-guideline.html" class="">Scio data guideline</a></li> <li><a href="/scio/docs/FAQ.html" class="">FAQ</a></li> <li><a href="/scio/docs/Powered-By.html" class="">Powered By</a></li> <li><a href="/scio/docs/HDFS.html" class="">IO</a> <ul class="sub_section"> <li><a href="/scio/docs/HDFS.html" class="">HDFS</a></li> <li><a href="/scio/docs/Avro.html" class="">Avro</a></li> <li><a href="/scio/docs/Bigtable.html" class="">Bigtable</a></li> <li><a href="/scio/docs/Protobuf.html" class="">Protobuf</a></li> <li><a href="/scio/docs/Parquet.html" class="">Parquet</a></li></ul></li> <li><a href="/scio/docs/Algebird.html" class="">Extras</a> <ul class="sub_section"> <li><a href="/scio/docs/Algebird.html" class="">Algebird</a></li></ul></li></ul></div><div id="page-content-wrapper"><div class="nav"><div class="container-fluid"><div class="row"><div class="col-lg-12"><div class="action-menu pull-left clearfix"><a href="#menu-toggle" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a></div><ul class="pull-right"><li id="gh-eyes-item" class="hidden-xs"><a href="https://github.com/regadas/scio"><i class="fa fa-eye"></i><span>WATCH<span id="eyes" class="label label-default">--</span></span></a></li><li id="gh-stars-item" class="hidden-xs"><a href="https://github.com/regadas/scio"><i class="fa fa-star-o"></i><span>STARS<span id="stars" class="label label-default">--</span></span></a></li><li><a href="#" onclick="shareSiteTwitter('scio Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding.');"><i class="fa fa-twitter"></i></a></li><li><a href="#" onclick="shareSiteFacebook('scio Scio, a Scala API for Apache Beam and Google Cloud Dataflow inspired by Apache Spark and Scalding.');"><i class="fa fa-facebook"></i></a></li><li><a href="#" onclick="shareSiteGoogle();"><i class="fa fa-google-plus"></i></a></li></ul></div></div></div></div><div id="content" data-github-owner="regadas" data-github-repo="scio"><div class="content-wrapper"><section><h2 id="general-guidelines">General Guidelines</h2>
+
+<h3 id="intellij-idea">IntelliJ IDEA</h3>
+
+<p>Most of us write Scala code in IntelliJ IDEA and it’s wise to let the IDE do most of the work including managing imports and formatting code. We also want to avoid custom settings as much as possible to make on-boarding new developers easier. Hence we use IntelliJ IDEA’s default settings with the following exceptions:</p>
+
+<ul>
+  <li>Set <em>Code Style → Default Options → Right margin (columns)</em> to 100</li>
+  <li>Turn off <em>Code Style → Scala → ScalaDoc → Use scaladoc indent for leading asterisk</em></li>
+  <li>Under <em>Copyright → Copyright Profiles</em>, add the following template.</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Copyright $today.year Spotify AB.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+</code></pre></div></div>
+
+<h3 id="scalastyle">ScalaStyle</h3>
+
+<p>We use ScalaStyle to cover the basics and the entire code base should pass. In case of exceptions, wrap the violating code with a pair of comments to temporarily suppress the warning.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// scalastyle:off regex
+</span><span class="n">println</span><span class="o">(</span><span class="s">"hello"</span><span class="o">)</span>
+<span class="c1">// scalastyle:on regex
+</span></code></pre></div></div>
+
+<h3 id="consistency">Consistency</h3>
+
+<p>There are many different ways to write Scala code and it’s hard to enforce a strict style. ScalaStyle’s rule set is also not as comprehensive as Java’s CheckStyle. When in doubt, be consistent with the rest of the code base.</p>
+
+<h3 id="references">References</h3>
+
+<p>We want to adhere to the styles of well known Scala projects and use the following documents as references. We follow the Databricks Scala Guide mainly with a few differences described in the next section.</p>
+
+<ul>
+  <li><a href="https://github.com/databricks/scala-style-guide">Databricks Scala Guide</a></li>
+  <li>The Official <a href="http://docs.scala-lang.org/style">Scala Style Guide</a></li>
+  <li>Twitter’s <a href="http://twitter.github.io/effectivescala/">Effective Scala</a></li>
+</ul>
+
+<h2 id="differences-from-databricks-scala-guide">Differences from Databricks Scala Guide</h2>
+
+<h3 id="spacing-and-indentation">Spacing and Indentation</h3>
+
+<ul>
+  <li>For method declarations, align parameters when they don’t fit in a single line. Return types can be either on the same line as the last parameter, or put to next line with no indent.</li>
+</ul>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">saveAsBigQuery</span><span class="o">(</span><span class="n">table</span><span class="k">:</span> <span class="kt">TableReference</span><span class="o">,</span> <span class="n">schema</span><span class="k">:</span> <span class="kt">TableSchema</span><span class="o">,</span>
+                   <span class="n">writeDisposition</span><span class="k">:</span> <span class="kt">WriteDisposition</span><span class="o">,</span>
+                   <span class="n">createDisposition</span><span class="k">:</span> <span class="kt">CreateDisposition</span><span class="o">)</span>
+                  <span class="o">(</span><span class="k">implicit</span> <span class="n">ev</span><span class="k">:</span> <span class="kt">T</span> <span class="k">&lt;:</span><span class="kt">&lt;</span> <span class="kt">TableRow</span><span class="o">)</span><span class="k">:</span> <span class="kt">Future</span><span class="o">[</span><span class="kt">Tap</span><span class="o">[</span><span class="kt">TableRow</span><span class="o">]]</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="c1">// method body
+</span><span class="o">}</span>
+
+<span class="k">def</span> <span class="n">saveAsBigQuery</span><span class="o">(</span><span class="n">table</span><span class="k">:</span> <span class="kt">TableReference</span><span class="o">,</span> <span class="n">schema</span><span class="k">:</span> <span class="kt">TableSchema</span><span class="o">,</span>
+                   <span class="n">writeDisposition</span><span class="k">:</span> <span class="kt">WriteDisposition</span><span class="o">,</span>
+                   <span class="n">createDisposition</span><span class="k">:</span> <span class="kt">CreateDisposition</span><span class="o">)</span>
+                  <span class="o">(</span><span class="k">implicit</span> <span class="n">ev</span><span class="k">:</span> <span class="kt">T</span> <span class="k">&lt;:</span><span class="kt">&lt;</span> <span class="kt">TableRow</span><span class="o">)</span>
+<span class="k">:</span> <span class="kt">Future</span><span class="o">[</span><span class="kt">Tap</span><span class="o">[</span><span class="kt">TableRow</span><span class="o">]]</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="c1">// method body
+</span><span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>For classes whose header doesn’t fit in a single line, align the next line and add a blank line after class header.</li>
+</ul>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Foo</span><span class="o">(</span><span class="k">val</span> <span class="n">param1</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+          <span class="k">val</span> <span class="n">param2</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+          <span class="k">val</span> <span class="n">param3</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">Byte</span><span class="o">])</span>
+  <span class="k">extends</span> <span class="nc">FooInterface</span>  <span class="c1">// 2 space indent here
+</span>  <span class="k">with</span> <span class="nc">Logging</span> <span class="o">{</span>
+
+  <span class="k">def</span> <span class="n">firstMethod</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span> <span class="o">...</span> <span class="o">}</span>  <span class="c1">// blank line above
+</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="blank-lines-vertical-whitespace">Blank Lines (Vertical Whitespace)</h3>
+
+<ul>
+  <li>A single blank line appears:
+    <ul>
+      <li>Between consecutive members (or initializers) of a class: fields, constructors, methods, nested classes, static initializers, instance initializers.</li>
+      <li>Within method bodies, as needed to create logical groupings of statements.</li>
+      <li>Before the first member and after the last member of the class.</li>
+    </ul>
+  </li>
+  <li>A blank line is optional:
+    <ul>
+      <li>Between consecutive one-liner fields or methods of a class that have no ScalaDoc.</li>
+      <li>Before the first member and after the last member of a short class with one-liner members only.</li>
+    </ul>
+  </li>
+  <li>Use one blank line to separate class definitions.</li>
+  <li>Excessive number of blank lines is discouraged.</li>
+</ul>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Foo</span> <span class="o">{</span>
+
+  <span class="k">val</span> <span class="n">x</span><span class="k">:</span> <span class="kt">Int</span>  <span class="c1">// blank line before the first member
+</span>  <span class="k">val</span> <span class="n">y</span><span class="k">:</span> <span class="kt">Int</span>
+  <span class="k">val</span> <span class="n">z</span><span class="k">:</span> <span class="kt">Int</span>  <span class="c1">// no blank line between one-liners that have no ScalaDoc
+</span>
+  <span class="k">def</span> <span class="n">hello</span><span class="o">()</span><span class="k">:</span> <span class="o">{</span>
+    <span class="c1">// body
+</span>  <span class="o">}</span>  <span class="c1">// blank line after the last member
+</span>
+<span class="o">}</span>
+
+<span class="c1">// no blank line before the first member and after the last member
+</span><span class="k">class</span> <span class="nc">Bar</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">x</span> <span class="k">=</span> <span class="o">{</span> <span class="cm">/* body */</span> <span class="o">}</span>
+  <span class="k">def</span> <span class="n">y</span> <span class="k">=</span> <span class="o">{</span> <span class="cm">/* body */</span> <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="curly-braces">Curly Braces</h3>
+
+<p>Put curly braces even around one-line conditional or loop statements. The only exception is if you are using if/else as an one-line ternary operator that is also side-effect free.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// the only exception for omitting braces
+</span><span class="k">val</span> <span class="n">x</span> <span class="k">=</span> <span class="k">if</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="n">expression1</span> <span class="k">else</span> <span class="n">expression2</span>
+</code></pre></div></div>
+
+<h3 id="documentation-style">Documentation Style</h3>
+
+<p>Use Java docs style instead of Scala docs style. One-liner ScalaDoc is acceptable. Annotations like <code class="highlighter-rouge">@tparam</code>, <code class="highlighter-rouge">@param</code>, <code class="highlighter-rouge">@return</code> are optional if they are obvious to the user.</p>
+
+<p>ScalaDoc <code class="highlighter-rouge">/** */</code> should only be used for documenting API to end users. Use regular comments e.g. <code class="highlighter-rouge">/* */</code> and <code class="highlighter-rouge">//</code> for explaining code to developers.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/** This is a correct one-liner, short description. */</span>
+
+<span class="cm">/**
+ * This is correct multi-line JavaDoc comment. And
+ * this is my second line, and if I keep typing, this would be
+ * my third line.
+ */</span>
+
+<span class="cm">/** In Spark, we don't use the ScalaDoc style so this
+  * is not correct.
+  */</span>
+
+<span class="c1">// @param xs, @tparam T and @return are obvious and no need to document
+</span><span class="cm">/** Sum up a sequence with an Algebird Semigroup. */</span>
+<span class="k">def</span> <span class="n">sum</span><span class="o">[</span><span class="kt">T:</span> <span class="kt">Semigroup</span><span class="o">](</span><span class="n">xs</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">reduce</span><span class="o">(</span><span class="n">implicitly</span><span class="o">[</span><span class="kt">Semigroup</span><span class="o">[</span><span class="kt">T</span><span class="o">]].</span><span class="n">plus</span><span class="o">)</span>
+</code></pre></div></div>
+<h3 id="ordering-within-a-class">Ordering within a Class</h3>
+
+<p>If a class is long and has many methods, group them logically into different sections, and use comment headers to organize them.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ScioContext</span> <span class="o">{</span>
+
+  <span class="c1">// =======================================================================
+</span>  <span class="c1">// Read operations
+</span>  <span class="c1">// =======================================================================
+</span>
+  <span class="c1">// =======================================================================
+</span>  <span class="c1">// Accumulators
+</span>  <span class="c1">// =======================================================================
+</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Of course, the situation in which a class grows this long is strongly discouraged, and is generally reserved only for building certain public APIs.</p>
+
+<h3 id="imports">Imports</h3>
+
+<ul>
+  <li>Mutable collections
+    <ul>
+      <li>Always prefix a mutable collection type with <code class="highlighter-rouge">M</code> when importing, e.g. <code class="highlighter-rouge">import scala.collection.mutable.{Map =&gt; MMap}</code></li>
+      <li>Or import <code class="highlighter-rouge">scala.collection.mutable</code> package and use <code class="highlighter-rouge">mutable.Map</code></li>
+    </ul>
+  </li>
+  <li>Sort imports in IntelliJ IDEA’s default order:
+    <ul>
+      <li><code class="highlighter-rouge">java.*</code></li>
+      <li>All other imports</li>
+      <li><code class="highlighter-rouge">scala.*</code></li>
+    </ul>
+  </li>
+  <li>It should look like this in <em>Imports → Import Layout</em></li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java
+_______ blank line _______
+all other imports
+_______ blank line _______
+scala
+</code></pre></div></div>
+</section></div></div></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/scio/highlight/highlight.pack.js"></script><script>hljs.configure({
+languages:['scala','java','bash']
+});
+hljs.initHighlighting();
+             </script><script>((window.gitter = {}).chat = {}).options = {
+room: 'regadas/scio'};</script><script src="https://sidecar.gitter.im/dist/sidecar.v1.js"></script><script src="/scio/js/main.js"></script></body></html>
