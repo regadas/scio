@@ -109,16 +109,19 @@ private[tensorflow] class SavedBundlePredictDoFn[T, V](uri: String,
 
   override def withResourceRunner(f: Session#Runner => V): CompletableFuture[V] =
     getResource
-      .computeIfAbsent(uri, _ => Models.tensorFlow(uri, options))
+      .computeIfAbsent(uri, new Function[String, ModelLoader[TensorFlowModel]] {
+        override def apply(t: String): ModelLoader[TensorFlowModel] =
+          Models.tensorFlow(uri, options)
+      })
       .get()
-      .thenApply[V](new Function[TensorFlowModel, V] {
+      .thenApplyAsync[V](new Function[TensorFlowModel, V] {
         override def apply(model: TensorFlowModel): V = f(model.instance().session().runner())
       })
       .toCompletableFuture
 
   @Teardown
   def teardown(): Unit = {
-    log.info(s"Closing down predict DoFn $this")
+    log.info(s"Tearing down predict DoFn $this")
     getResource
       .get(uri)
       .get()
@@ -139,19 +142,24 @@ private[tensorflow] class GraphPredictDoFn[T, V](uri: String,
 
   override def withResourceRunner(f: Session#Runner => V): CompletableFuture[V] =
     getResource
-      .computeIfAbsent(uri, _ => {
-        val configOpt = Option(config).map(ConfigProto.parseFrom)
-        Models.tensorFlowGraph(uri, configOpt.orNull, null)
-      })
+      .computeIfAbsent(
+        uri,
+        new Function[String, ModelLoader[TensorFlowGraphModel]] {
+          override def apply(t: String): ModelLoader[TensorFlowGraphModel] = {
+            val configOpt = Option(config).map(ConfigProto.parseFrom)
+            Models.tensorFlowGraph(uri, configOpt.orNull, null)
+          }
+        }
+      )
       .get()
-      .thenApply[V](new Function[TensorFlowGraphModel, V] {
+      .thenApplyAsync[V](new Function[TensorFlowGraphModel, V] {
         override def apply(model: TensorFlowGraphModel): V = f(model.instance().runner())
       })
       .toCompletableFuture
 
   @Teardown
   def teardown(): Unit = {
-    log.info(s"Closing down predict DoFn $this")
+    log.info(s"Tearing down predict DoFn $this")
     getResource
       .get(uri)
       .get()
@@ -298,7 +306,6 @@ class TFExampleSCollectionFunctions[T <: Example](val self: SCollection[T]) {
     self.saveAsTfExampleFile(path,
                              FeatranTFRecordSpec.fromFeatureSpec(fe.featureNames),
                              compression = compression)
-
 
   /**
    * Save this SCollection of `org.tensorflow.example.Example` as a TensorFlow TFRecord file,
