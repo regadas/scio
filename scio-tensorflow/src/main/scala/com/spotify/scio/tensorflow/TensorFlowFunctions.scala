@@ -19,6 +19,7 @@ package com.spotify.scio.tensorflow
 
 import java.nio.ByteBuffer
 import java.nio.channels.Channels
+import java.time.Duration
 import java.util.concurrent.{CompletableFuture, CompletionStage, ConcurrentMap}
 import java.util.function.{Consumer, Function}
 
@@ -39,7 +40,8 @@ import io.circe.syntax._
 import javax.annotation.Nullable
 import com.twitter.algebird.{Aggregator, MultiAggregator}
 import org.apache.beam.sdk.io.{Compression, FileSystems}
-import org.apache.beam.sdk.transforms.DoFn.Teardown
+import org.apache.beam.sdk.transforms.DoFn
+import org.apache.beam.sdk.transforms.DoFn.{ProcessElement, Teardown}
 import org.apache.beam.sdk.util.MimeTypes
 import org.apache.beam.sdk.{io => gio}
 import org.slf4j.LoggerFactory
@@ -57,18 +59,20 @@ private[this] abstract class PredictDoFn[T, V, M <: Model[_]](
   fetchOp: Seq[String],
   inFn: T => Map[String, Tensor[_]],
   outFn: (T, Map[String, Tensor[_]]) => V)
-    extends JavaAsyncDoFn[T, V, ConcurrentMap[String, ModelLoader[M]]] {
+    extends DoFnWithResource[T, V, ConcurrentMap[String, M]] {
   @transient private lazy val log = LoggerFactory.getLogger(this.getClass)
 
-  def withResourceRunner(f: Session#Runner => V): CompletableFuture[V]
+  def withResourceRunner(f: Session#Runner => V): V
 
   override def getResourceType: DoFnWithResource.ResourceType = ResourceType.PER_CLASS
 
   /**
    * Process an element asynchronously.
    */
-  override def processElement(input: T): CompletableFuture[V] = {
-    val result: CompletionStage[V] = withResourceRunner { runner =>
+  @ProcessElement
+  def processElement(c: DoFn[T, V]#ProcessContext): Unit = {
+    val input = c.element()
+    val result = withResourceRunner { runner =>
       val i = inFn(input)
       var result: V = null.asInstanceOf[V]
 
@@ -91,11 +95,11 @@ private[this] abstract class PredictDoFn[T, V, M <: Model[_]](
       result
     }
 
-    result.toCompletableFuture
+    c.output(result)
   }
 
-  override def createResource(): ConcurrentMap[String, ModelLoader[M]] =
-    Maps.newConcurrentMap[String, ModelLoader[M]]()
+  override def createResource(): ConcurrentMap[String, M] =
+    Maps.newConcurrentMap[String, M]()
 
 }
 
@@ -107,27 +111,20 @@ private[tensorflow] class SavedBundlePredictDoFn[T, V](uri: String,
     extends PredictDoFn[T, V, TensorFlowModel](fetchOp, inFn, outFn) {
   @transient private lazy val log = LoggerFactory.getLogger(this.getClass)
 
-  override def withResourceRunner(f: Session#Runner => V): CompletableFuture[V] =
-    getResource
-      .computeIfAbsent(uri, new Function[String, ModelLoader[TensorFlowModel]] {
-        override def apply(t: String): ModelLoader[TensorFlowModel] =
-          Models.tensorFlow(uri, options)
+  override def withResourceRunner(f: Session#Runner => V): V = {
+    val model = getResource
+      .computeIfAbsent(uri, new Function[String, TensorFlowModel] {
+        override def apply(t: String): TensorFlowModel =
+          Models.tensorFlow(uri, options).get(Duration.ofDays(Integer.MAX_VALUE))
       })
-      .get()
-      .thenApplyAsync[V](new Function[TensorFlowModel, V] {
-        override def apply(model: TensorFlowModel): V = f(model.instance().session().runner())
-      })
-      .toCompletableFuture
+
+    f(model.instance().session().runner())
+  }
 
   @Teardown
   def teardown(): Unit = {
     log.info(s"Tearing down predict DoFn $this")
-    getResource
-      .get(uri)
-      .get()
-      .thenAccept(new Consumer[TensorFlowModel] {
-        override def accept(model: TensorFlowModel): Unit = model.close()
-      })
+    getResource.get(uri).close()
   }
 
 }
@@ -140,32 +137,23 @@ private[tensorflow] class GraphPredictDoFn[T, V](uri: String,
     extends PredictDoFn[T, V, TensorFlowGraphModel](fetchOp, inFn, outFn) {
   @transient private lazy val log = LoggerFactory.getLogger(this.getClass)
 
-  override def withResourceRunner(f: Session#Runner => V): CompletableFuture[V] =
-    getResource
-      .computeIfAbsent(
-        uri,
-        new Function[String, ModelLoader[TensorFlowGraphModel]] {
-          override def apply(t: String): ModelLoader[TensorFlowGraphModel] = {
-            val configOpt = Option(config).map(ConfigProto.parseFrom)
-            Models.tensorFlowGraph(uri, configOpt.orNull, null)
-          }
+  override def withResourceRunner(f: Session#Runner => V): V = {
+    val model = getResource
+      .computeIfAbsent(uri, new Function[String, TensorFlowGraphModel] {
+        override def apply(t: String): TensorFlowGraphModel = {
+          val configOpt = Option(config).map(ConfigProto.parseFrom)
+          Models.tensorFlowGraph(uri, configOpt.orNull, null)
+            .get(Duration.ofDays(Integer.MAX_VALUE))
         }
-      )
-      .get()
-      .thenApplyAsync[V](new Function[TensorFlowGraphModel, V] {
-        override def apply(model: TensorFlowGraphModel): V = f(model.instance().runner())
       })
-      .toCompletableFuture
+
+    f(model.instance().runner())
+  }
 
   @Teardown
   def teardown(): Unit = {
     log.info(s"Tearing down predict DoFn $this")
-    getResource
-      .get(uri)
-      .get()
-      .thenAccept(new Consumer[TensorFlowGraphModel] {
-        override def accept(model: TensorFlowGraphModel): Unit = model.close()
-      })
+    getResource.get(uri).close()
   }
 }
 
