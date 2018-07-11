@@ -16,11 +16,7 @@ import org.tensorflow.example.Example
 
 /*
 SBT
-runMain com.spotify.scio.examples.extra.TensorFlowExample \
-  --project=scio-playground \
-  --runner=DataflowRunner \
-  --savedModelUri=gs://scio-playground/regadas/iris/tensorflow \
-  --output=gs://scio-playground/regadas/iris/ouput
+runMain com.spotify.scio.examples.extra.TensorFlowExample --workerMachineType=n1-standard-16 --project=scio-playground --runner=DataflowRunner --savedModelUri=gs://scio-playground/regadas/iris/tensorflow --output=gs://scio-playground/regadas/iris/ouput
  */
 object TensorFlowExample {
 
