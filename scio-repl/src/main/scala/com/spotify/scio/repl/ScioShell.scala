@@ -70,20 +70,28 @@ trait BaseScioShell extends MainGenericRunner {
       case _ => None
     }
 
-    def classLoaderURLsNew(cl: ClassLoader): Array[java.net.URL] = {
-      val resources = cl.getResources("").asScala ++ cl.getResources("META-INF").asScala
-      resources
-        .flatMap { url =>
-          val externalForm = url.toExternalForm()
-          toFile(new URL(externalForm.substring(0, externalForm.lastIndexOf("META-INF"))))
-        }
-        .map(_.toURL)
-        .toArray
-    }
+    import jodd.bridge.ClassPathURLs
 
-    def classLoaderURLs(cl: ClassLoader): Array[java.net.URL] = cl match {
-      case null => Array()
-      case _    => classLoaderURLsNew(cl) ++ classLoaderURLs(cl.getParent)
+    def classLoaderURLs(cl: ClassLoader): Array[java.net.URL] = {
+      // val resources = cl.getResources("").asScala ++ cl.getResources("META-INF").asScala
+      // resources
+      //   .flatMap { url =>
+      //     val externalForm = url.toExternalForm()
+      //     toFile(new URL(externalForm.substring(0, externalForm.lastIndexOf("META-INF"))))
+      //   }
+      //   .map(_.toURL)
+      //   .map { a =>
+      //     println(a)
+      //     a
+      //   }
+      //   .toArray
+      ClassPathURLs
+        .of(cl, null)
+        .map { a =>
+          println(a)
+          a
+        }
+
     }
 
     // def classLoaderURLs(cl: ClassLoader): Array[java.net.URL] = cl match {
@@ -126,8 +134,8 @@ trait BaseScioShell extends MainGenericRunner {
     val scioClassLoader = new ScioReplClassLoader(
       command.settings.classpathURLs.toArray ++
         classLoaderURLs(Thread.currentThread().getContextClassLoader),
-      null
-      // ClassLoader.getPlatformClassLoader()
+      // null
+      ClassLoader.getPlatformClassLoader()
     )
 
     val repl = new ScioILoop(scioClassLoader, args.toList)
