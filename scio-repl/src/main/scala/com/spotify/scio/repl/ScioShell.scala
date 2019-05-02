@@ -51,12 +51,47 @@ trait BaseScioShell extends MainGenericRunner {
       command.settings.usejavacp.value = true
     }
 
+    import scala.collection.JavaConverters._
+    import java.net.URL
+    import java.io.{File => JFile}
+
+    def toFile(url: URL): Option[JFile] = url.getProtocol match {
+      case "jar" =>
+        val spec = url.getFile()
+        val separator = spec.indexOf("!")
+        toFile(new URL(spec.substring(0, separator + 1)))
+      case "file" =>
+        val path = url.getFile()
+        if (path.endsWith("!")) {
+          Some(new JFile(path.substring(0, path.length() - 1)))
+        } else {
+          Some(new JFile(path))
+        }
+      case _ => None
+    }
+
+    def classLoaderURLsNew(cl: ClassLoader): Array[java.net.URL] = {
+      val resources = cl.getResources("").asScala ++ cl.getResources("META-INF").asScala
+      resources
+        .flatMap { url =>
+          val externalForm = url.toExternalForm()
+          toFile(new URL(externalForm.substring(0, externalForm.lastIndexOf("META-INF"))))
+        }
+        .map(_.toURL)
+        .toArray
+    }
+
     def classLoaderURLs(cl: ClassLoader): Array[java.net.URL] = cl match {
       case null => Array()
-      case u: java.net.URLClassLoader =>
-        u.getURLs ++ classLoaderURLs(cl.getParent)
-      case _ => classLoaderURLs(cl.getParent)
+      case _    => classLoaderURLsNew(cl) ++ classLoaderURLs(cl.getParent)
     }
+
+    // def classLoaderURLs(cl: ClassLoader): Array[java.net.URL] = cl match {
+    //   case null => Array()
+    //   case u: java.net.URLClassLoader =>
+    //     u.getURLs ++ classLoaderURLs(cl.getParent)
+    //   case _ => classLoaderURLs(cl.getParent)
+    // }
 
     classLoaderURLs(Thread.currentThread().getContextClassLoader)
       .foreach(u => command.settings.classpath.append(u.getPath))
@@ -91,8 +126,8 @@ trait BaseScioShell extends MainGenericRunner {
     val scioClassLoader = new ScioReplClassLoader(
       command.settings.classpathURLs.toArray ++
         classLoaderURLs(Thread.currentThread().getContextClassLoader),
-      null,
-      Thread.currentThread.getContextClassLoader
+      null
+      // ClassLoader.getPlatformClassLoader()
     )
 
     val repl = new ScioILoop(scioClassLoader, args.toList)

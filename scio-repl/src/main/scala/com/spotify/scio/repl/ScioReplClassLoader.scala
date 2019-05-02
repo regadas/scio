@@ -33,7 +33,7 @@ import scala.tools.nsc.io._
  * @param urls classpath urls for URLClassLoader
  * @param parent parent for Scio CL - may be null to close the chain
  */
-class ScioReplClassLoader(urls: Array[URL], parent: ClassLoader, detachedParent: ClassLoader)
+class ScioReplClassLoader(urls: Array[URL], parent: ClassLoader)
     extends URLClassLoader(urls, parent) {
 
   private val logger = LoggerFactory.getLogger(this.getClass)
