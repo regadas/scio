@@ -78,9 +78,17 @@ object Scalac {
   }
 
   def commonsOptions = Def.setting {
-    baseOptions ++ (if (scalaBinaryVersion.value == "2.12")
-                      scala212settings.value
-                    else Nil)
+    val scalaSettings = if (scalaBinaryVersion.value == "2.12") {
+      scala212settings.value
+    } else {
+      Nil
+    }
+    val jdkSettings = if (sys.props("java.version").startsWith("1.8")) {
+      Nil
+    } else {
+      jdk9Settings.value
+    }
+    baseOptions ++ scalaSettings ++ jdkSettings
   }
 
   def compileDocOptions = Def.setting {
@@ -88,5 +96,7 @@ object Scalac {
       (if (scalaBinaryVersion.value == "2.12") List("-no-java-comments")
        else Nil)
   }
+
+  def jdk9Settings = Def.setting { List("-release", "8") }
 
 }
