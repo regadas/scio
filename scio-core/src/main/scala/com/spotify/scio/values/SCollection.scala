@@ -189,12 +189,12 @@ sealed trait SCollection[T] extends PCollectionWrapper[T] {
 
   @experimental
   def transform[U](name: String)(f: SCollection[T] => SCollection[U]): SCollection[U] =
-    context.wrap {
-      internal.apply(name, new PTransform[PCollection[T], PCollection[U]]() {
+    this
+      .withName(name)
+      .pApply(new PTransform[PCollection[T], PCollection[U]]() {
         override def expand(input: PCollection[T]): PCollection[U] =
           f(context.wrap(input)).internal
       })
-    }
 
   def to[U](to: To[T, U]): SCollection[U] = transform(to)
 
@@ -224,12 +224,11 @@ sealed trait SCollection[T] extends PCollectionWrapper[T] {
    * multiple times (use [[distinct]] to eliminate them).
    * @group collection
    */
-  def union(that: SCollection[T]): SCollection[T] = {
-    val o = PCollectionList
+  def union(that: SCollection[T]): SCollection[T] = context.wrap {
+    PCollectionList
       .of(internal)
       .and(that.internal)
       .apply(this.tfName, Flatten.pCollections())
-    context.wrap(o)
   }
 
   /**
@@ -261,10 +260,10 @@ sealed trait SCollection[T] extends PCollectionWrapper[T] {
       Seq(this)
     } else {
       this
-        .applyInternal(Partition.of[T](numPartitions, Functions.partitionFn[T](numPartitions, f)))
+        .applyInternal(Partition.of(numPartitions, Functions.partitionFn(numPartitions, f)))
         .getAll
         .asScala
-        .map(p => context.wrap(p))
+        .map(context.wrap)
     }
   }
 
@@ -307,11 +306,7 @@ sealed trait SCollection[T] extends PCollectionWrapper[T] {
    * @group collection
    */
   def hashPartition(numPartitions: Int): Seq[SCollection[T]] =
-    self.partition(
-      numPartitions, { t =>
-        Math.floorMod(t.hashCode(), numPartitions)
-      }
-    )
+    self.partition(numPartitions, t => Math.floorMod(t.hashCode(), numPartitions))
 
   // =======================================================================
   // Transformations
