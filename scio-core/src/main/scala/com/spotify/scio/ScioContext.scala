@@ -189,7 +189,9 @@ object ContextAndArgs {
     // scalastyle:on cyclomatic.complexity
   }
 
-  def withParser[T](parser: ArgsParser[Try]): Array[String] => (ScioContext, T) =
+  def withParser[T](parser: ArgsParser[Try])(
+    implicit ex: ScioExecutionContext
+  ): Array[String] => (ScioContext, T) =
     args =>
       parser.parse(args) match {
         case Failure(exception) =>
@@ -205,10 +207,14 @@ object ContextAndArgs {
       }
 
   /** Create [[ScioContext]] and [[Args]] for command line arguments. */
-  def apply(args: Array[String]): (ScioContext, Args) =
+  def apply(args: Array[String])(
+    implicit ex: ScioExecutionContext
+  ): (ScioContext, Args) =
     withParser(DefaultParser[PipelineOptions]()).apply(args)
 
-  def typed[T: Parser: Help](args: Array[String]): (ScioContext, T) =
+  def typed[T: Parser: Help](
+    args: Array[String]
+  )(implicit ex: ScioExecutionContext): (ScioContext, T) =
     withParser(TypedParser[T]()).apply(args)
 
   private[scio] class UsageOrHelpException extends Exception with NoStackTrace
@@ -241,26 +247,36 @@ object ScioContext {
   import org.apache.beam.sdk.options.PipelineOptionsFactory
 
   /** Create a new [[ScioContext]] instance. */
-  def apply(): ScioContext = ScioContext(defaultOptions)
+  def apply()(
+    implicit ex: ScioExecutionContext = ScioExecutionContext.Implicits.global
+  ): ScioContext = apply(defaultOptions)
 
   /** Create a new [[ScioContext]] instance. */
-  def apply(options: PipelineOptions): ScioContext =
-    new ScioContext(options, Nil)
+  def apply(
+    options: PipelineOptions
+  )(implicit ex: ScioExecutionContext): ScioContext =
+    apply(options, Nil)
 
   /** Create a new [[ScioContext]] instance. */
-  def apply(artifacts: List[String]): ScioContext =
-    new ScioContext(defaultOptions, artifacts)
+  def apply(
+    artifacts: List[String]
+  )(implicit ex: ScioExecutionContext): ScioContext =
+    apply(defaultOptions, artifacts)
 
   /** Create a new [[ScioContext]] instance. */
-  def apply(options: PipelineOptions, artifacts: List[String]): ScioContext =
+  def apply(options: PipelineOptions, artifacts: List[String])(
+    implicit ex: ScioExecutionContext
+  ): ScioContext =
     new ScioContext(options, artifacts)
 
   /** Create a new [[ScioContext]] instance for testing. */
-  def forTest(): ScioContext = {
+  def forTest()(
+    implicit ex: ScioExecutionContext
+  ): ScioContext = {
     val opts = PipelineOptionsFactory
       .fromArgs("--appName=" + TestUtil.newTestId())
       .as(classOf[PipelineOptions])
-    new ScioContext(opts, List[String]())
+    apply(opts, List[String]())
   }
 
   /** Parse PipelineOptions and application arguments from command line arguments. */
@@ -325,13 +341,124 @@ object ScioContext {
 
 }
 
-final case class ClosedScioContext private (pipelineResult: PipelineResult, context: ScioContext) {
+trait ScioExecutionContext {
+  def testId(pipelineOptions: PipelineOptions): Option[String]
+
+  def isCompleted(pipelineResult: PipelineResult): Boolean
+
+  def state(pipelineResult: PipelineResult): State
+
+  def waitUntilFinish(
+    pipelineOptions: PipelineOptions,
+    pipelineResult: PipelineResult,
+    duration: Duration,
+    cancelJob: Boolean
+  ): ScioResult
+
+  def waitUntilDone(
+    pipelineOptions: PipelineOptions,
+    pipelineResult: PipelineResult,
+    duration: Duration,
+    cancelJob: Boolean
+  ): ScioResult
+}
+
+object ScioExecutionContext {
+
+  object Implicits {
+    implicit val global: ScioExecutionContext = new ScioExecutionContext {
+
+      private def optionsAs[T <: PipelineOptions: ClassTag](options: PipelineOptions): T =
+        options.as(ScioUtil.classOf[T])
+
+      override def testId(pipelineOptions: PipelineOptions): Option[String] =
+        Try(optionsAs[ApplicationNameOptions](pipelineOptions)).toOption.flatMap { o =>
+          if (TestUtil.isTestId(o.getAppName)) {
+            Some(o.getAppName)
+          } else {
+            None
+          }
+        }
+
+      override def isCompleted(pipelineResult: PipelineResult): Boolean =
+        pipelineResult.getState.isTerminal
+
+      override def state(pipelineResult: PipelineResult): State =
+        Try(pipelineResult.getState).getOrElse(State.UNKNOWN)
+
+      override def waitUntilFinish(
+        pipelineOptions: PipelineOptions,
+        pipelineResult: PipelineResult,
+        duration: Duration,
+        cancelJob: Boolean
+      ): ScioResult = {
+        try {
+          val wait = duration match {
+            case Duration.Inf => 0
+            case d            => d.toMillis
+          }
+          pipelineResult.waitUntilFinish(time.Duration.millis(wait))
+        } catch {
+          case e: InterruptedException =>
+            val cause = if (cancelJob) {
+              pipelineResult.cancel()
+              new InterruptedException(s"Job cancelled after exceeding timeout value $duration")
+            } else {
+              e
+            }
+            throw new PipelineExecutionException(cause)
+        }
+
+        new ScioResult(pipelineResult) {
+          private val metricsLocation = optionsAs[ScioOptions](pipelineOptions).getMetricsLocation
+          if (metricsLocation != null) {
+            saveMetrics(metricsLocation)
+          }
+
+          override def getMetrics: Metrics =
+            Metrics(
+              BuildInfo.version,
+              BuildInfo.scalaVersion,
+              optionsAs[ApplicationNameOptions](pipelineOptions).getAppName,
+              state.toString,
+              getBeamMetrics
+            )
+
+          override def isTest: Boolean = testId(pipelineOptions).isDefined
+        }
+      }
+
+      override def waitUntilDone(
+        pipelineOptions: PipelineOptions,
+        pipelineResult: PipelineResult,
+        duration: Duration,
+        cancelJob: Boolean
+      ): ScioResult = {
+        val result = waitUntilFinish(pipelineOptions, pipelineResult, duration, cancelJob)
+        if (!result.state.equals(State.DONE)) {
+          throw new PipelineExecutionException(
+            new Exception(s"Job finished with state ${result.state}")
+          )
+        }
+
+        result
+      }
+
+    }
+
+  }
+
+}
+
+final case class ClosedScioContext private (pipelineResult: PipelineResult, context: ScioContext)(
+  implicit ex: ScioExecutionContext
+) {
 
   /** Get the timeout period of the Scio job. Default to `Duration.Inf`. */
   def getAwaitDuration: Duration = context.awaitDuration
 
   /** Whether the pipeline is completed. */
-  def isCompleted: Boolean = pipelineResult.getState.isTerminal
+  def isCompleted: Boolean = ex.isCompleted(pipelineResult)
 
   /** Pipeline's current state. */
   def state: State = Try(pipelineResult.getState).getOrElse(State.UNKNOWN)
@@ -341,42 +468,7 @@ final case class ClosedScioContext private (pipelineResult: PipelineResult, cont
   def waitUntilFinish(
     duration: Duration = getAwaitDuration,
     cancelJob: Boolean = true
-  ): ScioResult = {
-    try {
-      val wait = duration match {
-        case Duration.Inf => 0
-        case d            => d.toMillis
-      }
-      pipelineResult.waitUntilFinish(time.Duration.millis(wait))
-    } catch {
-      case e: InterruptedException =>
-        val cause = if (cancelJob) {
-          pipelineResult.cancel()
-          new InterruptedException(s"Job cancelled after exceeding timeout value $duration")
-        } else {
-          e
-        }
-        throw new PipelineExecutionException(cause)
-    }
-
-    new ScioResult(pipelineResult) {
-      private val metricsLocation = context.optionsAs[ScioOptions].getMetricsLocation
-      if (metricsLocation != null) {
-        saveMetrics(metricsLocation)
-      }
-
-      override def getMetrics: Metrics =
-        Metrics(
-          BuildInfo.version,
-          BuildInfo.scalaVersion,
-          context.optionsAs[ApplicationNameOptions].getAppName,
-          state.toString,
-          getBeamMetrics
-        )
-
-      override def isTest: Boolean = context.isTest
-    }
-  }
+  ): ScioResult = ex.waitUntilFinish(context.options, pipelineResult, duration, cancelJob)
 
   /**
    * Wait until the pipeline finishes with the State `DONE` (as opposed to `CANCELLED` or
@@ -385,14 +477,8 @@ final case class ClosedScioContext private (pipelineResult: PipelineResult, cont
   def waitUntilDone(
     duration: Duration = getAwaitDuration,
     cancelJob: Boolean = true
-  ): ScioResult = {
-    val result = waitUntilFinish(duration, cancelJob)
-    if (!state.equals(State.DONE)) {
-      throw new PipelineExecutionException(new Exception(s"Job finished with state $state"))
-    }
-
-    result
-  }
+  ): ScioResult =
+    ex.waitUntilDone(context.options, pipelineResult, duration, cancelJob)
 }
 
 /**
@@ -405,8 +491,9 @@ final case class ClosedScioContext private (pipelineResult: PipelineResult, cont
  * @groupname Ungrouped Other Members
  */
 // scalastyle:off number.of.methods
-class ScioContext private[scio] (val options: PipelineOptions, private var artifacts: List[String])
-    extends TransformNameable {
+class ScioContext private[scio] (val options: PipelineOptions, private var artifacts: List[String])(
+  implicit ex: ScioExecutionContext = ScioExecutionContext.Implicits.global
+) extends TransformNameable {
 
   /** Get PipelineOptions as a more specific sub-type. */
   def optionsAs[T <: PipelineOptions: ClassTag]: T =
@@ -446,14 +533,7 @@ class ScioContext private[scio] (val options: PipelineOptions, private var artif
     }
   }
 
-  private[scio] val testId: Option[String] =
-    Try(optionsAs[ApplicationNameOptions]).toOption.flatMap { o =>
-      if (TestUtil.isTestId(o.getAppName)) {
-        Some(o.getAppName)
-      } else {
-        None
-      }
-    }
+  private[scio] val testId: Option[String] = ex.testId(options)
 
   /** Amount of time to block job for. */
   private[scio] val awaitDuration: Duration = {
