@@ -20,7 +20,7 @@ package com.spotify.scio.util
 import com.github.benmanes.caffeine.cache.{Caffeine, Cache => CCache}
 import com.google.common.cache.{Cache => GCache, CacheBuilder => GCacheBuilder}
 import java.util.function.{Function => JFunction}
-import java.util.concurrent.{Callable => JCallable}
+import java.util.concurrent.{Callable => JCallable, ConcurrentHashMap => JConcurrentHashMap}
 
 trait Cache[K, V] extends Serializable {
   type Underlying
@@ -37,7 +37,6 @@ trait CacheT[K, V, U] extends Cache[K, V] {
 }
 
 object Cache {
-
   def noOp[K, V]: CacheT[K, V, Nothing] = new CacheT[K, V, Nothing] {
     override def underlying: Nothing = ???
     override def get(k: K): Option[V] = None
@@ -46,7 +45,28 @@ object Cache {
     override def invalidateAll(): Unit = ()
   }
 
-  def caffeine[K <: AnyRef, V <: AnyRef](): CacheT[K, V, CCache[K, V]] =
+  def concurrentHashMap[K, V]: CacheT[K, V, JConcurrentHashMap[K, V]] =
+    concurrentHashMap(new JConcurrentHashMap[K, V]())
+
+  def concurrentHashMap[K, V](
+    chm: JConcurrentHashMap[K, V]
+  ): CacheT[K, V, JConcurrentHashMap[K, V]] =
+    new CacheT[K, V, JConcurrentHashMap[K, V]] {
+      override def underlying: JConcurrentHashMap[K, V] = chm
+
+      override def get(k: K): Option[V] = Option(chm.get(k))
+
+      override def get(k: K, default: => V): V =
+        chm.computeIfAbsent(k, new JFunction[K, V] {
+          override def apply(key: K): V = default
+        })
+
+      override def put(k: K, value: V): Unit = chm.put(k, value)
+
+      override def invalidateAll(): Unit = chm.clear()
+    }
+
+  def caffeine[K <: AnyRef, V <: AnyRef]: CacheT[K, V, CCache[K, V]] =
     caffeine(Caffeine.newBuilder().build[K, V]())
 
   def caffeine[K, V](cache: CCache[K, V]): CacheT[K, V, CCache[K, V]] =
@@ -89,5 +109,4 @@ object Cache {
       override def invalidateAll(): Unit =
         underlying.invalidateAll()
     }
-
 }

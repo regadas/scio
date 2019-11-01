@@ -20,7 +20,6 @@ package com.spotify.scio.extra.sparkey
 import java.io.File
 import java.nio.file.Files
 import java.util.Arrays
-import java.util.concurrent.ConcurrentHashMap
 
 import com.spotify.scio.util._
 import com.github.benmanes.caffeine.cache.{Caffeine, Cache => CCache}
@@ -35,20 +34,17 @@ import scala.collection.JavaConverters._
 final case class TestCache[K, V](testId: String) extends CacheT[K, V, CCache[K, V]] {
   @transient private lazy val cache =
     TestCache.caches
-      .computeIfAbsent(
-        testId,
-        new java.util.function.Function[String, AnyRef] {
-          override def apply(t: String): AnyRef =
-            Cache.caffeine(Caffeine.newBuilder().recordStats().build())
-        }
-      )
+      .get(testId, Cache.caffeine(Caffeine.newBuilder().recordStats().build()))
       .asInstanceOf[CacheT[K, V, CCache[K, V]]]
 
   override def get(k: K): Option[V] = cache.get(k)
 
   override def get(k: K, default: => V): V = cache.get(k, default)
 
-  override def put(k: K, value: V): Unit = cache.put(k, value)
+  override def put(k: K, value: V): Unit = {
+    cache.put(k, value)
+    ()
+  }
 
   override def invalidateAll(): Unit = cache.invalidateAll()
 
@@ -56,7 +52,7 @@ final case class TestCache[K, V](testId: String) extends CacheT[K, V, CCache[K, 
 }
 
 object TestCache {
-  private val caches = new ConcurrentHashMap[String, AnyRef]
+  private val caches = Cache.concurrentHashMap[String, AnyRef]
 
   @inline def apply[K, V](): TestCache[K, V] =
     TestCache[K, V](scala.util.Random.nextString(5))
