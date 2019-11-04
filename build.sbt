@@ -1181,3 +1181,9 @@ val scalaMappings = Seq(
   ("org.scalatest", "scalatest", "http://doc.scalatest.org/3.0.0")
 )
 val docMappings = javaMappings ++ scalaMappings
+
+def helloSbt: Command = Command.command("hello") { state =>
+  state
+}
+
+Global / commands += helloSbt
