@@ -20,7 +20,7 @@ package com.spotify.scio.avro.syntax
 import com.google.protobuf.Message
 import com.spotify.scio.avro._
 import com.spotify.scio.avro.types.AvroType.HasAvroAnnotation
-import com.spotify.scio.coders._
+import com.spotify.scio.coders.{avroGenericRecordCoder, Coder}
 import com.spotify.scio.io.ClosedTap
 import com.spotify.scio.values._
 import org.apache.avro.Schema
@@ -51,8 +51,7 @@ final class UnsafeReflectiveRecordSCollectionOps[T: Coder](private val self: SCo
     metadata: Map[String, AnyRef] = AvroIO.WriteParam.DefaultMetadata
   ): ClosedTap[T] = {
     val param = AvroIO.WriteParam(numShards, suffix, codec, metadata)
-//    self.write(ReflectiveRecordIO(path, schema))(param)
-    ???
+    self.write(ReflectiveRecordIO(path, schema))(param)
   }
 }
 
@@ -91,8 +90,7 @@ final class ObjectFileSCollectionOps[T](private val self: SCollection[T]) extend
     metadata: Map[String, AnyRef] = AvroIO.WriteParam.DefaultMetadata
   )(implicit coder: Coder[T]): ClosedTap[T] = {
     val param = ObjectFileIO.WriteParam(numShards, suffix, codec, metadata)
-//    self.write(ObjectFileIO(path))(param)
-    ???
+    self.write(ObjectFileIO(path))(param)
   }
 }
 
