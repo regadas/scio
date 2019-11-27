@@ -18,7 +18,7 @@
 package com.spotify.scio.values
 
 import com.spotify.scio.ScioContext
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 
 import com.spotify.scio.util.FunctionsWithWindowedValue
 import org.apache.beam.sdk.transforms.windowing.Window.ClosingBehavior

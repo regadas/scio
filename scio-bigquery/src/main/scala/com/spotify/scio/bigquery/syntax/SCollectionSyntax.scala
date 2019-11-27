@@ -28,7 +28,7 @@ import com.spotify.scio.bigquery.{
   TableRowJsonIO,
   TimePartitioning
 }
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.io._
 import com.spotify.scio.values.SCollection
 import org.apache.beam.sdk.io.Compression

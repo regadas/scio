@@ -22,7 +22,7 @@ import java.net.URI
 import java.nio.file.{Files, Paths}
 
 import annoy4s._
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.util.{RemoteFileUtil, ScioUtil}
 import org.apache.beam.sdk.options.PipelineOptions
 

@@ -20,7 +20,7 @@ package com.spotify.scio.testing
 import java.lang.{Iterable => JIterable}
 import java.util.{Map => JMap}
 
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.values.SCollection
 import com.twitter.chill.Externalizer
 import org.apache.beam.sdk.testing.PAssert

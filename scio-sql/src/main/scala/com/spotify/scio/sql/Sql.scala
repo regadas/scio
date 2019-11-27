@@ -19,7 +19,7 @@ package com.spotify.scio.sql
 
 import java.util.Collections
 
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.schemas._
 import com.spotify.scio.values.SCollection
 import org.apache.beam.sdk.extensions.sql.{BeamSqlTable, SqlTransform}

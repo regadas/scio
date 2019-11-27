@@ -20,7 +20,7 @@ package com.spotify.scio.extra
 import com.spotify.scio.ScioContext
 import com.spotify.scio.io.ClosedTap
 import com.spotify.scio.values.SCollection
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import io.circe.Printer
 import io.circe.generic.AutoDerivation
 import org.apache.beam.sdk.io.Compression

@@ -18,7 +18,7 @@
 package com.spotify.scio.jdbc.syntax
 
 import com.spotify.scio.values.SCollection
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 
 import scala.reflect.ClassTag
 import com.spotify.scio.ScioContext

@@ -21,7 +21,7 @@ import java.net.InetSocketAddress
 
 import com.spotify.scio.io.ClosedTap
 import com.spotify.scio.values.SCollection
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.elasticsearch.ElasticsearchIO.{RetryConfig, WriteParam}
 import org.apache.beam.sdk.io.elasticsearch.ElasticsearchIO.Write.BulkExecutionException
 import org.elasticsearch.action.DocWriteRequest

@@ -19,7 +19,7 @@ package com.spotify.scio.coders.instances
 
 import java.io.{DataInputStream, DataOutputStream, InputStream, OutputStream}
 
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import org.apache.beam.sdk.coders.{AtomicCoder, InstantCoder}
 import org.joda.time.chrono.ISOChronology
 import org.joda.time.{Chronology, DateTime, DateTimeZone, LocalDate, LocalDateTime, LocalTime}

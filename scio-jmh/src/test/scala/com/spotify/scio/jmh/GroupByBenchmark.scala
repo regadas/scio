@@ -66,7 +66,7 @@ class GroupByBenchmark {
 
   val source = "src/test/resources/events-10000-0.avro"
   implicit val coderGenericRecord: Coder[GenericRecord] =
-    Coder.avroGenericRecordCoder(avroSchema)
+    avroGenericRecordCoder(avroSchema)
 
   val charCoder = CoderMaterializer.beamWithDefault(Coder[Char])
   val doubleCoder = CoderMaterializer.beamWithDefault(Coder[Double])

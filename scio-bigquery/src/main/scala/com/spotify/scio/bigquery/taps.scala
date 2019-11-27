@@ -21,7 +21,7 @@ import com.google.cloud.bigquery.storage.v1beta1.ReadOptions.TableReadOptions
 import com.google.api.services.bigquery.model.TableReference
 import com.spotify.scio.ScioContext
 import com.spotify.scio.bigquery.client.BigQuery
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.io.{FileStorage, Tap, Taps}
 import com.spotify.scio.values.SCollection
 

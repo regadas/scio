@@ -21,7 +21,7 @@ import java.lang.{Iterable => JIterable}
 
 import com.spotify.scio.IsJavaBean
 import com.spotify.scio.bean.UserBean
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.schemas.{Schema, To}
 import com.spotify.scio.testing.PipelineSpec
 import org.apache.beam.sdk.extensions.sql.BeamSqlUdf
@@ -157,7 +157,7 @@ class BeamSQLTest extends PipelineSpec {
     val expected = users.map { u =>
       Row.withSchema(schemaRes).addValue(u.username).build()
     }
-    implicit def coderRowRes: Coder[Row] = Coder.row(schemaRes)
+    implicit def coderRowRes: Coder[Row] = row(schemaRes)
     val in = sc.parallelize(users)
     val r = in.query("select username from SCOLLECTION")
     r should containInAnyOrder(expected)
@@ -193,7 +193,7 @@ class BeamSQLTest extends PipelineSpec {
         .build()
     }
 
-    implicit def coderRowRes: Coder[Row] = Coder.row(schemaRes)
+    implicit def coderRowRes: Coder[Row] = row(schemaRes)
     val in = sc.parallelize(usersWithIds)
     val r = in.query("select id, username from SCOLLECTION")
     r should containInAnyOrder(expected)
@@ -208,7 +208,7 @@ class BeamSQLTest extends PipelineSpec {
     val expected = usersWithLocale.map { u =>
       Row.withSchema(schemaRes).addValue(u.username).build()
     }
-    implicit def coderRowRes: Coder[Row] = Coder.row(schemaRes)
+    implicit def coderRowRes: Coder[Row] = row(schemaRes)
     val in = sc.parallelize(usersWithLocale)
     val r = in.query("select username from SCOLLECTION")
     r should containInAnyOrder(expected)
@@ -219,7 +219,7 @@ class BeamSQLTest extends PipelineSpec {
     val expected = users.map { u =>
       Row.withSchema(schemaRes).addValue(u.username).build()
     }
-    implicit def coderRowRes: Coder[Row] = Coder.row(schemaRes)
+    implicit def coderRowRes: Coder[Row] = row(schemaRes)
     val in = sc.parallelize(users)
     val r = in.query("select username from SCOLLECTION")
     r should containInAnyOrder(expected)
@@ -513,7 +513,7 @@ class BeamSQLTest extends PipelineSpec {
     val expected = users.map { u =>
       Row.withSchema(schemaRes).addValue(u.username).addValue(true).build()
     }
-    implicit def coderRowRes: Coder[Row] = Coder.row(schemaRes)
+    implicit def coderRowRes: Coder[Row] = row(schemaRes)
 
     val in = sc.parallelize(users)
 
@@ -535,7 +535,7 @@ class BeamSQLTest extends PipelineSpec {
       .build()
 
     val expected = Seq(Row.withSchema(schemaRes).addValue(30).build())
-    implicit def coderRowRes: Coder[Row] = Coder.row(schemaRes)
+    implicit def coderRowRes: Coder[Row] = row(schemaRes)
 
     sc.parallelize(users)
       .query(

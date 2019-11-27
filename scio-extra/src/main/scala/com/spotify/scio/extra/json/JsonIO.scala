@@ -21,7 +21,7 @@ import com.spotify.scio.ScioContext
 import com.spotify.scio.io.{ScioIO, Tap, TapOf, TextIO}
 import com.spotify.scio.util.ScioUtil
 import com.spotify.scio.values.SCollection
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import io.circe.Printer
 import io.circe.parser._
 import io.circe.syntax._

@@ -18,7 +18,7 @@
 package com.spotify.scio.jdbc.syntax
 import com.spotify.scio.values.SCollection
 import com.spotify.scio.jdbc.JdbcWriteOptions
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.io.ClosedTap
 import com.spotify.scio.jdbc.JdbcWrite
 

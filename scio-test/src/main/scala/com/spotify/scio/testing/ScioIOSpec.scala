@@ -23,7 +23,7 @@ import java.util.UUID
 import com.spotify.scio._
 import com.spotify.scio.io._
 import com.spotify.scio.values.SCollection
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import org.apache.commons.io.FileUtils
 
 import scala.reflect.ClassTag

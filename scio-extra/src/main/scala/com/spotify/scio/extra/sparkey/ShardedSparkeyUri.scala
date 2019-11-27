@@ -20,7 +20,7 @@ package com.spotify.scio.extra.sparkey
 import java.io.File
 import java.net.URI
 
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.util.{RemoteFileUtil, ScioUtil}
 import com.spotify.sparkey.SparkeyReader
 import com.spotify.sparkey.extra.ThreadLocalSparkeyReader

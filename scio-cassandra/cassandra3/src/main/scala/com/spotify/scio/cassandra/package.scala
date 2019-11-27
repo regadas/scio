@@ -19,7 +19,7 @@ package com.spotify.scio
 
 import com.spotify.scio.io.ClosedTap
 import com.spotify.scio.values.SCollection
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 
 /**
  * Main package for Cassandra APIs. Import all.

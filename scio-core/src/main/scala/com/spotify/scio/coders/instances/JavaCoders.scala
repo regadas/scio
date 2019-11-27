@@ -24,7 +24,7 @@ import java.time.Instant
 import com.google.api.services.bigquery.model.TableRow
 import com.spotify.scio.IsJavaBean
 import com.spotify.scio.schemas.Schema
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.transforms.BaseAsyncLookupDoFn
 import com.spotify.scio.util.ScioUtil
 import org.apache.beam.sdk.coders.{Coder => _, _}
@@ -93,12 +93,12 @@ trait JavaCoders {
   private def fromScalaCoder[J <: java.lang.Number, S <: AnyVal](coder: Coder[S]): Coder[J] =
     coder.asInstanceOf[Coder[J]]
 
-  implicit val jShortCoder: Coder[java.lang.Short] = fromScalaCoder(Coder.shortCoder)
-  implicit val jByteCoder: Coder[java.lang.Byte] = fromScalaCoder(Coder.byteCoder)
-  implicit val jIntegerCoder: Coder[java.lang.Integer] = fromScalaCoder(Coder.intCoder)
-  implicit val jLongCoder: Coder[java.lang.Long] = fromScalaCoder(Coder.longCoder)
-  implicit val jFloatCoder: Coder[java.lang.Float] = fromScalaCoder(Coder.floatCoder)
-  implicit val jDoubleCoder: Coder[java.lang.Double] = fromScalaCoder(Coder.doubleCoder)
+  implicit val jShortCoder: Coder[java.lang.Short] = fromScalaCoder(Implicits.shortCoder)
+  implicit val jByteCoder: Coder[java.lang.Byte] = fromScalaCoder(Implicits.byteCoder)
+  implicit val jIntegerCoder: Coder[java.lang.Integer] = fromScalaCoder(Implicits.intCoder)
+  implicit val jLongCoder: Coder[java.lang.Long] = fromScalaCoder(Implicits.longCoder)
+  implicit val jFloatCoder: Coder[java.lang.Float] = fromScalaCoder(Implicits.floatCoder)
+  implicit val jDoubleCoder: Coder[java.lang.Double] = fromScalaCoder(Implicits.doubleCoder)
 
   implicit val jBooleanCoder: Coder[java.lang.Boolean] = Coder.beam(BooleanCoder.of())
 
@@ -124,7 +124,7 @@ trait JavaCoders {
   implicit def beamKVCoder[K: Coder, V: Coder]: Coder[KV[K, V]] = Coder.kv(Coder[K], Coder[V])
 
   implicit def jInstantCoder: Coder[Instant] =
-    Coder.xmap(Coder.pairCoder(jLongCoder, jIntegerCoder))(
+    Coder.xmap(Implicits.pairCoder(jLongCoder, jIntegerCoder))(
       pair => Instant.ofEpochSecond(pair._1, pair._2.toLong),
       instant => (instant.getEpochSecond, instant.getNano)
     )

@@ -16,7 +16,7 @@
  */
 package com.spotify.scio.schemas.instances
 
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.schemas.{Fallback, LowPrioritySchemaDerivation, Schema}
 
 trait LowPriorityFallbackInstances extends LowPrioritySchemaDerivation {

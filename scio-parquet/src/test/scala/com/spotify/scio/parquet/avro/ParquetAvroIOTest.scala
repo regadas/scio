@@ -18,7 +18,7 @@
 package com.spotify.scio.parquet.avro
 
 import com.spotify.scio._
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.avro._
 import com.spotify.scio.io.TapSpec
 import com.spotify.scio.testing._
@@ -117,7 +117,7 @@ class ParquetAvroIOTest extends ScioIOSpec with TapSpec with BeforeAndAfterAll {
 
     val genericRecords = (1 to 100).map(AvroUtils.newGenericRecord)
     val sc = ScioContext()
-    implicit val coder = Coder.avroGenericRecordCoder(AvroUtils.schema)
+    implicit val coder = avroGenericRecordCoder(AvroUtils.schema)
     sc.parallelize(genericRecords)
       .saveAsParquetAvroFile(dir.toString, numShards = 1, schema = AvroUtils.schema)
     sc.run()

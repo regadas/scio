@@ -17,7 +17,7 @@
 
 package com.spotify.scio.values
 
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 
 import com.twitter.algebird.{CMS, CMSHasher}
 

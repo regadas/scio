@@ -29,7 +29,7 @@
 
 package com.spotify.scio.coders.instances
 
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import shapeless.Strict
 
 trait TupleCoders {

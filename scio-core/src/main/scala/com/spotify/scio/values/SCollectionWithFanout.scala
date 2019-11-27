@@ -19,7 +19,7 @@ package com.spotify.scio.values
 
 import com.spotify.scio.ScioContext
 import com.spotify.scio.util.Functions
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.twitter.algebird.{Aggregator, Monoid, Semigroup}
 import org.apache.beam.sdk.transforms.Combine
 import org.apache.beam.sdk.values.PCollection

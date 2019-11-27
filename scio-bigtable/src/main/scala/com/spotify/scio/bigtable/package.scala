@@ -21,7 +21,7 @@ import com.google.bigtable.admin.v2.GcRule
 import com.google.bigtable.v2._
 import com.google.cloud.bigtable.config.BigtableOptions
 import com.google.protobuf.ByteString
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.io.ClosedTap
 import com.spotify.scio.values.SCollection
 import org.apache.beam.sdk.io.range.ByteKeyRange

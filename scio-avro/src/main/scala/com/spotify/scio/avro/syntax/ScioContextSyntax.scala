@@ -22,7 +22,7 @@ import com.spotify.scio.ScioContext
 import com.spotify.scio.annotations.experimental
 import com.spotify.scio.avro._
 import com.spotify.scio.avro.types.AvroType.HasAvroAnnotation
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.values._
 import org.apache.avro.Schema
 import org.apache.avro.generic.GenericRecord
@@ -50,7 +50,7 @@ object AvroFileImpl extends LowPriorityAvroFileImpl {
   implicit def genericRecordRead: AvroFileImpl[GenericRecord] =
     new AvroFileImpl[GenericRecord] {
       def apply(self: ScioContext)(path: String, schema: Schema): SCollection[GenericRecord] = {
-        val coder = Coder.avroGenericRecordCoder(schema)
+        val coder = avroGenericRecordCoder(schema)
         self.read(GenericRecordIO(path, schema))(coder)
       }
     }

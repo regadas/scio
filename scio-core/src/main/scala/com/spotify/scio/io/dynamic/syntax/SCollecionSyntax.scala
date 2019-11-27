@@ -35,6 +35,8 @@ import scala.collection.JavaConverters._
 import scala.reflect.ClassTag
 import java.util.{HashMap => JHashMap}
 
+import com.spotify.scio.coders.instances.Implicits
+
 object DynamicSCollectionOps {
   private[syntax] def writeDynamic[A](
     path: String,
@@ -188,7 +190,7 @@ final class DynamicProtobufSCollectionOps[T <: Message](private val self: SColle
     metadata: Map[String, AnyRef] = Map.empty
   )(destinationFn: T => String)(implicit ct: ClassTag[T]): ClosedTap[Nothing] = {
     val protoCoder =
-      Coder
+      Implicits
         .protoMessageCoder[Message](ct.asInstanceOf[ClassTag[Message]])
         .asInstanceOf[Coder[T]]
 

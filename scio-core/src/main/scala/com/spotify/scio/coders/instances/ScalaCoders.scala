@@ -21,7 +21,7 @@ import java.io.{InputStream, OutputStream}
 import java.util
 import java.util.Collections
 
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import org.apache.beam.sdk.coders.Coder.NonDeterministicException
 import org.apache.beam.sdk.coders.{Coder => BCoder, _}
 import org.apache.beam.sdk.util.CoderUtils

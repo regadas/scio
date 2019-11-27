@@ -18,7 +18,7 @@
 package com.spotify.scio.io
 
 import com.spotify.scio.ScioContext
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.testing.TestDataManager
 import com.spotify.scio.values.SCollection
 

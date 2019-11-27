@@ -20,6 +20,7 @@ package com.spotify.scio.avro
 import com.google.protobuf.Message
 import com.spotify.scio._
 import com.spotify.scio.avro.types.AvroType.HasAvroAnnotation
+import com.spotify.scio.coders.avroGenericRecordCoder
 import com.spotify.scio.coders.{AvroBytesUtil, Coder, CoderMaterializer}
 import com.spotify.scio.io.{FileStorage, Tap, Taps}
 import com.spotify.scio.values._
@@ -61,7 +62,7 @@ final case class GenericRecordTap(
   override def value: Iterator[GenericRecord] = FileStorage(path).avroFile[GenericRecord](s.get)
 
   override def open(sc: ScioContext): SCollection[GenericRecord] = {
-    implicit val coder = Coder.avroGenericRecordCoder(s.get)
+    implicit val coder = avroGenericRecordCoder(s.get)
     sc.read(GenericRecordIO(path, s.get))
   }
 }
@@ -139,7 +140,7 @@ final case class AvroTaps(self: Taps) {
     val avroT = AvroType[T]
 
     import scala.concurrent.ExecutionContext.Implicits.global
-    implicit val bcoder = Coder.avroGenericRecordCoder(avroT.schema)
+    implicit val bcoder = avroGenericRecordCoder(avroT.schema)
     avroFile[GenericRecord](path, avroT.schema)
       .map(_.map(avroT.fromGenericRecord))
   }

@@ -17,7 +17,7 @@
 package com.spotify.scio.spanner.instances
 
 import com.google.cloud.spanner.{Mutation, Struct}
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import org.apache.beam.sdk.{coders => bcoders}
 import org.apache.beam.sdk.io.gcp.spanner.{MutationGroup, ReadOperation}
 

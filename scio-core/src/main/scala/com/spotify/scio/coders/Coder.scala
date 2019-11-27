@@ -19,7 +19,7 @@ package com.spotify.scio.coders
 
 import java.io.{InputStream, OutputStream}
 
-import com.spotify.scio.coders.instances.Implicits
+import com.spotify.scio.coders.instances.{Implicits, LowPriorityFallbackCoder}
 import org.apache.beam.sdk.coders.Coder.NonDeterministicException
 import org.apache.beam.sdk.coders.{AtomicCoder, Coder => BCoder}
 import org.apache.beam.sdk.util.common.ElementByteSizeObserver
@@ -465,7 +465,7 @@ sealed trait CoderGrammar {
     Record[T](typeName, cs, construct, destruct)
 }
 
-object Coder extends CoderGrammar with Implicits {
+object Coder extends CoderGrammar with LowPriorityFallbackCoder {
   @inline final def apply[T](implicit c: Coder[T]): Coder[T] = c
 }
 

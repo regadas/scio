@@ -177,7 +177,7 @@ final class CoderTest extends FlatSpec with Matchers {
     val schema = Avro.user.getSchema
     val record: GenericRecord = Avro.user
 
-    implicit val c: Coder[GenericRecord] = Coder.avroGenericRecordCoder(schema)
+    implicit val c: Coder[GenericRecord] = avroGenericRecordCoder(schema)
     implicit val eq: Equality[GenericRecord] = Avro.eq
 
     record coderShould notFallback()
@@ -266,7 +266,7 @@ final class CoderTest extends FlatSpec with Matchers {
         .addDoubleField("c3")
         .build()
 
-    implicit val coderRow = Coder.row(beamSchema)
+    implicit val coderRow = row(beamSchema)
     val rows =
       List[(jInt, jString, jDouble)]((1, "row", 1.0), (2, "row", 2.0), (3, "row", 3.0))
         .map {

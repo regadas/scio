@@ -19,7 +19,7 @@ package com.spotify.scio.testing
 
 import java.io.{InputStream, OutputStream}
 
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.testing.CoderAssertions._
 import org.apache.beam.sdk.coders.{AtomicCoder, StringUtf8Coder}
 import org.scalatest.exceptions.TestFailedException

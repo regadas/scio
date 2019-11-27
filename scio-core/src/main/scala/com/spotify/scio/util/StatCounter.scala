@@ -19,7 +19,7 @@
 
 package com.spotify.scio.util
 
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 
 /**
  * A class for tracking the statistics of a set of numbers (count, mean and variance) in a

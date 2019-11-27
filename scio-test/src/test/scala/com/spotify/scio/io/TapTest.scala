@@ -35,7 +35,7 @@ import org.apache.beam.sdk.util.SerializableUtils
 import org.apache.commons.compress.compressors.CompressorStreamFactory
 import org.apache.commons.io.{FileUtils, IOUtils}
 
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.options.ScioOptions
 
 trait TapSpec extends PipelineSpec {
@@ -66,7 +66,7 @@ trait TapSpec extends PipelineSpec {
 
 class TapTest extends TapSpec {
   val schema = newGenericRecord(1).getSchema
-  implicit val coder = Coder.avroGenericRecordCoder(schema)
+  implicit val coder = avroGenericRecordCoder(schema)
 
   private def makeRecords(sc: ScioContext) =
     sc.parallelize(Seq(1, 2, 3))

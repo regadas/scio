@@ -20,7 +20,7 @@ package com.spotify.scio.util
 import java.lang.{Iterable => JIterable}
 import java.util.{Iterator => JIterator}
 
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.options.ScioOptions
 import com.spotify.scio.options.ScioOptions.CheckEnabled
 import com.spotify.scio.values.SCollection

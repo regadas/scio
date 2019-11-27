@@ -28,7 +28,7 @@ import com.google.datastore.v1._
 import com.google.datastore.v1.client.{Datastore, DatastoreHelper}
 import com.spotify.scio._
 import com.spotify.scio.benchmarks.BenchmarkResult.{Batch, BenchmarkType, Metric}
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.runners.dataflow.DataflowResult
 import com.spotify.scio.values.SCollection
 import magnolify.datastore._

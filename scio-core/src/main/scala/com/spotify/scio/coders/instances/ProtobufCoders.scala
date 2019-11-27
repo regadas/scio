@@ -18,7 +18,7 @@
 package com.spotify.scio.coders.instances
 
 import com.google.protobuf.{ByteString, Message}
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import org.apache.beam.sdk.extensions.protobuf.{ByteStringCoder, ProtoCoder}
 
 import scala.reflect.{classTag, ClassTag}

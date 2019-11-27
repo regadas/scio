@@ -17,7 +17,7 @@
 
 package com.spotify.scio
 
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.elasticsearch.ElasticsearchIO.{RetryConfig, WriteParam}
 import com.spotify.scio.io.ClosedTap
 import com.spotify.scio.values.SCollection

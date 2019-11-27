@@ -26,4 +26,5 @@ trait Implicits
     with AlgebirdCoders
     with JodaCoders
     with Serializable
-    with LowPriorityFallbackCoder
+
+object Implicits extends Implicits

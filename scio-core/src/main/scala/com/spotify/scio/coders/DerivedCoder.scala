@@ -72,7 +72,6 @@ private object Derived extends Serializable {
 
 trait LowPriorityCoderDerivation {
   import language.experimental.macros, magnolia._
-  import com.spotify.scio.coders.CoderMacros
 
   type Typeclass[T] = Coder[T]
 

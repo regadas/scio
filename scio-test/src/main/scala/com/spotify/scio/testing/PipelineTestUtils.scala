@@ -19,7 +19,7 @@ package com.spotify.scio.testing
 
 import org.apache.beam.sdk.options._
 import com.spotify.scio._
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.values.SCollection
 
 /** Trait with utility methods for unit testing pipelines. */

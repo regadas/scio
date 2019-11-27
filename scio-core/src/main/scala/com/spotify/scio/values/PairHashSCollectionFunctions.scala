@@ -17,7 +17,7 @@
 
 package com.spotify.scio.values
 
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 
 import scala.collection.mutable.{ArrayBuffer, Map => MMap}
 

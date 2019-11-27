@@ -35,7 +35,7 @@ private[coders] object CoderMacros {
           |Using a fallback coder for Avro's GenericRecord is discouraged as it is VERY inefficient.
           |It is highly recommended to define a proper Coder[GenericRecord] using:
           |
-          |  Coder.avroGenericRecordCoder(schema)
+          |  avroGenericRecordCoder(schema)
         """.stripMargin
     )
 
@@ -80,7 +80,7 @@ private[coders] object CoderMacros {
         |  It is recommended to declare this Coder in your class companion object:
         |
         |       object ${typeName} {
-        |         import com.spotify.scio.coders.Coder
+        |         import com.spotify.scio.coders._
         |         import org.apache.beam.sdk.coders.AtomicCoder
         |
         |         implicit def coder${typeName}: Coder[$fullType] =

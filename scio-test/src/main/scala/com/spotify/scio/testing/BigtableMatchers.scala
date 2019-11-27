@@ -21,7 +21,7 @@ import com.google.bigtable.v2.Mutation
 import com.google.bigtable.v2.Mutation.MutationCase
 import com.google.protobuf.ByteString
 import com.spotify.scio.values.SCollection
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 
 import org.scalatest.matchers.{MatchResult, Matcher}
 

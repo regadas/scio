@@ -18,7 +18,7 @@
 package com.spotify.scio
 
 import com.spotify.scio.values.SCollection
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 
 package object repl {
   implicit class ReplSCollection[T](private val self: SCollection[T]) extends AnyVal {

@@ -19,6 +19,7 @@ package com.spotify.scio.avro
 
 import com.google.protobuf.Message
 import com.spotify.scio.avro.types.AvroType.HasAvroAnnotation
+import com.spotify.scio.coders._
 import com.spotify.scio.coders.{AvroBytesUtil, Coder, CoderMaterializer}
 import com.spotify.scio.io._
 import com.spotify.scio.util.{Functions, ScioUtil}
@@ -49,7 +50,7 @@ final case class ObjectFileIO[T: Coder](path: String) extends ScioIO[T] {
    */
   override protected def read(sc: ScioContext, params: ReadP): SCollection[T] = {
     val coder = CoderMaterializer.beamWithDefault(Coder[T])
-    implicit val bcoder = Coder.avroGenericRecordCoder(AvroBytesUtil.schema)
+    implicit val bcoder = avroGenericRecordCoder(AvroBytesUtil.schema)
     sc.read(GenericRecordIO(path, AvroBytesUtil.schema))
       .parDo(new DoFn[GenericRecord, T] {
         @ProcessElement
@@ -66,7 +67,7 @@ final case class ObjectFileIO[T: Coder](path: String) extends ScioIO[T] {
    */
   override protected def write(data: SCollection[T], params: WriteP): Tap[T] = {
     val elemCoder = CoderMaterializer.beamWithDefault(Coder[T])
-    implicit val bcoder = Coder.avroGenericRecordCoder(AvroBytesUtil.schema)
+    implicit val bcoder = avroGenericRecordCoder(AvroBytesUtil.schema)
     data
       .parDo(new DoFn[T, GenericRecord] {
         @ProcessElement
@@ -92,8 +93,7 @@ final case class ProtobufIO[T <: Message: ClassTag](path: String) extends ScioIO
   override final val tapT = TapOf[T]
 
   private val protoCoder =
-    Coder
-      .protoMessageCoder[Message](classTag[T].asInstanceOf[ClassTag[Message]])
+    protoMessageCoder[Message](classTag[T].asInstanceOf[ClassTag[Message]])
       .asInstanceOf[Coder[T]]
 
   /**
@@ -374,7 +374,7 @@ object AvroTyped {
 
     override def tap(read: ReadP): Tap[T] = {
       val avroT = AvroType[T]
-      val bcoder = Coder.avroGenericRecordCoder(avroT.schema)
+      val bcoder = avroGenericRecordCoder(avroT.schema)
       GenericRecordTap(ScioUtil.addPartSuffix(path), avroT.schema)
         .map(avroT.fromGenericRecord)
     }

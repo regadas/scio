@@ -24,6 +24,7 @@ import java.util.concurrent.ThreadLocalRandom
 import com.google.datastore.v1.Entity
 import com.spotify.scio.ScioContext
 import com.spotify.scio.annotations.experimental
+import com.spotify.scio.coders.instances.Implicits
 import com.spotify.scio.coders.{AvroBytesUtil, Coder, CoderMaterializer}
 import com.spotify.scio.io._
 import com.spotify.scio.schemas.{Schema, SchemaMaterializer, To}
@@ -1153,7 +1154,7 @@ sealed trait SCollection[T] extends PCollectionWrapper[T] {
     } else {
       val elemCoder = CoderMaterializer.beam(context, coder)
       val schema = AvroBytesUtil.schema
-      val avroCoder = Coder.avroGenericRecordCoder(schema)
+      val avroCoder = Implicits.avroGenericRecordCoder(schema)
       val write = beam.AvroIO
         .writeGenericRecords(schema)
         .to(ScioUtil.pathWithShards(path))

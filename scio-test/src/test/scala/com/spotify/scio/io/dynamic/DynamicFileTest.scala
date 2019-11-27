@@ -22,7 +22,7 @@ import java.nio.file.{Files, Path}
 import com.spotify.scio._
 import com.spotify.scio.avro.AvroUtils._
 import com.spotify.scio.avro._
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.proto.SimpleV2.SimplePB
 import com.spotify.scio.testing.PipelineSpec
 import com.spotify.scio.values.WindowOptions
@@ -98,7 +98,7 @@ class DynamicFileTest extends PipelineSpec {
   it should "support generic Avro files" in {
     val tmpDir = Files.createTempDirectory("dynamic-io-")
     val sc1 = ScioContext()
-    implicit val coder = Coder.avroGenericRecordCoder(schema)
+    implicit val coder = avroGenericRecordCoder(schema)
     sc1
       .parallelize(1 to 10)
       .map(newGenericRecord)

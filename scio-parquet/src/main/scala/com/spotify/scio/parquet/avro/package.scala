@@ -20,7 +20,7 @@ package com.spotify.scio.parquet
 import com.spotify.scio.ScioContext
 import com.spotify.scio.io.ClosedTap
 import com.spotify.scio.values.SCollection
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.parquet.avro.ParquetAvroIO.WriteParam
 import org.apache.avro.Schema
 import org.apache.avro.specific.SpecificRecordBase

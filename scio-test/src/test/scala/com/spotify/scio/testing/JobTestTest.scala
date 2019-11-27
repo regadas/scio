@@ -25,7 +25,7 @@ import com.spotify.scio._
 import com.spotify.scio.avro.AvroUtils.{newGenericRecord, newSpecificRecord}
 import com.spotify.scio.avro._
 import com.spotify.scio.bigquery._
-import com.spotify.scio.coders.Coder
+import com.spotify.scio.coders._
 import com.spotify.scio.io._
 import com.spotify.scio.util.MockedPrintStream
 import org.apache.avro.generic.GenericRecord
@@ -65,7 +65,7 @@ object SpecificAvroFileJob {
 object GenericAvroFileJob {
   def main(cmdlineArgs: Array[String]): Unit = {
     val (sc, args) = ContextAndArgs(cmdlineArgs)
-    implicit val coder = Coder.avroGenericRecordCoder(AvroUtils.schema)
+    implicit val coder = avroGenericRecordCoder(AvroUtils.schema)
     sc.avroFile[GenericRecord](args("input"), AvroUtils.schema)
       .saveAsAvroFile(args("output"), schema = AvroUtils.schema)
     sc.run()
@@ -325,7 +325,7 @@ class JobTestTest extends PipelineSpec {
   }
 
   def testGenericAvroFileJob(xs: Seq[GenericRecord]): Unit = {
-    implicit val coder = Coder.avroGenericRecordCoder
+    implicit val coder = avroGenericRecordCoder
     JobTest[GenericAvroFileJob.type]
       .args("--input=in.avro", "--output=out.avro")
       .input(AvroIO[GenericRecord]("in.avro"), (1 to 3).map(newGenericRecord))
@@ -350,7 +350,7 @@ class JobTestTest extends PipelineSpec {
 
   def testGenericParseAvroFileJob(xs: Seq[GenericRecord]): Unit = {
     import GenericParseFnAvroFileJob.PartialFieldsAvro
-    implicit val coder: Coder[GenericRecord] = Coder.avroGenericRecordCoder
+    implicit val coder: Coder[GenericRecord] = avroGenericRecordCoder
     JobTest[GenericParseFnAvroFileJob.type]
       .args("--input=in.avro", "--output=out.avro")
       .input(AvroIO[PartialFieldsAvro]("in.avro"), (1 to 3).map(PartialFieldsAvro))
