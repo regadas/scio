@@ -141,7 +141,7 @@ lazy val scalafmtSettings = Seq(
 
 val commonSettings = Sonatype.sonatypeSettings ++ assemblySettings ++ Seq(
   organization := "com.spotify",
-  scalaVersion := "2.12.10",
+  scalaVersion := "2.13.1",
   crossScalaVersions := Seq("2.12.10"),
   scalacOptions ++= Scalac.commonsOptions.value,
   scalacOptions ++= {
@@ -373,11 +373,11 @@ lazy val root: Project = Project("scio", file("."))
     `scio-extra`,
     `scio-jdbc`,
     `scio-parquet`,
-    `scio-tensorflow`,
+//    `scio-tensorflow`,
     `scio-schemas`,
     `scio-spanner`,
     `scio-sql`,
-    `scio-examples`,
+//    `scio-examples`,
     `scio-repl`,
     `scio-jmh`,
     `scio-macros`,
@@ -870,39 +870,39 @@ lazy val `scio-spanner`: Project = project
   )
   .configs(IntegrationTest)
 
-lazy val `scio-tensorflow`: Project = project
-  .in(file("scio-tensorflow"))
-  .settings(commonSettings)
-  .settings(itSettings)
-  .settings(protobufSettings)
-  .settings(
-    crossScalaVersions := Seq("2.12.10"),
-    description := "Scio add-on for TensorFlow",
-    Compile / sourceDirectories := (Compile / sourceDirectories).value
-      .filterNot(_.getPath.endsWith("/src_managed/main")),
-    Compile / managedSourceDirectories := (Compile / managedSourceDirectories).value
-      .filterNot(_.getPath.endsWith("/src_managed/main")),
-    libraryDependencies ++= Seq(
-      "org.apache.beam" % "beam-sdks-java-core" % beamVersion,
-      "org.tensorflow" % "tensorflow" % tensorFlowVersion,
-      "org.tensorflow" % "proto" % tensorFlowVersion,
-      "org.apache.commons" % "commons-compress" % commonsCompressVersion,
-      "com.spotify" %% "featran-core" % featranVersion,
-      "com.spotify" %% "featran-scio" % featranVersion,
-      "com.spotify" %% "featran-tensorflow" % featranVersion,
-      "com.spotify" % "zoltar-api" % zoltarVersion,
-      "com.spotify" % "zoltar-tensorflow" % zoltarVersion,
-      "org.slf4j" % "slf4j-api" % slf4jVersion,
-      "com.spotify" %% "magnolify-tensorflow" % magnolifyVersion % Test
-    ),
-    javaOptions += "-Dscio.ignoreVersionWarning=true"
-  )
-  .dependsOn(
-    `scio-avro`,
-    `scio-core`,
-    `scio-test` % "test->test"
-  )
-  .enablePlugins(ProtobufPlugin)
+//lazy val `scio-tensorflow`: Project = project
+//  .in(file("scio-tensorflow"))
+//  .settings(commonSettings)
+//  .settings(itSettings)
+//  .settings(protobufSettings)
+//  .settings(
+//    crossScalaVersions := Seq("2.12.10"),
+//    description := "Scio add-on for TensorFlow",
+//    Compile / sourceDirectories := (Compile / sourceDirectories).value
+//      .filterNot(_.getPath.endsWith("/src_managed/main")),
+//    Compile / managedSourceDirectories := (Compile / managedSourceDirectories).value
+//      .filterNot(_.getPath.endsWith("/src_managed/main")),
+//    libraryDependencies ++= Seq(
+//      "org.apache.beam" % "beam-sdks-java-core" % beamVersion,
+//      "org.tensorflow" % "tensorflow" % tensorFlowVersion,
+//      "org.tensorflow" % "proto" % tensorFlowVersion,
+//      "org.apache.commons" % "commons-compress" % commonsCompressVersion,
+//      "com.spotify" %% "featran-core" % featranVersion,
+//      "com.spotify" %% "featran-scio" % featranVersion,
+//      "com.spotify" %% "featran-tensorflow" % featranVersion,
+//      "com.spotify" % "zoltar-api" % zoltarVersion,
+//      "com.spotify" % "zoltar-tensorflow" % zoltarVersion,
+//      "org.slf4j" % "slf4j-api" % slf4jVersion,
+//      "com.spotify" %% "magnolify-tensorflow" % magnolifyVersion % Test
+//    ),
+//    javaOptions += "-Dscio.ignoreVersionWarning=true"
+//  )
+//  .dependsOn(
+//    `scio-avro`,
+//    `scio-core`,
+//    `scio-test` % "test->test"
+//  )
+//  .enablePlugins(ProtobufPlugin)
 
 lazy val `scio-schemas`: Project = project
   .in(file("scio-schemas"))
@@ -922,67 +922,68 @@ lazy val `scio-schemas`: Project = project
   )
   .enablePlugins(ProtobufPlugin)
 
-lazy val `scio-examples`: Project = project
-  .in(file("scio-examples"))
-  .settings(commonSettings)
-  .settings(noPublishSettings)
-  .settings(soccoSettings)
-  .settings(beamRunnerSettings)
-  .settings(macroSettings)
-  .settings(
-    libraryDependencies ++= Seq(
-      "org.apache.beam" % "beam-sdks-java-core" % beamVersion,
-      "org.apache.beam" % "beam-sdks-java-extensions-google-cloud-platform-core" % beamVersion,
-      "org.apache.avro" % "avro" % avroVersion,
-      "com.google.cloud.datastore" % "datastore-v1-proto-client" % datastoreV1ProtoClientVersion,
-      "com.google.api.grpc" % "proto-google-cloud-datastore-v1" % generatedGrpcBetaVersion,
-      "com.google.api.grpc" % "proto-google-cloud-bigtable-v2" % generatedGrpcBetaVersion,
-      "com.google.cloud.sql" % "mysql-socket-factory" % "1.0.15",
-      "com.google.apis" % "google-api-services-bigquery" % googleApiServicesBigQuery,
-      "org.tensorflow" % "proto" % tensorFlowVersion,
-      "com.spotify" %% "magnolify-avro" % magnolifyVersion,
-      "com.spotify" %% "magnolify-datastore" % magnolifyVersion,
-      "com.spotify" %% "magnolify-tensorflow" % magnolifyVersion,
-      "mysql" % "mysql-connector-java" % "8.0.19",
-      "joda-time" % "joda-time" % jodaTimeVersion,
-      "com.github.alexarchambault" %% "case-app" % caseappVersion,
-      "org.slf4j" % "slf4j-api" % slf4jVersion,
-      "org.slf4j" % "slf4j-simple" % slf4jVersion,
-      "org.scalacheck" %% "scalacheck" % scalacheckVersion % "test"
-    ),
-    beamSDKIODependencies,
-    // exclude problematic sources if we don't have GCP credentials
-    excludeFilter in unmanagedSources := {
-      if (BuildCredentials.exists) {
-        HiddenFileFilter
-      } else {
-        HiddenFileFilter || "TypedBigQueryTornadoes*.scala" || "TypedStorageBigQueryTornadoes*.scala"
-      }
-    },
-    sources in doc in Compile := List(),
-    run / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat,
-    Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat
-  )
-  .dependsOn(
-    `scio-core`,
-    `scio-bigquery`,
-    `scio-bigtable`,
-    `scio-schemas`,
-    `scio-jdbc`,
-    `scio-extra`,
-    `scio-elasticsearch7`,
-    `scio-spanner`,
-    `scio-tensorflow`,
-    `scio-sql`,
-    `scio-test` % "compile->test",
-    `scio-smb`
-  )
+//lazy val `scio-examples`: Project = project
+//  .in(file("scio-examples"))
+//  .settings(commonSettings)
+//  .settings(noPublishSettings)
+//  .settings(soccoSettings)
+//  .settings(beamRunnerSettings)
+//  .settings(macroSettings)
+//  .settings(
+//    libraryDependencies ++= Seq(
+//      "org.apache.beam" % "beam-sdks-java-core" % beamVersion,
+//      "org.apache.beam" % "beam-sdks-java-extensions-google-cloud-platform-core" % beamVersion,
+//      "org.apache.avro" % "avro" % avroVersion,
+//      "com.google.cloud.datastore" % "datastore-v1-proto-client" % datastoreV1ProtoClientVersion,
+//      "com.google.api.grpc" % "proto-google-cloud-datastore-v1" % generatedGrpcBetaVersion,
+//      "com.google.api.grpc" % "proto-google-cloud-bigtable-v2" % generatedGrpcBetaVersion,
+//      "com.google.cloud.sql" % "mysql-socket-factory" % "1.0.15",
+//      "com.google.apis" % "google-api-services-bigquery" % googleApiServicesBigQuery,
+//      "org.tensorflow" % "proto" % tensorFlowVersion,
+//      "com.spotify" %% "magnolify-avro" % magnolifyVersion,
+//      "com.spotify" %% "magnolify-datastore" % magnolifyVersion,
+//      "com.spotify" %% "magnolify-tensorflow" % magnolifyVersion,
+//      "mysql" % "mysql-connector-java" % "8.0.19",
+//      "joda-time" % "joda-time" % jodaTimeVersion,
+//      "com.github.alexarchambault" %% "case-app" % caseappVersion,
+//      "org.slf4j" % "slf4j-api" % slf4jVersion,
+//      "org.slf4j" % "slf4j-simple" % slf4jVersion,
+//      "org.scalacheck" %% "scalacheck" % scalacheckVersion % "test"
+//    ),
+//    beamSDKIODependencies,
+//    // exclude problematic sources if we don't have GCP credentials
+//    excludeFilter in unmanagedSources := {
+//      if (BuildCredentials.exists) {
+//        HiddenFileFilter
+//      } else {
+//        HiddenFileFilter || "TypedBigQueryTornadoes*.scala" || "TypedStorageBigQueryTornadoes*.scala"
+//      }
+//    },
+//    sources in doc in Compile := List(),
+//    run / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat,
+//    Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat
+//  )
+//  .dependsOn(
+//    `scio-core`,
+//    `scio-bigquery`,
+//    `scio-bigtable`,
+//    `scio-schemas`,
+//    `scio-jdbc`,
+//    `scio-extra`,
+//    `scio-elasticsearch7`,
+//    `scio-spanner`,
+//    `scio-tensorflow`,
+//    `scio-sql`,
+//    `scio-test` % "compile->test",
+//    `scio-smb`
+//  )
 
 lazy val `scio-repl`: Project = project
   .in(file("scio-repl"))
   .settings(commonSettings)
   .settings(macroSettings)
   .settings(
+    crossScalaVersions += "2.13.1",
     libraryDependencies ++= Seq(
       "org.apache.beam" % "beam-runners-direct-java" % beamVersion,
       "org.apache.beam" % "beam-runners-google-cloud-dataflow-java" % beamVersion,
@@ -995,9 +996,15 @@ lazy val `scio-repl`: Project = project
       "org.slf4j" % "slf4j-simple" % slf4jVersion,
       "jline" % "jline" % jlineVersion,
       "org.scala-lang" % "scala-compiler" % scalaVersion.value,
-      "com.nrinaudo" %% "kantan.csv" % kantanCsvVersion,
-      "org.scalamacros" % "paradise" % scalaMacrosVersion cross CrossVersion.full
+      "com.nrinaudo" %% "kantan.csv" % kantanCsvVersion
     ),
+    libraryDependencies ++= {
+      if (isScala213x.value) {
+        Seq()
+      } else {
+        Seq("org.scalamacros" % "paradise" % scalaMacrosVersion cross CrossVersion.full)
+      }
+    },
     assemblyJarName in assembly := s"scio-repl-${version.value}.jar"
   )
   .dependsOn(
@@ -1181,7 +1188,7 @@ lazy val siteSettings = Def.settings(
       `scio-extra`,
       `scio-jdbc`,
       `scio-parquet`,
-      `scio-tensorflow`,
+//      `scio-tensorflow`,
       `scio-spanner`,
       `scio-macros`,
       `scio-smb`
