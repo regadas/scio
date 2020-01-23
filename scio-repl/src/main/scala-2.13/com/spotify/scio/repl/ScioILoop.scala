@@ -17,10 +17,9 @@
 
 package com.spotify.scio.repl
 
-import java.io.{BufferedReader, PrintWriter => JPrintWriter}
-
 import com.spotify.scio.BuildInfo
 import com.spotify.scio.bigquery.BigQuerySysProps
+
 import org.apache.beam.sdk.extensions.gcp.options.GcpOptions.DefaultProjectFactory
 import org.apache.beam.sdk.options.PipelineOptionsFactory
 import org.apache.commons.text.StringEscapeUtils

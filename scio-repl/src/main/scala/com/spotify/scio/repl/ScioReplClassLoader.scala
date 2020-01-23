@@ -22,9 +22,9 @@ import java.net.{URL, URLClassLoader}
 import java.nio.file.Files
 import java.util.jar.{JarEntry, JarOutputStream}
 
+import com.spotify.scio.repl.compat.ILoopClassLoader
 import org.slf4j.LoggerFactory
 
-import scala.tools.nsc.interpreter.ILoop
 import scala.tools.nsc.io._
 
 object ScioReplClassLoader {
@@ -38,15 +38,12 @@ object ScioReplClassLoader {
  * @param parent parent for Scio CL - may be null to close the chain
  */
 class ScioReplClassLoader(urls: Array[URL], parent: ClassLoader)
-    extends URLClassLoader(urls, parent) {
+    extends URLClassLoader(urls, parent)
+    with ILoopClassLoader {
   import ScioReplClassLoader.Logger
 
   private val replJarName = "scio-repl-session.jar"
   private var nextReplJarDir: File = genNextReplCodeJarDir
-
-  private var scioREPL: ILoop = _
-
-  def setRepl(repl: ILoop): Unit = scioREPL = repl
 
   override def loadClass(name: String): Class[_] =
     // If contains $line - means that repl was loaded, so we can lookup
