@@ -17,35 +17,25 @@
 
 package com.spotify.scio.repl
 
-import java.io.BufferedReader
+import java.io.{BufferedReader, PrintWriter => JPrintWriter}
 
-import org.apache.beam.sdk.options.PipelineOptionsFactory
-import com.spotify.scio.bigquery.BigQuerySysProps
 import com.spotify.scio.BuildInfo
+import com.spotify.scio.bigquery.BigQuerySysProps
 import org.apache.beam.sdk.extensions.gcp.options.GcpOptions.DefaultProjectFactory
+import org.apache.beam.sdk.options.PipelineOptionsFactory
 import org.apache.commons.text.StringEscapeUtils
 
-import scala.tools.nsc.interpreter.shell.{ILoop, ShellConfig}
-import java.io.{PrintWriter => JPrintWriter}
-
-import scala.tools.nsc.Settings
+import scala.tools.nsc.{CompilerCommand, Settings}
 import scala.tools.nsc.interpreter.Results
+import scala.tools.nsc.interpreter.shell.{ILoop, ShellConfig}
 
 /**
  * ScioILoop - core of Scio REPL.
  * @param scioClassLoader [[ScioReplClassLoader]] used for runtime/in-memory classloading
  * @param args user arguments for Scio REPL
  */
-class ScioILoop(
-  config: ShellConfig,
-  scioClassLoader: ScioReplClassLoader,
-  args: List[String],
-  reader: BufferedReader,
-  out: JPrintWriter
-) extends ILoop(config, reader, out) {
-
-  def this(config: ShellConfig, scioCL: ScioReplClassLoader, args: List[String]) =
-    this(config, scioCL, args, null, new JPrintWriter(Console.out, true))
+class ScioILoop(command: CompilerCommand, scioClassLoader: ScioReplClassLoader, args: List[String])
+    extends ILoop(ShellConfig(command.settings)) {
 
   // Fail fast for illegal arguments
   try {

@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory
 
 import scala.collection.JavaConverters._
 import scala.reflect.ClassTag
+import scala.collection.compat._
 
 /** Commands for simple file I/O in the REPL. */
 class IoCommands(options: PipelineOptions) {
@@ -70,7 +71,7 @@ class IoCommands(options: PipelineOptions) {
     implicit val codec = scala.io.Codec.UTF8
     inputStream(path)
       .asUnsafeCsvReader(rfc.withCellSeparator(sep).withHeader(header))
-      .iterator
+      .toIterator
   }
 
   /** Read from a TSV file on local filesystem or GCS. */
