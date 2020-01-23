@@ -70,7 +70,7 @@ class IoCommands(options: PipelineOptions) {
     implicit val codec = scala.io.Codec.UTF8
     inputStream(path)
       .asUnsafeCsvReader(rfc.withCellSeparator(sep).withHeader(header))
-      .toIterator
+      .iterator
   }
 
   /** Read from a TSV file on local filesystem or GCS. */

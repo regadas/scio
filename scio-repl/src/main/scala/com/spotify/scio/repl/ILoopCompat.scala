@@ -25,5 +25,5 @@ import java.io.{PrintWriter => JPrintWriter}
 /** ILoop for ScioLoop. */
 class ILoopCompat(config: ShellConfig, in: BufferedReader, out: JPrintWriter)
     extends ILoop(config, in, out) {
-  def addThunk(f: => Unit): Unit = intp.initializeCompiler()
+//  def addThunk(f: => Unit): Unit = intp.initializeCompiler()
 }

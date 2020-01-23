@@ -22,6 +22,7 @@ import java.lang.invoke.{MethodHandles, MethodType}
 import com.spotify.scio.bigquery.BigQuerySysProps
 
 import scala.reflect.io.File
+import scala.tools.nsc.interpreter.shell.ShellConfig
 import scala.tools.nsc.util.ClassPath
 import scala.tools.nsc.{GenericRunnerCommand, MainGenericRunner}
 
@@ -115,7 +116,9 @@ trait BaseScioShell extends MainGenericRunner {
       BootClassLoader
     )
 
-    val repl = new ScioILoop(scioClassLoader, args.toList)
+    val config = ShellConfig(command.settings)
+
+    val repl = new ScioILoop(config, scioClassLoader, args.toList)
     scioClassLoader.setRepl(repl)
 
     // Set classloader chain - expose top level abstract class loader down
@@ -123,7 +126,7 @@ trait BaseScioShell extends MainGenericRunner {
     // See https://gist.github.com/harrah/404272
     command.settings.embeddedDefaults(scioClassLoader)
 
-    repl.process(command.settings)
+    repl.run(command.settings)
   }
 
   /** Runs an instance of the shell. */
