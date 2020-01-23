@@ -92,18 +92,6 @@ val googleCloudSpannerVersion = "1.6.0"
 val datastoreV1ProtoClientVersion = "1.6.0"
 val scalaCollectionCompatVersion = "2.1.3"
 
-def scalaVersionSpecificFolders(srcBaseDir: java.io.File, scalaVersion: String) =
-  CrossVersion.partialVersion(scalaVersion) match {
-    case Some((2, y)) if y <= 12 =>
-      new java.io.File(s"${srcBaseDir.getPath}-2.12-") :: Nil
-    case Some((2, y)) if y >= 13 =>
-      new java.io.File(s"${srcBaseDir.getPath}-2.13+") :: Nil
-    case _ => Nil
-  }
-
-def isScala212x = Def.setting {
-  scalaBinaryVersion.value == "2.12"
-}
 def isScala213x = Def.setting {
   scalaBinaryVersion.value == "2.13"
 }
@@ -155,18 +143,6 @@ val commonSettings = Sonatype.sonatypeSettings ++ assemblySettings ++ Seq(
   organization := "com.spotify",
   scalaVersion := "2.12.10",
   crossScalaVersions := Seq("2.12.10"),
-  Compile / unmanagedSourceDirectories ++= scalaVersionSpecificFolders(
-    (Compile / scalaSource).value,
-    scalaVersion.value
-  ),
-  Test / unmanagedSourceDirectories ++= scalaVersionSpecificFolders(
-    (Test / scalaSource).value,
-    scalaVersion.value
-  ),
-  Compile / unmanagedSourceDirectories ++= scalaVersionSpecificFolders(
-    (Compile / javaSource).value,
-    scalaVersion.value
-  ),
   scalacOptions ++= Scalac.commonsOptions.value,
   scalacOptions ++= {
     if (isScala213x.value) {
