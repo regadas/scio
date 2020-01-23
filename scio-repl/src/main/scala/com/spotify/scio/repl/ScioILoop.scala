@@ -45,7 +45,7 @@ class ScioILoop(
 ) extends ILoop(config, reader, out) {
   private var scioIsInitialized = false
 
-  welcome()
+  printWelcome()
 
   def this(config: ShellConfig, scioCL: ScioReplClassLoader, args: List[String]) =
     this(config, scioCL, args, null, new JPrintWriter(Console.out, true))
@@ -58,8 +58,6 @@ class ScioILoop(
       echo(e.getMessage)
       sys.exit(1)
   }
-
-  override def printWelcome(): Unit = {}
 
   override lazy val prompt: String =
     if (scioIsInitialized) {
