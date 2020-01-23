@@ -43,9 +43,6 @@ class ScioILoop(
   reader: BufferedReader,
   out: JPrintWriter
 ) extends ILoop(config, reader, out) {
-  private var scioIsInitialized = false
-
-  printWelcome()
 
   def this(config: ShellConfig, scioCL: ScioReplClassLoader, args: List[String]) =
     this(config, scioCL, args, null, new JPrintWriter(Console.out, true))
@@ -60,11 +57,7 @@ class ScioILoop(
   }
 
   override lazy val prompt: String =
-    if (scioIsInitialized) {
-      Console.GREEN + "\nscio> " + Console.RESET
-    } else {
-      ""
-    }
+    Console.GREEN + "\nscio> " + Console.RESET
 
   // Options for creating new Scio contexts
   private var scioOpts: Array[String] = args.toArray
@@ -190,6 +183,7 @@ class ScioILoop(
   }
 
   override def welcome(): String = {
+    val p = scala.util.Properties
     val ascii =
       """Welcome to
         |                 _____
@@ -197,19 +191,20 @@ class ScioILoop(
         |    __  ___/  ___/_  /_  __ \
         |    _(__  )/ /__ _  / / /_/ /
         |    /____/ \___/ /_/  \____/""".stripMargin + "   version " + BuildInfo.version + "\n"
-//    echo(ascii)
-//
-//    val p = scala.util.Properties
-//    echo(
-//      "Using Scala version %s (%s, Java %s)"
-//        .format(BuildInfo.scalaVersion, p.javaVmName, p.javaVersion)
-//    )
-//
-//    echo("""
-//        |Type in expressions to have them evaluated.
-//        |Type :help for more information.
-//      """.stripMargin)
-    ascii
+
+    val version = "Using Scala version %s (%s, Java %s)".format(
+      BuildInfo.scalaVersion,
+      p.javaVmName,
+      p.javaVersion
+    )
+
+    s"""
+      |$ascii
+      |$version
+      |
+      |Type in expressions to have them evaluated.
+      |Type :help for more information.
+      """.stripMargin
   }
 
   private def addImports(): Results.Result =
@@ -260,7 +255,6 @@ class ScioILoop(
       newScioCmdImpl("sc")
       loadIoCommands()
     }
-    scioIsInitialized = true
     out.print(prompt)
     out.flush()
   }
