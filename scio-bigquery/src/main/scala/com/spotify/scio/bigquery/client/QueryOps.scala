@@ -19,11 +19,7 @@ package com.spotify.scio.bigquery.client
 
 import com.google.api.client.googleapis.json.GoogleJsonResponseException
 import com.google.api.services.bigquery.model._
-<<<<<<< HEAD
 import com.spotify.scio.bigquery.{Table => STable}
-=======
-import com.spotify.scio.bigquery
->>>>>>> Remove patched bigquery rows iterator
 import com.spotify.scio.bigquery.client.BigQuery.Client
 import com.spotify.scio.bigquery.{BigQueryUtil, TableRow}
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO.TypedRead.QueryPriority
