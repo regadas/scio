@@ -186,11 +186,11 @@ private[types] object ConverterProvider {
 
         case t if t =:= typeOf[Instant] => q"$tree.getMillis * 1000"
         case t if t =:= typeOf[LocalDate] =>
-          q"_root_.com.spotify.scio.bigquery.Date($tree)"
+          q"_root_.org.joda.time.Days.daysBetween(new _root_.org.joda.time.LocalDate(1970, 1, 1), $tree).getDays"
         case t if t =:= typeOf[LocalTime] =>
-          q"_root_.com.spotify.scio.bigquery.Time($tree)"
+          q"$tree.millisOfDay().get().toLong * 1000"
         case t if t =:= typeOf[LocalDateTime] =>
-          q"_root_.com.spotify.scio.bigquery.DateTime($tree)"
+          q"""throw new NotImplementedError("BigQuery does not support datetime avro import")"""
 
         case t if t =:= typeOf[Geography] =>
           // different than nested record match below, even though this is a case class

@@ -24,7 +24,7 @@ import bloop.integrations.sbt.BloopDefaults
 
 ThisBuild / turbo := true
 
-val beamVersion = "2.19.0"
+val beamVersion = "2.21.0-SNAPSHOT"
 
 val algebirdVersion = "0.13.6"
 val annoy4sVersion = "0.9.0"
@@ -164,6 +164,7 @@ val commonSettings = Sonatype.sonatypeSettings ++ assemblySettings ++ Seq(
   javacOptions in (Compile, doc) := Seq("-source", "1.8"),
   // protobuf-lite is an older subset of protobuf-java and causes issues
   excludeDependencies += "com.google.protobuf" % "protobuf-lite",
+  resolvers += Resolver.mavenLocal,
   resolvers += Resolver.sonatypeRepo("public"),
   testOptions in Test += Tests.Argument("-oD"),
   testOptions += Tests.Argument(TestFrameworks.JUnit, "-q", "-v"),

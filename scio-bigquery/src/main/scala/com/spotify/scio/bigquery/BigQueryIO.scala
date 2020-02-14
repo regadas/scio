@@ -20,8 +20,8 @@ package com.spotify.scio.bigquery
 import java.util.concurrent.ConcurrentHashMap
 import java.util.function
 
-import com.google.cloud.bigquery.storage.v1beta1.ReadOptions.TableReadOptions
 import com.google.api.services.bigquery.model.{TableReference, TableSchema}
+import com.google.cloud.bigquery.storage.v1beta1.ReadOptions.TableReadOptions
 import com.spotify.scio.ScioContext
 import com.spotify.scio.bigquery.ExtendedErrorInfo._
 import com.spotify.scio.bigquery.client.BigQuery
@@ -31,12 +31,19 @@ import com.spotify.scio.io.{ScioIO, Tap, TapOf, TestIO}
 import com.spotify.scio.schemas.{Schema, SchemaMaterializer}
 import com.spotify.scio.util.ScioUtil
 import com.spotify.scio.values.SCollection
+import com.twitter.chill.ClosureCleaner
+import org.apache.avro.generic.GenericRecord
 import org.apache.beam.sdk.extensions.gcp.options.GcpOptions
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO.TypedRead.Method
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO.Write.{CreateDisposition, WriteDisposition}
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryUtils.ConversionOptions
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryUtils.ConversionOptions.TruncateTimestamps
-import org.apache.beam.sdk.io.gcp.bigquery.{AvroWriteRequest, BigQueryUtils, SchemaAndRecord}
+import org.apache.beam.sdk.io.gcp.bigquery.{
+  AvroWriteRequest,
+  BigQueryAvroUtilsWrapper,
+  BigQueryUtils,
+  SchemaAndRecord
+}
 import org.apache.beam.sdk.io.gcp.{bigquery => beam}
 import org.apache.beam.sdk.io.{Compression, TextIO}
 import org.apache.beam.sdk.transforms.SerializableFunction
@@ -44,8 +51,6 @@ import org.apache.beam.sdk.transforms.SerializableFunction
 import scala.collection.JavaConverters._
 import scala.reflect.ClassTag
 import scala.reflect.runtime.universe._
-import com.twitter.chill.ClosureCleaner
-import org.apache.avro.generic.GenericRecord
 
 private object Reads {
   private[this] val cache = new ConcurrentHashMap[ScioContext, BigQuery]()
@@ -163,7 +168,7 @@ object Format {
       BigQueryTypedTable(
         _.getRecord(),
         identity[GenericRecord],
-        (gr: GenericRecord, ts: TableSchema) => gr,
+        (gr: GenericRecord, _: TableSchema) => gr,
         table
       )
   }
@@ -248,6 +253,11 @@ object BigQueryTypedTable {
       .withAvroFormatFunction(new SerializableFunction[AvroWriteRequest[T], GenericRecord] {
         override def apply(input: AvroWriteRequest[T]): GenericRecord = wFn(input.getElement)
       })
+      .withAvroSchemaFactory(new SerializableFunction[TableSchema, org.apache.avro.Schema] {
+        override def apply(input: TableSchema): org.apache.avro.Schema =
+          BigQueryAvroUtilsWrapper.toGenericAvroSchema("root", input.getFields)
+      })
+      .useAvroLogicalTypes()
 
     BigQueryTypedTable(reader, writer, table, tableRowFn)
   }
@@ -618,11 +628,12 @@ object BigQueryTyped {
       extends BigQueryIO[T] {
     private[this] val underlying = {
       val readerFn = BigQueryType[T].fromAvro
-      val toAvroFn = BigQueryType[T].toAvro
+      val toTableRow = BigQueryType[T].toTableRow
+      val fromTableRow = BigQueryType[T].fromTableRow
       BigQueryTypedTable[T](
         (i: SchemaAndRecord) => readerFn(i.getRecord),
-        toAvroFn,
-        (gr: GenericRecord, _: TableSchema) => readerFn(gr),
+        toTableRow,
+        fromTableRow,
         table
       )
     }

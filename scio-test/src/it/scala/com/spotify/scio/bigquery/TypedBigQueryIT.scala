@@ -19,10 +19,8 @@ package com.spotify.scio.bigquery
 
 import com.google.protobuf.ByteString
 import com.spotify.scio._
-import com.spotify.scio.bigquery.client.BigQuery
 import com.spotify.scio.testing._
 import magnolify.scalacheck.auto._
-import org.apache.beam.sdk.io.gcp.bigquery.BigQueryHelpers
 import org.apache.beam.sdk.options.PipelineOptionsFactory
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.{Instant, LocalDate, LocalDateTime, LocalTime}
@@ -84,8 +82,8 @@ class TypedBigQueryIT extends PipelineSpec with BeforeAndAfterAll {
     ()
   }
 
-  override protected def afterAll(): Unit =
-    BigQuery.defaultInstance().tables.delete(BigQueryHelpers.parseTableSpec(table))
+//  override protected def afterAll(): Unit =
+//    BigQuery.defaultInstance().tables.delete(BigQueryHelpers.parseTableSpec(table))
 
   "TypedBigQuery" should "read records" in {
     val sc = ScioContext(options)
