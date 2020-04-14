@@ -155,10 +155,11 @@ abstract private class SeqLikeCoder[M[_], T](bc: BCoder[T])(
 ) extends BaseSeqLikeCoder[M, T](bc) {
   protected val lc = VarIntCoder.of()
   override def encode(value: M[T], outStream: OutputStream): Unit = {
-    val traversable = toSeq(value)
+    val traversable = toSeq(value).toList
     lc.encode(traversable.size, outStream)
     traversable.foreach(bc.encode(_, outStream))
   }
+
   def decode(inStream: InputStream, builder: m.Builder[T, M[T]]): M[T] = {
     val size = lc.decode(inStream)
     builder.sizeHint(size)
