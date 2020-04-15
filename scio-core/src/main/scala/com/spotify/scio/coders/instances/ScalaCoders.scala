@@ -26,6 +26,7 @@ import org.apache.beam.sdk.coders.Coder.NonDeterministicException
 import org.apache.beam.sdk.coders.{Coder => BCoder, _}
 import org.apache.beam.sdk.util.CoderUtils
 import org.apache.beam.sdk.util.common.ElementByteSizeObserver
+import org.apache.beam.sdk.util.VarInt
 
 import scala.collection.JavaConverters._
 import scala.reflect.ClassTag
@@ -216,9 +217,15 @@ private class VectorCoder[T](bc: BCoder[T]) extends SeqLikeCoder[Vector, T](bc) 
 
 private class ArrayCoder[@specialized(Short, Int, Long, Float, Double, Boolean, Char) T: ClassTag](
   bc: BCoder[T]
-) extends SeqLikeCoder[Array, T](bc) {
+) extends AtomicCoder[Array[T]] {
+
+  override def encode(value: Array[T], outStream: OutputStream): Unit = {
+    VarInt.encode(value.size, outStream)
+    value.foreach(bc.encode(_, outStream))
+  }
+
   override def decode(inStream: InputStream): Array[T] = {
-    val size = lc.decode(inStream)
+    val size = VarInt.decodeInt(inStream)
     val arr = new Array[T](size)
     var i = 0
     while (i < size) {
@@ -227,7 +234,18 @@ private class ArrayCoder[@specialized(Short, Int, Long, Float, Double, Boolean, 
     }
     arr
   }
+
+  override def getCoderArguments: java.util.List[_ <: BCoder[_]] =
+    Collections.singletonList(bc)
+
   override def consistentWithEquals(): Boolean = false
+
+  override def structuralValue(value: Array[T]): AnyRef = {
+    val b = Seq.newBuilder[AnyRef]
+    b.sizeHint(value.size)
+    value.foreach(v => b += bc.structuralValue(v))
+    b.result()
+  }
 }
 
 private class ArrayBufferCoder[T](bc: BCoder[T]) extends SeqLikeCoder[m.ArrayBuffer, T](bc) {
