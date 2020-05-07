@@ -1215,6 +1215,52 @@ sealed trait SCollection[T] extends PCollectionWrapper[T] {
   @deprecated("Use readAllAsBytes instead", "0.8.1")
   def readAllBytes(implicit ev: T <:< String): SCollection[Array[Byte]] = readFilesAsBytes
 
+  /**
+   * Returns an [[SCollection]] consisting of pairs of each element with a [[List]] of the
+   * provided [[SCollection]] associated with the element's window.
+   *
+   * [[List]] is required to fit in memory.
+   */
+  def reifyAsList[U](
+    coll: SCollection[U]
+  )(implicit tc: Coder[T], uc: Coder[U]): SCollection[(T, List[U])] =
+    reify(coll.applyInternal(com.spotify.scio.values.View.asScalaList))
+
+  /**
+   * Returns an [[SCollection]] consisting of pairs of each element with an [[Iterable]] of the
+   * provided [[SCollection]] associated with the element's window.
+   *
+   * [[Iterable]] is not required to fit in memory.
+   */
+  def reifyAsIterable[U](
+    coll: SCollection[U]
+  )(implicit tc: Coder[T], uc: Coder[U]): SCollection[(T, Iterable[U])] =
+    reify(coll.applyInternal(com.spotify.scio.values.View.asScalaIterable))
+
+  /**
+   * Returns an [[SCollection]] consisting of pairs of each element with a [[Map]] of the
+   * provided [[SCollection]] associated with the element's window.
+   */
+  def reifyAsMap[A, B](
+    coll: SCollection[(A, B)]
+  )(implicit tc: Coder[T], ac: Coder[A], bc: Coder[B]): SCollection[(T, Map[A, B])] =
+    reify(coll.applyInternal(com.spotify.scio.values.View.asScalaMap))
+
+  def reifyAsMultimap[A, B](
+    coll: SCollection[(A, B)]
+  )(implicit tc: Coder[T], ac: Coder[A], bc: Coder[B]): SCollection[(T, Map[A, Iterable[B]])] =
+    reify(coll.applyInternal(com.spotify.scio.values.View.asScalaMultimap))
+
+  /**
+   * Pairs each element with the value of the provided [[PCollectionView]] in the element's window.
+   */
+  def reify[U](
+    view: PCollectionView[U]
+  )(implicit kv: Coder[KV[T, U]], tc: Coder[T], uc: Coder[U]): SCollection[(T, U)] = {
+    val reify = Reify.viewAsValues[T, U](view, CoderMaterializer.beam(self.context, uc))
+    self.transform(_.applyTransform(reify).map(kv => (kv.getKey(), kv.getValue())))
+  }
+
   // =======================================================================
   // Write operations
   // =======================================================================

@@ -39,6 +39,7 @@ import org.joda.time.{DateTimeConstants, Duration, Instant}
 
 import scala.collection.JavaConverters._
 import com.spotify.scio.coders.Coder
+import org.apache.beam.sdk.transforms.View
 
 class SCollectionTest extends PipelineSpec {
   "SCollection" should "support applyTransform()" in {
@@ -682,6 +683,14 @@ class SCollectionTest extends PipelineSpec {
     runWithContext { sc =>
       val count = sc.parallelize(List[String]()).count
       count should containSingleValue(0L)
+    }
+  }
+
+  it should "reify as list" in {
+    runWithContext { sc =>
+      val other = sc.parallelize(Seq(1))
+      val coll = sc.parallelize(Seq(1, 2)).reifyAsList(other)
+      coll should containInAnyOrder(Seq((1, List(1)), (2, List(1))))
     }
   }
 }
