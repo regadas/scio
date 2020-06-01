@@ -161,15 +161,7 @@ val commonSettings = Sonatype.sonatypeSettings ++ assemblySettings ++ Seq(
   scalaVersion := "2.13.2",
   crossScalaVersions := Seq("2.12.11", scalaVersion.value),
   scalacOptions ++= Scalac.commonsOptions.value,
-  scalacOptions ++= {
-    if (isScala213x.value) {
-      Seq("-Ymacro-annotations", "-Ywarn-unused")
-    } else {
-      Seq()
-    }
-  },
-  Compile / doc / scalacOptions --= Seq("-release", "8"),
-  scalacOptions in (Compile, doc) ++= Scalac.compileDocOptions.value,
+  Compile / doc / scalacOptions := Scalac.compileDocOptions.value,
   javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint:unchecked"),
   javacOptions in (Compile, doc) := Seq("-source", "1.8"),
   // protobuf-lite is an older subset of protobuf-java and causes issues
@@ -1075,7 +1067,7 @@ lazy val `scio-repl`: Project = project
   .settings(commonSettings)
   .settings(macroSettings)
   .settings(
-    scalacOptions --= Seq("-release", "8"),
+    scalacOptions := Scalac.replOptions.value,
     libraryDependencies ++= Seq(
       "org.scala-lang.modules" %% "scala-collection-compat" % scalaCollectionCompatVersion,
       "org.apache.beam" % "beam-runners-direct-java" % beamVersion,
