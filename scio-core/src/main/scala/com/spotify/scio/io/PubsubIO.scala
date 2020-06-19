@@ -35,6 +35,9 @@ import scala.jdk.CollectionConverters._
 import scala.reflect.{classTag, ClassTag}
 import com.spotify.scio.io.PubsubIO.Subscription
 import com.spotify.scio.io.PubsubIO.Topic
+import org.apache.beam.sdk.options.ValueProvider
+import org.apache.beam.sdk.options.ValueProvider.StaticValueProvider
+import org.apache.beam.vendor.calcite.v1_20_0.org.apache.calcite.util.Static
 
 sealed trait PubsubIO[T] extends ScioIO[T] {
   override type ReadP = PubsubIO.ReadParam
@@ -78,6 +81,19 @@ object PubsubIO {
     name: String,
     idAttribute: String = null,
     timestampAttribute: String = null
+  ): PubsubIO[T] = PubsubIO(StaticValueProvider.of(name), idAttribute, timestampAttribute)
+
+  // The following method is unsafe and exists to preserve compatibility with
+  // the previous implementation while the underlying `PubsubIO` implementations
+  // have been refactored and are more type safe.
+  @deprecated(
+    "Use readString, readAvro, readProto, readPubsub or readCoder instead.",
+    since = "0.8.0"
+  )
+  def apply[T: ClassTag: Coder](
+    name: ValueProvider[String],
+    idAttribute: String,
+    timestampAttribute: String
   ): PubsubIO[T] = ScioUtil.classOf[T] match {
     case cls if classOf[String] isAssignableFrom cls =>
       StringPubsubIOWithoutAttributes(name, idAttribute, timestampAttribute)
@@ -105,10 +121,24 @@ object PubsubIO {
     idAttribute: String = null,
     timestampAttribute: String = null
   ): PubsubIO[String] =
+    readStringProvider(StaticValueProvider.of(name), idAttribute, timestampAttribute)
+
+  def readStringProvider(
+    name: ValueProvider[String],
+    idAttribute: String = null,
+    timestampAttribute: String = null
+  ): PubsubIO[String] =
     StringPubsubIOWithoutAttributes(name, idAttribute, timestampAttribute)
 
   def readAvro[T <: SpecificRecordBase: ClassTag](
     name: String,
+    idAttribute: String = null,
+    timestampAttribute: String = null
+  ): PubsubIO[T] =
+    readAvroProvider[T](StaticValueProvider.of(name), idAttribute, timestampAttribute)
+
+  def readAvroProvider[T <: SpecificRecordBase: ClassTag](
+    name: ValueProvider[String],
     idAttribute: String = null,
     timestampAttribute: String = null
   ): PubsubIO[T] =
@@ -119,10 +149,24 @@ object PubsubIO {
     idAttribute: String = null,
     timestampAttribute: String = null
   ): PubsubIO[T] =
+    readProtoProvider[T](StaticValueProvider.of(name), idAttribute, timestampAttribute)
+
+  def readProtoProvider[T <: Message: ClassTag](
+    name: ValueProvider[String],
+    idAttribute: String = null,
+    timestampAttribute: String = null
+  ): PubsubIO[T] =
     MessagePubsubIOWithoutAttributes[T](name, idAttribute, timestampAttribute)
 
   def readPubsub[T <: beam.PubsubMessage: ClassTag](
-    name: String,
+    name: ValueProvider[String],
+    idAttribute: String = null,
+    timestampAttribute: String = null
+  ): PubsubIO[T] =
+    readPubsubProvider[T](name, idAttribute, timestampAttribute)
+
+  def readPubsubProvider[T <: beam.PubsubMessage: ClassTag](
+    name: ValueProvider[String],
     idAttribute: String = null,
     timestampAttribute: String = null
   ): PubsubIO[T] =
@@ -133,10 +177,24 @@ object PubsubIO {
     idAttribute: String = null,
     timestampAttribute: String = null
   ): PubsubIO[T] =
+    readCoderProvider[T](StaticValueProvider.of(name), idAttribute, timestampAttribute)
+
+  def readCoderProvider[T: Coder: ClassTag](
+    name: ValueProvider[String],
+    idAttribute: String = null,
+    timestampAttribute: String = null
+  ): PubsubIO[T] =
     FallbackPubsubIOWithoutAttributes[T](name, idAttribute, timestampAttribute)
 
   def withAttributes[T: ClassTag: Coder](
     name: String,
+    idAttribute: String = null,
+    timestampAttribute: String = null
+  ): PubsubIO[(T, Map[String, String])] =
+    withAttributesProvider[T](StaticValueProvider.of(name), idAttribute, timestampAttribute)
+
+  def withAttributesProvider[T: ClassTag: Coder](
+    name: ValueProvider[String],
     idAttribute: String = null,
     timestampAttribute: String = null
   ): PubsubIO[(T, Map[String, String])] =
@@ -168,7 +226,7 @@ object PubsubIO {
 }
 
 sealed private trait PubsubIOWithoutAttributes[T] extends PubsubIO[T] {
-  def name: String
+  def name: ValueProvider[String]
   def idAttribute: String
   def timestampAttribute: String
 
@@ -197,7 +255,7 @@ sealed private trait PubsubIOWithoutAttributes[T] extends PubsubIO[T] {
 }
 
 final private case class StringPubsubIOWithoutAttributes(
-  name: String,
+  name: ValueProvider[String],
   idAttribute: String,
   timestampAttribute: String
 ) extends PubsubIOWithoutAttributes[String] {
@@ -214,7 +272,7 @@ final private case class StringPubsubIOWithoutAttributes(
 }
 
 final private case class AvroPubsubIOWithoutAttributes[T <: SpecificRecordBase: ClassTag](
-  name: String,
+  name: ValueProvider[String],
   idAttribute: String,
   timestampAttribute: String
 ) extends PubsubIOWithoutAttributes[T] {
@@ -233,7 +291,7 @@ final private case class AvroPubsubIOWithoutAttributes[T <: SpecificRecordBase: 
 }
 
 final private case class MessagePubsubIOWithoutAttributes[T <: Message: ClassTag](
-  name: String,
+  name: ValueProvider[String],
   idAttribute: String,
   timestampAttribute: String
 ) extends PubsubIOWithoutAttributes[T] {
@@ -252,7 +310,7 @@ final private case class MessagePubsubIOWithoutAttributes[T <: Message: ClassTag
 }
 
 final private case class PubSubMessagePubsubIOWithoutAttributes[T <: beam.PubsubMessage](
-  name: String,
+  name: ValueProvider[String],
   idAttribute: String,
   timestampAttribute: String
 ) extends PubsubIOWithoutAttributes[T] {
@@ -269,7 +327,7 @@ final private case class PubSubMessagePubsubIOWithoutAttributes[T <: beam.Pubsub
 }
 
 final private case class FallbackPubsubIOWithoutAttributes[T: Coder](
-  name: String,
+  name: ValueProvider[String],
   idAttribute: String,
   timestampAttribute: String
 ) extends PubsubIOWithoutAttributes[T] {
@@ -300,7 +358,7 @@ final private case class FallbackPubsubIOWithoutAttributes[T: Coder](
 }
 
 final private case class PubsubIOWithAttributes[T: ClassTag: Coder](
-  name: String,
+  name: ValueProvider[String],
   idAttribute: String,
   timestampAttribute: String
 ) extends PubsubIO[(T, Map[String, String])] {
