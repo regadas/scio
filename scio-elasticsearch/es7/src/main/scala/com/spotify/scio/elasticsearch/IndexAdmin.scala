@@ -17,7 +17,6 @@
 
 package com.spotify.scio.elasticsearch
 
-import org.apache.http.HttpHost
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequest
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequest.AliasActions
 import org.elasticsearch.action.admin.indices.alias.get.GetAliasesRequest
@@ -29,7 +28,7 @@ import org.elasticsearch.common.unit.TimeValue
 import org.elasticsearch.common.xcontent.XContentType
 import org.slf4j.LoggerFactory
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import scala.util.Try
 
 object IndexAdmin {
@@ -85,7 +84,7 @@ object IndexAdmin {
     index: String,
     timeout: TimeValue
   ): Try[AcknowledgedResponse] =
-    indicesClient(esOptions)(client => removeIndex(esOptions, index, client, timeout))
+    indicesClient(esOptions)(client => removeIndex(client, index, timeout))
 
   /**
    * Delete index
@@ -94,16 +93,11 @@ object IndexAdmin {
    * @return Failure or unacknowledged response if operation did not succeed
    */
   private def removeIndex(
-    esOptions: ElasticsearchOptions,
-    index: String,
     client: IndicesClient,
+    index: String,
     timeout: TimeValue
-  ): AcknowledgedResponse = {
-    val request = new DeleteIndexRequest(index)
-      .timeout(timeout)
-
-    client.delete(request, RequestOptions.DEFAULT)
-  }
+  ): AcknowledgedResponse =
+    client.delete(new DeleteIndexRequest(index).timeout(timeout), RequestOptions.DEFAULT)
 
   /**
    * Add index alias with an option to remove the alias from all other indexes if it is already
@@ -122,50 +116,71 @@ object IndexAdmin {
     removePrevious: Boolean,
     timeout: TimeValue
   ): Try[AcknowledgedResponse] =
-    indicesClient(esOptions)(client =>
-      createOrUpdateAlias(esOptions, alias, indexName, removePrevious, client, timeout)
-    )
+    createOrUpdateAlias(esOptions, List((indexName, true)), alias, removePrevious, timeout)
 
   /**
-   * Add index alias and remove the alias from all other indexes if it is already pointed to any.
+   * Add or update index alias with an option to remove the alias from all other indexes if it is already
+   * pointed to any.
    * If index already exists or some other error occurs this results in a [[scala.util.Failure]].
    *
    * @param alias            to be re-assigned
    * @param indexName        index to point the alias to
    * @param removePrevious   When set to true, the indexAlias would be removed from all indices it
+   *                         was assigned to before adding new index alias assignment.
+   */
+  def createOrUpdateAlias(
+    esOptions: ElasticsearchOptions,
+    indices: Iterable[(String, Boolean)],
+    alias: String,
+    removePrevious: Boolean,
+    timeout: TimeValue
+  ): Try[AcknowledgedResponse] =
+    indicesClient(esOptions) { client =>
+      createOrUpdateAlias(client, indices, alias, removePrevious, timeout)
+    }
+
+  /**
+   * Add or update index alias with an option to remove the alias from all other indexes if it is already
+   * pointed to any.
+   *
+   * @param alias            to be re-assigned
+   * @param indices          Iterable of indicies to point the alias to
+   * @param removePrevious   When set to true, the indexAlias would be removed from all indices it
    *                         was assigned to before adding new index alias assignment
    */
   private def createOrUpdateAlias(
-    esOptions: ElasticsearchOptions,
-    alias: String,
-    indexName: String,
-    removePrevious: Boolean,
     client: IndicesClient,
+    indices: Iterable[(String, Boolean)],
+    alias: String,
+    removePrevious: Boolean,
     timeout: TimeValue
   ): AcknowledgedResponse = {
+    require(
+      indices.find(_._2).size == 1,
+      "Only one index per alias can be assigned to be the write index at a time"
+    )
 
-    val getAliasesResponse =
-      client.getAlias(new GetAliasesRequest(alias), RequestOptions.DEFAULT)
-
-    val request = new IndicesAliasesRequest()
-      .addAliasAction(
-        new AliasActions(AliasActions.Type.ADD)
-          .index(indexName)
-          .alias(alias)
-      )
-
-    if (removePrevious) {
-      val indexAliacesToRemove = getAliasesResponse.getAliases.asScala.map(_._1)
-      Logger.info(s"Removing alias $alias from ${indexAliacesToRemove.mkString(", ")}")
-
-      indexAliacesToRemove.foreach(indexName =>
+    val request = indices.foldLeft(new IndicesAliasesRequest()) {
+      case (request, (idx, isWriteIndex)) =>
         request.addAliasAction(
-          new AliasActions(AliasActions.Type.REMOVE)
-            .index(indexName)
+          new AliasActions(AliasActions.Type.ADD)
+            .index(idx)
+            .writeIndex(isWriteIndex)
             .alias(alias)
         )
-      )
     }
-    client.updateAliases(request, RequestOptions.DEFAULT);
+
+    if (removePrevious) {
+      val getAliasesResponse = client.getAlias(new GetAliasesRequest(alias), RequestOptions.DEFAULT)
+      val indexAliacesToRemove = getAliasesResponse.getAliases.asScala.keys
+      Logger.info(s"Removing alias $alias from ${indexAliacesToRemove.mkString(", ")}")
+
+      indexAliacesToRemove.foreach { indexName =>
+        request.addAliasAction(
+          new AliasActions(AliasActions.Type.REMOVE).index(indexName).alias(alias)
+        )
+      }
+    }
+    client.updateAliases(request.timeout(timeout), RequestOptions.DEFAULT);
   }
 }
