@@ -52,22 +52,6 @@ object IndexAdmin {
    * @param mappingSource a valid json string
    */
   def ensureIndex(
-    nodes: Iterable[HttpHost],
-    index: String,
-    mappingSource: String
-  ): Try[CreateIndexResponse] = {
-    val esOptions = ElasticsearchOptions(nodes.toSeq)
-    ensureIndex(esOptions, index, mappingSource)
-  }
-
-  /**
-   * Ensure that index is created.
-   * If index already exists or some other error occurs this results in a [[scala.util.Failure]].
-   *
-   * @param index index to be created
-   * @param mappingSource a valid json string
-   */
-  def ensureIndex(
     esOptions: ElasticsearchOptions,
     index: String,
     mappingSource: String
@@ -89,21 +73,6 @@ object IndexAdmin {
       new CreateIndexRequest(index).source(mappingSource, XContentType.JSON),
       RequestOptions.DEFAULT
     )
-
-  /**
-   * Delete index
-   * @param index to be deleted
-   * @param timeout defaults to 1 minute
-   * @return Failure or unacknowledged response if operation did not succeed
-   */
-  def removeIndex(
-    nodes: Iterable[HttpHost],
-    index: String,
-    timeout: TimeValue = TimeValue.timeValueMinutes(1)
-  ): Try[AcknowledgedResponse] = {
-    val esOptions = ElasticsearchOptions(nodes.toSeq)
-    removeIndex(esOptions, index, timeout)
-  }
 
   /**
    * Delete index
@@ -137,25 +106,6 @@ object IndexAdmin {
   }
 
   /**
-   * Add index alias and remove the alias from all other indexes if it is already pointed to any.
-   * If index already exists or some other error occurs this results in a [[scala.util.Failure]].
-   *
-   * @param alias        to be re-assigned
-   * @param indexName index to point the alias to
-   * @param timeout defaults to 1 minute
-   */
-  def createOrUpdateAlias(
-    nodes: Iterable[HttpHost],
-    alias: String,
-    indexName: String,
-    removePrevious: Boolean,
-    timeout: TimeValue = TimeValue.timeValueMinutes(1)
-  ): Try[AcknowledgedResponse] = {
-    val esOptions = ElasticsearchOptions(nodes.toSeq)
-    createOrUpdateAlias(esOptions, alias, indexName, removePrevious, timeout)
-  }
-
-  /**
    * Add index alias with an option to remove the alias from all other indexes if it is already
    * pointed to any.
    * If index already exists or some other error occurs this results in a [[scala.util.Failure]].
@@ -184,7 +134,6 @@ object IndexAdmin {
    * @param indexName        index to point the alias to
    * @param removePrevious   When set to true, the indexAlias would be removed from all indices it
    *                         was assigned to before adding new index alias assignment
-   *
    */
   private def createOrUpdateAlias(
     esOptions: ElasticsearchOptions,
