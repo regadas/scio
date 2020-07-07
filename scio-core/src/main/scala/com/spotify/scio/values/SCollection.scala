@@ -56,6 +56,31 @@ import com.twitter.chill.ClosureCleaner
 object SCollection {
   private[values] val logger = LoggerFactory.getLogger(this.getClass)
 
+  sealed trait STransform[A, B] {
+    def transform(name: String, coll: SCollection[A])(f: SCollection[A] => B): B
+  }
+
+  object STransform {
+    implicit def sCollection[A, B]: STransform[A, SCollection[B]] =
+      new STransform[A, SCollection[B]] {
+        override def transform(
+          name: String,
+          coll: SCollection[A]
+        )(f: SCollection[A] => SCollection[B]): SCollection[B] =
+          coll.context.wrap(pOutput.transform(name, coll)(c => f(c).internal))
+      }
+
+    implicit private[scio] def pOutput[A, B <: POutput]: STransform[A, B] = new STransform[A, B] {
+      override def transform(name: String, coll: SCollection[A])(f: SCollection[A] => B): B =
+        coll.applyInternal(
+          name,
+          new PTransform[PCollection[A], B] {
+            override def expand(input: PCollection[A]): B = f(coll.context.wrap(input))
+          }
+        )
+    }
+  }
+
   /**
    * Create a union of multiple [[SCollection]] instances.
    * Will throw an exception if the provided iterable is empty.
@@ -185,18 +210,13 @@ sealed trait SCollection[T] extends PCollectionWrapper[T] {
   }
 
   /** Apply a transform. */
-  def transform[U](f: SCollection[T] => SCollection[U]): SCollection[U] = transform(this.tfName)(f)
+  def transform[U](f: SCollection[T] => U)(implicit ev: SCollection.STransform[T, U]): U =
+    transform(this.tfName)(f)
 
-  def transform[U](name: String)(f: SCollection[T] => SCollection[U]): SCollection[U] =
-    context.wrap {
-      internal.apply(
-        name,
-        new PTransform[PCollection[T], PCollection[U]]() {
-          override def expand(input: PCollection[T]): PCollection[U] =
-            f(context.wrap(input)).internal
-        }
-      )
-    }
+  def transform[U](
+    name: String
+  )(f: SCollection[T] => U)(implicit ev: SCollection.STransform[T, U]): U =
+    ev.transform(name, this)(f)
 
   /**
    * Go from an SCollection of type [[T]] to an SCollection of [[U]]

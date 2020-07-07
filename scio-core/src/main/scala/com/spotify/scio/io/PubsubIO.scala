@@ -289,12 +289,14 @@ final private case class FallbackPubsubIOWithoutAttributes[T: Coder](
   override protected def write(data: SCollection[T], params: WriteP): Tap[Nothing] = {
     val coder = CoderMaterializer.beam(data.context, Coder[T])
     val t = setup(beam.PubsubIO.writeMessages(), params)
-    data
-      .map { record =>
-        val payload = CoderUtils.encodeToByteArray(coder, record)
-        new beam.PubsubMessage(payload, Map.empty[String, String].asJava)
-      }
-      .applyInternal(t)
+    data.transform { coll =>
+      coll
+        .map { record =>
+          val payload = CoderUtils.encodeToByteArray(coder, record)
+          new beam.PubsubMessage(payload, Map.empty[String, String].asJava)
+        }
+        .applyInternal(t)
+    }
     EmptyTap
   }
 }
@@ -345,20 +347,16 @@ final private case class PubsubIOWithAttributes[T: ClassTag: Coder](
 
     val coder = CoderMaterializer.beam(data.context, Coder[T])
 
-    data.applyInternal(new PTransform[PCollection[WithAttributeMap], PDone]() {
-      override def expand(input: PCollection[WithAttributeMap]): PDone =
-        input
-          .apply(
-            "Encode Pubsub message and attributes",
-            ParDo.of(Functions.mapFn[WithAttributeMap, beam.PubsubMessage] { kv =>
-              val payload = CoderUtils.encodeToByteArray(coder, kv._1)
-              val attributes = kv._2.asJava
-              new beam.PubsubMessage(payload, attributes)
-            })
-          )
-          .setCoder(PubsubMessageWithAttributesCoder.of())
-          .apply("Write to Pubsub", w)
-    })
+    data.transform { coll =>
+      coll
+        .withName("Encode Pubsub message and attributes")
+        .map { kv =>
+          val payload = CoderUtils.encodeToByteArray(coder, kv._1)
+          val attributes = kv._2.asJava
+          new beam.PubsubMessage(payload, attributes)
+        }(Coder.beam(PubsubMessageWithAttributesCoder.of()))
+        .applyInternal("Write to Pubsub", w)
+    }
 
     EmptyTap
   }

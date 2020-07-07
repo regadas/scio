@@ -422,9 +422,12 @@ final case class TableRowJsonIO(path: String) extends ScioIO[TableRow] {
       .map(e => ScioUtil.jsonFactory.fromString(e, classOf[TableRow]))
 
   override protected def write(data: SCollection[TableRow], params: WriteP): Tap[TableRow] = {
-    data
-      .map(e => ScioUtil.jsonFactory.toString(e))
-      .applyInternal(data.textOut(path, ".json", params.numShards, params.compression))
+    data.transform { coll =>
+      coll
+        .map(e => ScioUtil.jsonFactory.toString(e))
+        .applyInternal(data.textOut(path, ".json", params.numShards, params.compression))
+    }
+
     tap(())
   }
 
