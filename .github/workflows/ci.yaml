@@ -1,0 +1,171 @@
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: "actions/checkout@v2.1.0"
+      - run: |
+          shasum build.sbt \
+            project/plugins.sbt \
+            project/build.properties > gha.cache.tmp
+      - name: "~/.sbt\n\"~/.cache/coursier\"\n cache"
+        uses: "actions/cache@v2"
+        with:
+          key: "${{ runner.os }}-sbt-${{ hashFiles('gha.cache.tmp') }}"
+          path: |
+            ~/.sbt
+            "~/.cache/coursier"
+          restore-keys: sbt
+      - name: "java 11 setup"
+        uses: "olafurpg/setup-java@v6"
+        with:
+          java-version: "11"
+      - run: 'sbt "; scalafmtCheckAll; scalafmtSbtCheck" "; scalafixEnable; scalafix --check; test:scalafix --check; it:scalafix --check"'
+  scalafix-rules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: "actions/checkout@v2.1.0"
+      - run: |
+          shasum build.sbt \
+            project/plugins.sbt \
+            project/build.properties > gha.cache.tmp
+      - name: "~/.sbt\n\"~/.cache/coursier\"\n cache"
+        uses: "actions/cache@v2"
+        with:
+          key: "${{ runner.os }}-sbt-${{ hashFiles('gha.cache.tmp') }}"
+          path: |
+            ~/.sbt
+            "~/.cache/coursier"
+          restore-keys: sbt
+      - name: "java 11 setup"
+        uses: "olafurpg/setup-java@v6"
+        with:
+          java-version: "11"
+      - run: "cd scalafix; sbt test"
+  repl-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: "actions/checkout@v2.1.0"
+      - run: |
+          shasum build.sbt \
+            project/plugins.sbt \
+            project/build.properties > gha.cache.tmp
+      - name: "~/.sbt\n\"~/.cache/coursier\"\n cache"
+        uses: "actions/cache@v2"
+        with:
+          key: "${{ runner.os }}-sbt-${{ hashFiles('gha.cache.tmp') }}"
+          path: |
+            ~/.sbt
+            "~/.cache/coursier"
+          restore-keys: sbt
+      - name: "java ${{matrix.java}} setup"
+        uses: "olafurpg/setup-java@v6"
+        with:
+          java-version: "${{matrix.java}}"
+      - run: ./scripts/circleci_repl.sh
+        env:
+          SCALA_VERSION: ${{ matrix.scala }}
+    strategy:
+      matrix:
+        java:
+          - "8"
+          - "11"
+        scala:
+          - "2.12.12"
+          - "2.13.3"
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: "actions/checkout@v2.1.0"
+      - run: |
+          shasum build.sbt \
+            project/plugins.sbt \
+            project/build.properties > gha.cache.tmp
+      - name: "~/.sbt\n\"~/.cache/coursier\"\n cache"
+        uses: "actions/cache@v2"
+        with:
+          key: "${{ runner.os }}-sbt-${{ hashFiles('gha.cache.tmp') }}"
+          path: |
+            ~/.sbt
+            "~/.cache/coursier"
+          restore-keys: sbt
+      - name: "java ${{matrix.java}} setup"
+        uses: "olafurpg/setup-java@v6"
+        with:
+          java-version: "${{matrix.java}}"
+      - run: 'sbt "++${{matrix.scala}} test"'
+    strategy:
+      matrix:
+        java:
+          - "8"
+          - "11"
+        scala:
+          - "2.12.12"
+          - "2.13.3"
+  it-test:
+    runs-on: ubuntu-latest
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: /home/runner/work/scio/scio/scripts/key.json
+      ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+    if: github.event.repository.fork == 'false'
+    steps:
+      - uses: "actions/checkout@v2.1.0"
+      - run: |
+          shasum build.sbt \
+            project/plugins.sbt \
+            project/build.properties > gha.cache.tmp
+      - name: "~/.sbt\n\"~/.cache/coursier\"\n cache"
+        uses: "actions/cache@v2"
+        with:
+          key: "${{ runner.os }}-sbt-${{ hashFiles('gha.cache.tmp') }}"
+          path: |
+            ~/.sbt
+            "~/.cache/coursier"
+          restore-keys: sbt
+      - name: "java ${{matrix.java}} setup"
+        uses: "olafurpg/setup-java@v6"
+        with:
+          java-version: "${{matrix.java}}"
+      - run: |
+          openssl aes-256-cbc -d \
+                -in "$GOOGLE_APPLICATION_CREDENTIALS.enc" \
+                -out $GOOGLE_APPLICATION_CREDENTIALS \
+                -k $ENCRYPTION_KEY
+      - run: 'sbt -Dbigquery.project=data-integration-test -Dbigquery.secret=$GOOGLE_APPLICATION_CREDENTIALS "++${{matrix.scala}} it:test"'
+    strategy:
+      matrix:
+        java:
+          - "8"
+          - "11"
+        scala:
+          - "2.12.12"
+          - "2.13.3"
+  testWithCoverageReport:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: "actions/checkout@v2.1.0"
+      - run: |
+          shasum build.sbt \
+            project/plugins.sbt \
+            project/build.properties > gha.cache.tmp
+      - name: "~/.sbt\n\"~/.cache/coursier\"\n cache"
+        uses: "actions/cache@v2"
+        with:
+          key: "${{ runner.os }}-sbt-${{ hashFiles('gha.cache.tmp') }}"
+          path: |
+            ~/.sbt
+            "~/.cache/coursier"
+          restore-keys: sbt
+      - name: "java 11 setup"
+        uses: "olafurpg/setup-java@v6"
+        with:
+          java-version: "11"
+      - run: sbt coverage clean test coverageReport
+      - run: "bash <(curl -s https://codecov.io/bash)"
+name: ci
+on:
+  pull_request:
+    paths-ignore:
+      - "site/**"
+  push:
+    paths-ignore:
+      - "site/**"
