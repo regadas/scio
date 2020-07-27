@@ -138,6 +138,7 @@ private class JavaDoFn(val numThreads: Int) extends JavaAsyncDoFn[Int, String, J
 }
 
 private class ScalaDoFn(val numThreads: Int) extends ScalaAsyncDoFn[Int, String, ScalaClient] {
+  implicit override def executionContext: ExecutionContext = ExecutionContext.global
   override def getResourceType: ResourceType = ResourceType.PER_CLASS
   override def createResource(): ScalaClient = new ScalaClient(numThreads)
   override def processElement(input: Int): Future[String] =

@@ -29,6 +29,7 @@ import com.spotify.scio.transforms.BaseAsyncLookupDoFn.CacheSupplier
 import scala.jdk.CollectionConverters._
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
+import scala.concurrent.ExecutionContext
 
 class AsyncLookupDoFnTest extends PipelineSpec {
   private def testDoFn[F, T: Coder](
@@ -178,7 +179,7 @@ class FailingJavaLookupDoFn extends JavaAsyncLookupDoFn[Int, String, AsyncClient
 }
 
 class ScalaLookupDoFn extends ScalaAsyncLookupDoFn[Int, String, AsyncClient]() {
-  import scala.concurrent.ExecutionContext.Implicits.global
+  implicit override def executionContext: ExecutionContext = ExecutionContext.global
   override protected def newClient(): AsyncClient = null
   override def asyncLookup(session: AsyncClient, input: Int): Future[String] =
     Future(input.toString)
@@ -186,7 +187,7 @@ class ScalaLookupDoFn extends ScalaAsyncLookupDoFn[Int, String, AsyncClient]() {
 
 class CachingScalaLookupDoFn
     extends ScalaAsyncLookupDoFn[Int, String, AsyncClient](100, new TestCacheSupplier) {
-  import scala.concurrent.ExecutionContext.Implicits.global
+  implicit override def executionContext: ExecutionContext = ExecutionContext.global
   override protected def newClient(): AsyncClient = null
   override def asyncLookup(session: AsyncClient, input: Int): Future[String] = {
     AsyncLookupDoFnTest.scalaQueue.add(input)
@@ -195,7 +196,7 @@ class CachingScalaLookupDoFn
 }
 
 class FailingScalaLookupDoFn extends ScalaAsyncLookupDoFn[Int, String, AsyncClient]() {
-  import scala.concurrent.ExecutionContext.Implicits.global
+  implicit override def executionContext: ExecutionContext = ExecutionContext.global
   override protected def newClient(): AsyncClient = null
   override def asyncLookup(session: AsyncClient, input: Int): Future[String] =
     if (input % 2 == 0) {
@@ -206,7 +207,7 @@ class FailingScalaLookupDoFn extends ScalaAsyncLookupDoFn[Int, String, AsyncClie
 }
 
 class CallbackFailingScalaLookupDoFn extends ScalaAsyncLookupDoFn[Int, String, AsyncClient]() {
-  import scala.concurrent.ExecutionContext.Implicits.global
+  implicit override def executionContext: ExecutionContext = ExecutionContext.global
   override protected def newClient(): AsyncClient = null
   override def asyncLookup(session: AsyncClient, input: Int): Future[String] =
     Future("success" + input)

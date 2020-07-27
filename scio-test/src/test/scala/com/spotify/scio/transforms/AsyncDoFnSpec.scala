@@ -33,6 +33,7 @@ import scala.collection.mutable.{Buffer => MBuffer}
 import scala.concurrent.{Future, Promise}
 
 import scala.util.Try
+import scala.concurrent.ExecutionContext
 
 object AsyncDoFnSpec extends Properties("AsyncDoFn") {
   property("GuavaAsyncDoFn") = GuavaAsyncDoFnCommands.property()
@@ -89,6 +90,7 @@ class JavaAsyncDoFnTester extends AsyncDoFnTester[CompletableFuture, Completable
 class ScalaAsyncDoFnTester extends AsyncDoFnTester[Promise, Future] {
   override def newDoFn: BaseAsyncDoFn[Int, String, Unit, Future[String]] =
     new ScalaAsyncDoFn[Int, String, Unit] {
+      implicit override val executionContext: ExecutionContext = ExecutionContext.global
       override def getResourceType: ResourceType = ResourceType.PER_CLASS
       override def processElement(input: Int): Future[String] = {
         val p = Promise[String]()
