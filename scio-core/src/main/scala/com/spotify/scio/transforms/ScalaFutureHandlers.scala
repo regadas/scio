@@ -21,17 +21,13 @@ import java.lang
 import java.util.function.{Function => JFunction}
 
 import scala.jdk.CollectionConverters._
-import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.Duration
+import scala.util.{Failure, Success}
+import scala.concurrent.ExecutionContext.Implicits.global
 
 /** A [[FutureHandlers.Base]] implementation for Scala [[Future]]. */
 trait ScalaFutureHandlers[T] extends FutureHandlers.Base[Future[T], T] {
-  @transient
-  implicit private lazy val immediateExecutionContext = new ExecutionContext {
-    override def execute(runnable: Runnable): Unit = runnable.run()
-    override def reportFailure(cause: Throwable): Unit =
-      ExecutionContext.defaultReporter(cause)
-  }
 
   override def waitForFutures(futures: lang.Iterable[Future[T]]): Unit = {
     Await.ready(Future.sequence(futures.asScala), Duration.Inf)
@@ -43,5 +39,10 @@ trait ScalaFutureHandlers[T] extends FutureHandlers.Base[Future[T], T] {
     onSuccess: JFunction[T, Void],
     onFailure: JFunction[Throwable, Void]
   ): Future[T] =
-    future.map { r => onSuccess(r); r }.transform(identity, t => { onFailure(t); t })
+    future.andThen {
+      case Failure(exception) => onFailure(exception)
+      case Success(value) =>
+        try onSuccess(value)
+        catch { case exp: Throwable => onFailure(exp) }
+    }
 }
