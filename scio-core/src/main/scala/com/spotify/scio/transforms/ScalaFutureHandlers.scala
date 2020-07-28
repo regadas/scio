@@ -24,7 +24,7 @@ import scala.jdk.CollectionConverters._
 import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.concurrent.duration.Duration
 import scala.util.{Failure, Success}
-import com.google.common.util.concurrent.MoreExecutors
+import scala.concurrent.ExecutionContexts
 
 /** A [[FutureHandlers.Base]] implementation for Scala [[Future]]. */
 trait ScalaFutureHandlers[T] extends FutureHandlers.Base[Future[T], T] {
@@ -49,6 +49,5 @@ trait ScalaFutureHandlers[T] extends FutureHandlers.Base[Future[T], T] {
 }
 
 object ScalaFutureHandlers {
-  implicit private val ec: ExecutionContext =
-    ExecutionContext.fromExecutor(MoreExecutors.directExecutor())
+  implicit private val ec: ExecutionContext = ExecutionContexts.parasitic
 }
