@@ -28,7 +28,7 @@ import scala.concurrent.ExecutionContexts
 
 /** A [[FutureHandlers.Base]] implementation for Scala [[Future]]. */
 trait ScalaFutureHandlers[T] extends FutureHandlers.Base[Future[T], T] {
-  import ScalaFutureHandlers._
+  implicit private[this] lazy val ec: ExecutionContext = ExecutionContexts.parasitic
 
   override def waitForFutures(futures: lang.Iterable[Future[T]]): Unit = {
     Await.ready(Future.sequence(futures.asScala), Duration.Inf)
@@ -46,8 +46,4 @@ trait ScalaFutureHandlers[T] extends FutureHandlers.Base[Future[T], T] {
         try onSuccess(value)
         catch { case exp: Throwable => onFailure(exp) }
     }
-}
-
-object ScalaFutureHandlers {
-  implicit private val ec: ExecutionContext = ExecutionContexts.parasitic
 }
