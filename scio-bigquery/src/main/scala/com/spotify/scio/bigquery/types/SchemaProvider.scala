@@ -28,6 +28,7 @@ import org.joda.time.{Instant, LocalDate, LocalDateTime, LocalTime}
 import scala.jdk.CollectionConverters._
 import scala.reflect.runtime.universe._
 import com.spotify.scio.util.Cache
+import org.apache.beam.sdk.io.gcp.bigquery.BigQueryAvroUtilsWrapper
 
 private[types] object SchemaProvider {
   private[this] val AvroSchemaCache = Cache.concurrentHashMap[String, Schema]
@@ -36,7 +37,7 @@ private[types] object SchemaProvider {
   def avroSchemaOf[T: TypeTag]: Schema =
     AvroSchemaCache.get(
       typeTag[T].tpe.toString,
-      BigQueryUtils.toGenericAvroSchema(typeTag[T].tpe.toString, schemaOf[T].getFields)
+      BigQueryAvroUtilsWrapper.toGenericAvroSchema(typeTag[T].tpe.toString, schemaOf[T].getFields)
     )
 
   def schemaOf[T: TypeTag]: TableSchema =

@@ -25,6 +25,8 @@ import sbtrelease.ReleaseStateTransformations._
 
 ThisBuild / turbo := true
 
+ThisBuild / resolvers += Resolver.mavenLocal
+
 val algebirdVersion = "0.13.7"
 val algebraVersion = "2.0.1"
 val annoy4sVersion = "0.9.0"
@@ -34,7 +36,7 @@ val autoServiceVersion = "1.0-rc7"
 val autoValueVersion = "1.7.4"
 val avroVersion = "1.8.2"
 val beamVendorVersion = "0.1"
-val beamVersion = "2.23.0"
+val beamVersion = "2.24.0-SNAPSHOT"
 val bigdataossVersion = "2.1.2"
 val bigQueryStorageVersion = "0.125.0-beta"
 val bigtableClientVersion = "1.13.0"

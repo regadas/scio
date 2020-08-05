@@ -150,9 +150,9 @@ class TypedBigQueryIT extends PipelineSpec with BeforeAndAfterAll {
         |    {"mode": "NULLABLE", "name": "string", "type": "STRING"},
         |    {"mode": "NULLABLE", "name": "byteString", "type": "BYTES"},
         |    {"mode": "NULLABLE", "name": "timestamp", "type": "INTEGER"},
-        |    {"mode": "NULLABLE", "name": "date", "type": "STRING"},
-        |    {"mode": "NULLABLE", "name": "time", "type": "STRING"},
-        |    {"mode": "NULLABLE", "name": "datetime", "type": "STRING"}
+        |    {"mode": "NULLABLE", "name": "date", "type": "DATE"},
+        |    {"mode": "NULLABLE", "name": "time", "type": "TIME"},
+        |    {"mode": "REQUIRED", "name": "datetime", "type": "STRING"}
         |  ]
         |}
       """.stripMargin)
@@ -161,7 +161,7 @@ class TypedBigQueryIT extends PipelineSpec with BeforeAndAfterAll {
       .saveAsBigQueryTable(avroTable, schema = schema, createDisposition = CREATE_IF_NEEDED)
 
     val result = sc.run().waitUntilDone()
-    result.tap(tap).map(Record.fromAvro).value.toList shouldBe records
+    result.tap(tap).map(Record.fromAvro).value.toSet shouldBe records.toSet
   }
 
   it should "write GenericRecord records with logical types" in {

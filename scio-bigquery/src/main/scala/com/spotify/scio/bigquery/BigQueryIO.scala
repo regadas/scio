@@ -323,7 +323,9 @@ object BigQueryTypedTable {
   ): BigQueryTypedTable[T] = {
     val rFn = ClosureCleaner.clean(readerFn)
     val wFn = ClosureCleaner.clean(writerFn)
-    val reader = beam.BigQueryIO.read(rFn(_))
+    val reader = beam.BigQueryIO
+      .read(rFn(_))
+      .useAvroLogicalTypes()
     val writer = beam.BigQueryIO
       .write[T]()
       .useAvroLogicalTypes()
