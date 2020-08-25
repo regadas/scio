@@ -29,6 +29,7 @@ import com.spotify.scio.transforms.BaseAsyncLookupDoFn.CacheSupplier
 import scala.jdk.CollectionConverters._
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
+import java.util.concurrent.Executor
 
 class AsyncLookupDoFnTest extends PipelineSpec {
   private def testDoFn[F, T: Coder](
@@ -123,6 +124,7 @@ class GuavaLookupDoFn extends GuavaAsyncLookupDoFn[Int, String, AsyncClient]() {
   override protected def newClient(): AsyncClient = null
   override def asyncLookup(session: AsyncClient, input: Int): ListenableFuture[String] =
     Futures.immediateFuture(input.toString)
+  override def executor(): Executor = _.run()
 }
 
 class CachingGuavaLookupDoFn
@@ -132,6 +134,7 @@ class CachingGuavaLookupDoFn
     AsyncLookupDoFnTest.guavaQueue.add(input)
     Futures.immediateFuture(input.toString)
   }
+  override def executor(): Executor = _.run()
 }
 
 class FailingGuavaLookupDoFn extends GuavaAsyncLookupDoFn[Int, String, AsyncClient]() {
@@ -142,6 +145,7 @@ class FailingGuavaLookupDoFn extends GuavaAsyncLookupDoFn[Int, String, AsyncClie
     } else {
       Futures.immediateFailedFuture(new RuntimeException("failure" + input))
     }
+  override def executor(): Executor = _.run()
 }
 
 class JavaLookupDoFn extends JavaAsyncLookupDoFn[Int, String, AsyncClient]() {
@@ -150,6 +154,7 @@ class JavaLookupDoFn extends JavaAsyncLookupDoFn[Int, String, AsyncClient]() {
     CompletableFuture.supplyAsync(new Supplier[String] {
       override def get(): String = input.toString
     })
+  override def executor(): Executor = _.run()
 }
 
 class CachingJavaLookupDoFn
@@ -161,6 +166,7 @@ class CachingJavaLookupDoFn
       override def get(): String = input.toString
     })
   }
+  override def executor(): Executor = _.run()
 }
 
 class FailingJavaLookupDoFn extends JavaAsyncLookupDoFn[Int, String, AsyncClient]() {
@@ -175,27 +181,27 @@ class FailingJavaLookupDoFn extends JavaAsyncLookupDoFn[Int, String, AsyncClient
       f.completeExceptionally(new RuntimeException("failure" + input))
       f
     }
+  override def executor(): Executor = _.run()
 }
 
 class ScalaLookupDoFn extends ScalaAsyncLookupDoFn[Int, String, AsyncClient]() {
-  import scala.concurrent.ExecutionContext.Implicits.global
   override protected def newClient(): AsyncClient = null
   override def asyncLookup(session: AsyncClient, input: Int): Future[String] =
     Future(input.toString)
+  override def executor(): Executor = _.run()
 }
 
 class CachingScalaLookupDoFn
     extends ScalaAsyncLookupDoFn[Int, String, AsyncClient](100, new TestCacheSupplier) {
-  import scala.concurrent.ExecutionContext.Implicits.global
   override protected def newClient(): AsyncClient = null
   override def asyncLookup(session: AsyncClient, input: Int): Future[String] = {
     AsyncLookupDoFnTest.scalaQueue.add(input)
     Future(input.toString)
   }
+  override def executor(): Executor = _.run()
 }
 
 class FailingScalaLookupDoFn extends ScalaAsyncLookupDoFn[Int, String, AsyncClient]() {
-  import scala.concurrent.ExecutionContext.Implicits.global
   override protected def newClient(): AsyncClient = null
   override def asyncLookup(session: AsyncClient, input: Int): Future[String] =
     if (input % 2 == 0) {
@@ -203,10 +209,10 @@ class FailingScalaLookupDoFn extends ScalaAsyncLookupDoFn[Int, String, AsyncClie
     } else {
       Future(throw new RuntimeException("failure" + input))
     }
+  override def executor(): Executor = _.run()
 }
 
 class CallbackFailingScalaLookupDoFn extends ScalaAsyncLookupDoFn[Int, String, AsyncClient]() {
-  import scala.concurrent.ExecutionContext.Implicits.global
   override protected def newClient(): AsyncClient = null
   override def asyncLookup(session: AsyncClient, input: Int): Future[String] =
     Future("success" + input)
@@ -222,6 +228,7 @@ class CallbackFailingScalaLookupDoFn extends ScalaAsyncLookupDoFn[Int, String, A
       ),
       onFailure
     )
+  override def executor(): Executor = _.run()
 }
 
 class TestCacheSupplier extends CacheSupplier[Int, String, java.lang.Long] {

@@ -27,6 +27,7 @@ import org.apache.beam.sdk.Pipeline.PipelineExecutionException
 import org.apache.beam.sdk.transforms.{DoFn, ParDo}
 
 import scala.concurrent.{ExecutionContext, Future}
+import java.util.concurrent.Executor
 
 class AsyncDoFnTest extends PipelineSpec {
   private val inputs = Seq(1, 10, 100).map(n => 1 to n)
@@ -128,6 +129,7 @@ private class GuavaDoFn(val numThreads: Int) extends GuavaAsyncDoFn[Int, String,
   override def createResource(): GuavaClient = new GuavaClient(numThreads)
   override def processElement(input: Int): ListenableFuture[String] =
     getResource.request(input)
+  override def executor(): Executor = _.run()
 }
 
 private class JavaDoFn(val numThreads: Int) extends JavaAsyncDoFn[Int, String, JavaClient] {
@@ -135,6 +137,7 @@ private class JavaDoFn(val numThreads: Int) extends JavaAsyncDoFn[Int, String, J
   override def createResource(): JavaClient = new JavaClient(numThreads)
   override def processElement(input: Int): CompletableFuture[String] =
     getResource.request(input)
+  override def executor(): Executor = _.run()
 }
 
 private class ScalaDoFn(val numThreads: Int) extends ScalaAsyncDoFn[Int, String, ScalaClient] {
@@ -142,4 +145,5 @@ private class ScalaDoFn(val numThreads: Int) extends ScalaAsyncDoFn[Int, String,
   override def createResource(): ScalaClient = new ScalaClient(numThreads)
   override def processElement(input: Int): Future[String] =
     getResource.request(input)
+  override def executor(): Executor = _.run()
 }

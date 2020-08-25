@@ -17,9 +17,9 @@
 
 package com.spotify.scio.transforms
 
-import java.util.concurrent.CompletableFuture
+import java.util.concurrent.{CompletableFuture, Executor, Executors}
 
-import com.google.common.util.concurrent.{ListenableFuture, SettableFuture}
+import com.google.common.util.concurrent.{ListenableFuture, MoreExecutors, SettableFuture}
 import com.spotify.scio.transforms.DoFnWithResource.ResourceType
 import org.apache.beam.sdk.options.PipelineOptions
 import org.apache.beam.sdk.transforms.windowing.{BoundedWindow, PaneInfo}
@@ -31,7 +31,6 @@ import org.scalacheck.commands.Commands
 
 import scala.collection.mutable.{Buffer => MBuffer}
 import scala.concurrent.{Future, Promise}
-
 import scala.util.Try
 
 object AsyncDoFnSpec extends Properties("AsyncDoFn") {
@@ -62,6 +61,8 @@ class GuavaAsyncDoFnTester extends AsyncDoFnTester[SettableFuture, ListenableFut
         p
       }
       override def createResource(): Unit = ()
+
+      override def executor(): Executor = MoreExecutors.directExecutor()
     }
   override def completePromise(p: SettableFuture[String], result: String): Unit = {
     p.set(result)
@@ -79,6 +80,8 @@ class JavaAsyncDoFnTester extends AsyncDoFnTester[CompletableFuture, Completable
         p
       }
       override def createResource(): Unit = ()
+
+      override def executor(): Executor = _.run()
     }
   override def completePromise(p: CompletableFuture[String], result: String): Unit = {
     p.complete(result)
@@ -96,6 +99,8 @@ class ScalaAsyncDoFnTester extends AsyncDoFnTester[Promise, Future] {
         p.future
       }
       override def createResource(): Unit = ()
+
+      override def executor(): Executor = _.run()
     }
   override def completePromise(p: Promise[String], result: String): Unit =
     p.success(result)

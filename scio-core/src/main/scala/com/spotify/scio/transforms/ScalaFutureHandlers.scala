@@ -27,9 +27,9 @@ import scala.util.{Failure, Success}
 
 /** A [[FutureHandlers.Base]] implementation for Scala [[Future]]. */
 trait ScalaFutureHandlers[T] extends FutureHandlers.Base[Future[T], T] {
-  @transient
-  implicit private lazy val immediateExecutionContext: ExecutionContext =
-    ExecutionContext.fromExecutor(_.run())
+
+  @transient implicit lazy val executionContext: ExecutionContext =
+    ExecutionContext.fromExecutor(executor())
 
   override def waitForFutures(futures: lang.Iterable[Future[T]]): Unit = {
     Await.ready(Future.sequence(futures.asScala), Duration.Inf)

@@ -21,6 +21,7 @@ import com.google.common.util.concurrent.*;
 import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.stream.StreamSupport;
 
@@ -37,49 +38,48 @@ public class FutureHandlers {
     void waitForFutures(Iterable<F> futures) throws InterruptedException, ExecutionException;
 
     F addCallback(F future, Function<V, Void> onSuccess, Function<Throwable, Void> onFailure);
+
+    Executor executor();
   }
 
   /** A {@link Base} implementation for Guava {@link ListenableFuture}. */
   public interface Guava<V> extends Base<ListenableFuture<V>, V> {
+
     @Override
-    default void waitForFutures(Iterable<ListenableFuture<V>> futures)
-        throws InterruptedException, ExecutionException {
+    default void waitForFutures(Iterable<ListenableFuture<V>> futures) throws InterruptedException, ExecutionException {
       // Futures#allAsList only works if all futures succeed
-      Futures.whenAllComplete(futures).run(() -> {}, MoreExecutors.directExecutor()).get();
+      Futures.whenAllComplete(futures).run(() -> {
+      }, executor()).get();
     }
 
     @Override
-    default ListenableFuture<V> addCallback(
-        ListenableFuture<V> future,
-        Function<V, Void> onSuccess,
+    default ListenableFuture<V> addCallback(ListenableFuture<V> future, Function<V, Void> onSuccess,
         Function<Throwable, Void> onFailure) {
-      // Futures#transform doesn't allow onFailure callback while Futures#addCallback doesn't
+      // Futures#transform doesn't allow onFailure callback while Futures#addCallback
+      // doesn't
       // guarantee that callbacks are called before ListenableFuture#get() unblocks
       SettableFuture<V> f = SettableFuture.create();
-      Futures.addCallback(
-          future,
-          new FutureCallback<V>() {
-            @Override
-            public void onSuccess(@Nullable V result) {
-              try {
-                onSuccess.apply(result);
-              } catch (RuntimeException | Error e) {
-                f.setException(e);
-                return;
-              }
-              f.set(result);
-            }
+      Futures.addCallback(future, new FutureCallback<V>() {
+        @Override
+        public void onSuccess(@Nullable V result) {
+          try {
+            onSuccess.apply(result);
+          } catch (Exception e) {
+            f.setException(e);
+            return;
+          }
+          f.set(result);
+        }
 
-            @Override
-            public void onFailure(Throwable t) {
-              try {
-                onFailure.apply(t);
-              } finally {
-                f.setException(t);
-              }
-            }
-          },
-          MoreExecutors.directExecutor());
+        @Override
+        public void onFailure(Throwable t) {
+          try {
+            onFailure.apply(t);
+          } finally {
+            f.setException(t);
+          }
+        }
+      }, executor());
 
       return f;
     }
@@ -90,24 +90,20 @@ public class FutureHandlers {
     @Override
     default void waitForFutures(Iterable<CompletableFuture<V>> futures)
         throws InterruptedException, ExecutionException {
-      CompletableFuture[] array =
-          StreamSupport.stream(futures.spliterator(), false).toArray(CompletableFuture[]::new);
+      CompletableFuture[] array = StreamSupport.stream(futures.spliterator(), false).toArray(CompletableFuture[]::new);
       CompletableFuture.allOf(array).get();
     }
 
     @Override
-    default CompletableFuture<V> addCallback(
-        CompletableFuture<V> future,
-        Function<V, Void> onSuccess,
+    default CompletableFuture<V> addCallback(CompletableFuture<V> future, Function<V, Void> onSuccess,
         Function<Throwable, Void> onFailure) {
-      return future.whenComplete(
-          (r, t) -> {
-            if (r != null) {
-              onSuccess.apply(r);
-            } else {
-              onFailure.apply(t);
-            }
-          });
+      return future.whenCompleteAsync((r, t) -> {
+        if (r != null) {
+          onSuccess.apply(r);
+        } else {
+          onFailure.apply(t);
+        }
+      }, executor());
     }
   }
 }
