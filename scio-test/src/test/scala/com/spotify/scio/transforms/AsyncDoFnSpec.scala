@@ -17,7 +17,7 @@
 
 package com.spotify.scio.transforms
 
-import java.util.concurrent.{CompletableFuture, Executor, Executors}
+import java.util.concurrent.{CompletableFuture, Executor}
 
 import com.google.common.util.concurrent.{ListenableFuture, MoreExecutors, SettableFuture}
 import com.spotify.scio.transforms.DoFnWithResource.ResourceType

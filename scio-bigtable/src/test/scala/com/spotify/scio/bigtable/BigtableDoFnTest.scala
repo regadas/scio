@@ -27,6 +27,7 @@ import com.spotify.scio.transforms.BaseAsyncLookupDoFn.CacheSupplier
 
 import scala.jdk.CollectionConverters._
 import scala.util.{Failure, Success}
+import java.util.concurrent.Executor
 
 class BigtableDoFnTest extends PipelineSpec {
   "BigtableDoFn" should "work" in {
@@ -69,6 +70,7 @@ class TestBigtableDoFn extends BigtableDoFn[Int, String](null) {
   override def newClient(): BigtableSession = null
   override def asyncLookup(session: BigtableSession, input: Int): ListenableFuture[String] =
     Futures.immediateFuture(input.toString)
+  override def executor(): Executor = _.run()
 }
 
 class TestCachingBigtableDoFn extends BigtableDoFn[Int, String](null, 100, new TestCacheSupplier) {
@@ -77,6 +79,7 @@ class TestCachingBigtableDoFn extends BigtableDoFn[Int, String](null, 100, new T
     BigtableDoFnTest.queue.add(input)
     Futures.immediateFuture(input.toString)
   }
+  override def executor(): Executor = _.run()
 }
 
 class TestFailingBigtableDoFn extends BigtableDoFn[Int, String](null) {
@@ -87,6 +90,7 @@ class TestFailingBigtableDoFn extends BigtableDoFn[Int, String](null) {
     } else {
       Futures.immediateFailedFuture(new RuntimeException("failure" + input))
     }
+  override def executor(): Executor = _.run()
 }
 
 class TestCacheSupplier extends CacheSupplier[Int, String, java.lang.Long] {

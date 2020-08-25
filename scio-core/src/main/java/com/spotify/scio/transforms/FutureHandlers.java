@@ -39,6 +39,7 @@ public class FutureHandlers {
 
     F addCallback(F future, Function<V, Void> onSuccess, Function<Throwable, Void> onFailure);
 
+    /** Executor that futures will use to run */
     Executor executor();
   }
 
