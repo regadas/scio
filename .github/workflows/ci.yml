@@ -27,4 +27,4 @@ jobs:
         run: sbt $SBT_OPTS scio-examples/compile site/makeSite
         env:
           SOCCO: true
-          SBT_OPTS: -Dbigquery.project=data-integration-test -Dbigquery.secret=$GOOGLE_APPLICATION_CREDENTIALS
+          SBT_OPTS: -Dbigquery.project=data-integration-test -Dbigquery.secret=${{ env.GOOGLE_APPLICATION_CREDENTIALS }}
