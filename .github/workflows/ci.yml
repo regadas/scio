@@ -6,7 +6,7 @@ jobs:
     name: Build documentation
     runs-on: ubuntu-latest
     env:
-      GOOGLE_APPLICATION_CREDENTIALS: /home/circleci/scio/scripts/data-integration-test.json
+      GOOGLE_APPLICATION_CREDENTIALS: scripts/data-integration-test.json
       ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
     steps:
       - name: Checkout current branch
@@ -17,9 +17,9 @@ jobs:
         uses: coursier/cache-action@v3
 
       - run: >
-          openssl aes-256-cbc -d
-            -in "$GOOGLE_APPLICATION_CREDENTIALS.enc"
-            -out $GOOGLE_APPLICATION_CREDENTIALS
+          openssl aes-256-cbc -d \
+            -in "$GOOGLE_APPLICATION_CREDENTIALS.enc" \
+            -out $GOOGLE_APPLICATION_CREDENTIALS \
             -k $ENCRYPTION_KEY
 
       - name: Build documentation
