@@ -1,10 +1,13 @@
 name: CI
-on: [push, pull_request]
+on: [push]
 
 jobs:
   build:
     name: Build documentation
     runs-on: ubuntu-latest
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: /home/circleci/scio/scripts/data-integration-test.json
+      ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
     steps:
       - name: Checkout current branch
         uses: actions/checkout@v1
@@ -12,6 +15,12 @@ jobs:
         uses: olafurpg/setup-scala@v5
       - name: cache SBT
         uses: coursier/cache-action@v3
+
+      - run: >
+          openssl aes-256-cbc -d \
+            -in "$GOOGLE_APPLICATION_CREDENTIALS.enc" \
+            -out $GOOGLE_APPLICATION_CREDENTIALS \
+            -k $ENCRYPTION_KEY
 
       - name: Build documentation
         run: sbt $SBT_OPTS site/makeSite
