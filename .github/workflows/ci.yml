@@ -6,7 +6,7 @@ jobs:
     name: Build documentation
     runs-on: ubuntu-latest
     env:
-      GOOGLE_APPLICATION_CREDENTIALS: scripts/data-integration-test.json
+      GOOGLE_APPLICATION_CREDENTIALS: scripts/gha-data-integration-test.json
       ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
     steps:
       - name: Checkout current branch
@@ -18,7 +18,7 @@ jobs:
 
       - name: prepare credentials
         run: >
-          openssl aes-256-cbc -d \
+          openssl aes-256-cbc -d -salt -pbkdf2 \
             -in "$GOOGLE_APPLICATION_CREDENTIALS.enc" \
             -out $GOOGLE_APPLICATION_CREDENTIALS \
             -k $ENCRYPTION_KEY
