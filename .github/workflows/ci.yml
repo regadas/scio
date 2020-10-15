@@ -17,9 +17,9 @@ jobs:
         uses: coursier/cache-action@v3
 
       - run: >
-          openssl aes-256-cbc -d \
-            -in "$GOOGLE_APPLICATION_CREDENTIALS.enc" \
-            -out $GOOGLE_APPLICATION_CREDENTIALS \
+          openssl aes-256-cbc -d
+            -in "$GOOGLE_APPLICATION_CREDENTIALS.enc"
+            -out $GOOGLE_APPLICATION_CREDENTIALS
             -k $ENCRYPTION_KEY
 
       - name: Build documentation
