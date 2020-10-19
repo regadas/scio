@@ -22,13 +22,7 @@ import com.spotify.scio.bigquery.BigQueryTyped.Table.{WriteParam => TableWritePa
 import com.spotify.scio.bigquery.BigQueryTyped.BeamSchema.{WriteParam => TypedWriteParam}
 import com.spotify.scio.bigquery.TableRowJsonIO.{WriteParam => TableRowJsonWriteParam}
 import com.spotify.scio.bigquery.types.BigQueryType.HasAnnotation
-import com.spotify.scio.bigquery.{
-  BigQueryTable,
-  BigQueryTyped,
-  TableRow,
-  TableRowJsonIO,
-  TimePartitioning
-}
+import com.spotify.scio.bigquery.{BigQueryTable, BigQueryTyped, TableRowJsonIO, TimePartitioning}
 import com.spotify.scio.coders.Coder
 import com.spotify.scio.io._
 import com.spotify.scio.values.SCollection
@@ -41,8 +35,8 @@ import scala.reflect.runtime.universe._
 import com.spotify.scio.bigquery.Table
 import com.spotify.scio.schemas.Schema
 import com.spotify.scio.bigquery.BigQueryTypedTable
-import com.spotify.scio.bigquery.BigQueryTypedTable.Format
 import org.apache.avro.generic.GenericRecord
+import com.google.api.services.bigquery.model.TableRow
 
 /** Enhanced version of [[SCollection]] with BigQuery methods. */
 final class SCollectionTableRowOps[T <: TableRow](private val self: SCollection[T]) extends AnyVal {
@@ -69,7 +63,7 @@ final class SCollectionTableRowOps[T <: TableRow](private val self: SCollection[
       )
     self
       .covary[TableRow]
-      .write(BigQueryTypedTable(table, Format.TableRow))(param)
+      .write(BigQueryTypedTable[TableRow](table))(param)
   }
 
   /**
@@ -103,6 +97,7 @@ final class SCollectionGenericRecordOps[T <: GenericRecord](private val self: SC
     tableDescription: String = BigQueryTable.WriteParam.DefaultTableDescription,
     timePartitioning: TimePartitioning = BigQueryTable.WriteParam.DefaultTimePartitioning
   ): ClosedTap[GenericRecord] = {
+    implicit val coder = self.coder.asInstanceOf[Coder[GenericRecord]]
     val param =
       BigQueryTable.WriteParam(
         schema,
@@ -113,11 +108,7 @@ final class SCollectionGenericRecordOps[T <: GenericRecord](private val self: SC
       )
     self
       .covary[GenericRecord]
-      .write(
-        BigQueryTypedTable(table, Format.GenericRecord)(
-          self.coder.asInstanceOf[Coder[GenericRecord]]
-        )
-      )(param)
+      .write(BigQueryTypedTable[GenericRecord](table))(param)
   }
 
 }

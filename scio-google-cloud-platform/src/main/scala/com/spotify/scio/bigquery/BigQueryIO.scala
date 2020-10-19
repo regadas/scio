@@ -47,6 +47,8 @@ import scala.jdk.CollectionConverters._
 import scala.reflect.ClassTag
 import scala.reflect.runtime.universe._
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryAvroUtilsWrapper
+import scala.annotation.implicitNotFound
+import scala.annotation.implicitAmbiguous
 
 private object Reads {
   private[this] val cache = new ConcurrentHashMap[ScioContext, BigQuery]()
@@ -202,10 +204,12 @@ object BigQuerySelect {
 object BigQueryTypedTable {
 
   /** Defines the format in which BigQuery can be read and written to. */
+  @implicitNotFound("Supported types: TableRow or GenericRecord")
   sealed abstract class Format[F]
   object Format {
-    case object GenericRecord extends Format[GenericRecord]
-    case object TableRow extends Format[TableRow]
+    @implicitAmbiguous("Type param required: TableRow or GenericRecord")
+    implicit case object GenericRecord extends Format[GenericRecord]
+    implicit case object TableRow extends Format[TableRow]
   }
 
   trait WriteParam {
@@ -271,8 +275,8 @@ object BigQueryTypedTable {
    * Writting: Supports LogicalTypes only for DATE and TIME.
    *           DATETIME is not yet supported. https://issuetracker.google.com/issues/140681683
    */
-  def apply[F: Coder](table: Table, format: Format[F]): BigQueryTypedTable[F] =
-    format match {
+  final def apply[F: Format: Coder](table: Table): BigQueryTypedTable[F] =
+    implicitly[Format[F]] match {
       case Format.GenericRecord => genericRecord(table)
       case Format.TableRow      => tableRow(table)
     }
@@ -371,7 +375,7 @@ final case class BigQueryTypedTable[T: Coder](
 /** Get an IO for a BigQuery table. */
 @deprecated("use BigQueryTypedTable(table, Format.TableRow) instead", "0.9.2")
 final case class BigQueryTable(table: Table) extends BigQueryIO[TableRow] {
-  private[this] val underlying = BigQueryTypedTable(table, BigQueryTypedTable.Format.TableRow)
+  private[this] val underlying = BigQueryTypedTable[TableRow](table)
 
   override type ReadP = Unit
   override type WriteP = BigQueryTable.WriteParam

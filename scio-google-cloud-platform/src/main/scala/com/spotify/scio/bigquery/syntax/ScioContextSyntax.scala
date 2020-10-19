@@ -69,9 +69,9 @@ final class ScioContextOps(private val self: ScioContext) extends AnyVal {
   ): SCollection[TableRow] =
     bigQuerySelect(sqlQuery, BigQuerySelect.ReadParam.DefaultFlattenResults)
 
-  /** Get an SCollection for a BigQuery table. */
-  def bigQueryTable(table: Table): SCollection[TableRow] =
-    bigQueryTable(table, BigQueryTypedTable.Format.TableRow)
+  // /** Get an SCollection for a BigQuery table. */
+  // def bigQueryTable(table: Table): SCollection[TableRow] =
+  //   bigQueryTable(table)
 
   /**
    * Get an SCollection for a BigQuery table using the specified [[Format]].
@@ -82,8 +82,8 @@ final class ScioContextOps(private val self: ScioContext) extends AnyVal {
    * Note: When using `Format.GenericRecord` Bigquery types DATE, TIME and DATETIME
    *       are read as STRING.
    */
-  def bigQueryTable[F: Coder](table: Table, format: Format[F]): SCollection[F] =
-    self.read(BigQueryTypedTable(table, format))
+  def bigQueryTable[F: Format: Coder](table: Table): SCollection[F] =
+    self.read(BigQueryTypedTable(table))
 
   /**
    * Get an SCollection for a BigQuery table using the storage API.

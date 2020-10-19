@@ -72,7 +72,7 @@ final case class Query(underlying: String) extends Source {
  * Example:
  * {{{
  *   val table = Table.Spec("bigquery-public-data:samples.shakespeare")
- *   sc.bigQueryTable(table)
+ *   sc.bigQueryTable[TableRow](table)
  *     .filter(r => "hamlet".equals(r.getString("corpus")) && "Polonius".equals(r.getString("word")))
  *     .saveAsTextFile("./output.txt")
  *   sc.run()

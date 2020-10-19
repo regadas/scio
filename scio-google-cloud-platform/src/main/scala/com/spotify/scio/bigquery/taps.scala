@@ -30,7 +30,6 @@ import scala.jdk.CollectionConverters._
 import scala.concurrent.Future
 import scala.reflect.ClassTag
 import scala.reflect.runtime.universe._
-import com.spotify.scio.bigquery.BigQueryTypedTable.Format
 import com.twitter.chill.Externalizer
 
 /** Tap for BigQuery TableRow JSON files. */
@@ -50,7 +49,7 @@ final case class BigQueryTypedTap[T: Coder](table: Table, fn: (GenericRecord, Ta
 
   override def open(sc: ScioContext): SCollection[T] = {
     val ser = Externalizer(ts)
-    sc.bigQueryTable(table, Format.GenericRecord).map(gr => fn(gr, ser.get))
+    sc.bigQueryTable[GenericRecord](table).map(gr => fn(gr, ser.get))
   }
 }
 
@@ -59,7 +58,7 @@ final case class BigQueryTap(table: TableReference) extends Tap[TableRow] {
   override def value: Iterator[TableRow] =
     BigQuery.defaultInstance().tables.rows(Table.Ref(table))
   override def open(sc: ScioContext): SCollection[TableRow] =
-    sc.bigQueryTable(Table.Ref(table))
+    sc.bigQueryTable[TableRow](Table.Ref(table))
 }
 
 /** Tap for BigQuery tables using storage api. */

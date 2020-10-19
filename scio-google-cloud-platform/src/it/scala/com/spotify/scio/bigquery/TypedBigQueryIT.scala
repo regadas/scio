@@ -19,7 +19,6 @@ package com.spotify.scio.bigquery
 
 import com.google.protobuf.ByteString
 import com.spotify.scio._
-import com.spotify.scio.bigquery.BigQueryTypedTable.Format
 import com.spotify.scio.bigquery.client.BigQuery
 import com.spotify.scio.coders.Coder
 import com.spotify.scio.testing._
@@ -121,7 +120,7 @@ class TypedBigQueryIT extends PipelineSpec with BeforeAndAfterAll {
   "BigQueryTypedTable" should "read TableRow records" in {
     val sc = ScioContext(options)
     sc
-      .bigQueryTable(tableRowTable)
+      .bigQueryTable[TableRow](tableRowTable)
       .map(Record.fromTableRow) should containInAnyOrder(records)
     sc.run()
   }
@@ -130,7 +129,7 @@ class TypedBigQueryIT extends PipelineSpec with BeforeAndAfterAll {
     val sc = ScioContext(options)
     implicit val coder = Coder.avroGenericRecordCoder(Record.avroSchema)
     sc
-      .bigQueryTable(tableRowTable, Format.GenericRecord)
+      .bigQueryTable[GenericRecord](tableRowTable)
       .map(Record.fromAvro) should containInAnyOrder(records)
     sc.run()
   }
@@ -157,7 +156,7 @@ class TypedBigQueryIT extends PipelineSpec with BeforeAndAfterAll {
         |}
       """.stripMargin)
     val tap = sc
-      .bigQueryTable(tableRowTable, Format.GenericRecord)
+      .bigQueryTable[GenericRecord](tableRowTable)
       .saveAsBigQueryTable(avroTable, schema = schema, createDisposition = CREATE_IF_NEEDED)
 
     val result = sc.run().waitUntilDone()
