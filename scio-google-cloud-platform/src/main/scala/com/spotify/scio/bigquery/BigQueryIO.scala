@@ -26,9 +26,9 @@ import com.spotify.scio.bigquery.ExtendedErrorInfo._
 import com.spotify.scio.bigquery.client.BigQuery
 import com.spotify.scio.bigquery.types.BigQueryType.HasAnnotation
 import com.spotify.scio.coders._
-import com.spotify.scio.io.{EmptyTap, EmptyTapOf, ScioIO, Tap, TapOf, TapT, TestIO}
+import com.spotify.scio.io.{ScioIO, Tap, TapOf, TapT, TestIO}
 import com.spotify.scio.schemas.{Schema, SchemaMaterializer}
-import com.spotify.scio.util.{Functions, ScioUtil}
+import com.spotify.scio.util.ScioUtil
 import com.spotify.scio.values.SCollection
 import com.twitter.chill.ClosureCleaner
 import org.apache.avro.generic.GenericRecord
@@ -51,6 +51,7 @@ import org.apache.beam.sdk.transforms.SerializableFunction
 import scala.jdk.CollectionConverters._
 import scala.reflect.ClassTag
 import scala.reflect.runtime.universe._
+import com.spotify.scio.io.UnsupportedTap
 
 private object Reads {
   private[this] val cache = new ConcurrentHashMap[ScioContext, BigQuery]()
@@ -323,53 +324,135 @@ object BigQueryTypedTable {
 
     BigQueryTypedTable(reader, writer, table, fn)
   }
+
+  case class Reader[T: Coder](
+    reader: beam.BigQueryIO.TypedRead[T],
+    table: Table,
+    fn: (GenericRecord, TableSchema) => T
+  ) extends BigQueryIO[T] {
+    override type ReadP = Unit
+    override type WriteP = Nothing
+
+    override def testId: String = s"BigQueryIO(${table.spec})"
+
+    override protected[bigquery] def read(sc: ScioContext, params: ReadP): SCollection[T] = {
+      val io = reader.from(table.ref).withCoder(CoderMaterializer.beam(sc, Coder[T]))
+      sc.applyTransform(s"Read BQ table ${table.spec}", io)
+    }
+
+    override protected def write(data: SCollection[T], params: WriteP): Tap[tapT.T] =
+      throw new UnsupportedOperationException("read-only")
+
+    override def tap(read: ReadP): Tap[tapT.T] = BigQueryTypedTap(table, fn)
+  }
+
+  object Writer {
+
+    // TODO: Add GenericRecord format
+
+    final def apply(dt: DynamicDestinations[TableRow, TableDestination]): Writer[TableRow] =
+      Writer(
+        beam.BigQueryIO.writeTableRows().to(dt),
+        BigQueryUtils.convertGenericRecordToTableRow(_, _)
+      )
+
+    final def apply[T: Coder](
+      writerFn: T => TableRow,
+      tableRowFn: TableRow => T,
+      dt: DynamicDestinations[T, TableDestination]
+    ): Writer[T] = {
+      val w = beam.BigQueryIO.write[T]().withFormatFunction(writerFn(_)).to(dt)
+      val f: (GenericRecord, TableSchema) => T = (gr, ts) =>
+        tableRowFn(BigQueryUtils.convertGenericRecordToTableRow(gr, ts))
+      Writer(w, f)
+    }
+  }
+
+  case class Writer[T: Coder] private (
+    writer: beam.BigQueryIO.Write[T],
+    fn: (GenericRecord, TableSchema) => T
+  ) extends BigQueryIO[T] {
+    override type ReadP = Unit
+    override type WriteP = BigQueryTypedTable.WriteParam
+
+    override def testId: String = s"BigQueryIO(${Table.Ref(writer.getTable().get()).spec})"
+
+    override protected def writeTest(data: SCollection[T], params: WriteParam): Tap[T] =
+      //TODO: abort if dynamic
+      ???
+
+    override protected def read(sc: ScioContext, params: ReadP): SCollection[T] =
+      throw new UnsupportedOperationException("write-only")
+
+    override protected[bigquery] def write(data: SCollection[T], params: WriteP): Tap[T] = {
+      var transform = writer
+
+      // TODO: check for table or dynamic destination
+
+      if (params.schema != null) {
+        transform = transform.withSchema(params.schema)
+      }
+      if (params.createDisposition != null) {
+        transform = transform.withCreateDisposition(params.createDisposition)
+      }
+      if (params.writeDisposition != null) {
+        transform = transform.withWriteDisposition(params.writeDisposition)
+      }
+      if (params.tableDescription != null) {
+        transform = transform.withTableDescription(params.tableDescription)
+      }
+      if (params.timePartitioning != null) {
+        transform = transform.withTimePartitioning(params.timePartitioning.asJava)
+      }
+      transform = params.extendedErrorInfo match {
+        case Disabled => transform
+        case Enabled  => transform.withExtendedErrorInfo()
+      }
+
+      val wr = data.applyInternal(transform)
+      params.insertErrorTransform(params.extendedErrorInfo.coll(data.context, wr))
+
+      tap(())
+    }
+
+    override def tap(read: ReadP): Tap[T] = {
+      if (writer.getTable() == null) {
+        UnsupportedTap("not supported without table definition")
+      } else {
+        BigQueryTypedTap(Table.Ref(writer.getTable().get()), fn)
+      }
+    }
+  }
+
+  @deprecated
+  def apply[T: Coder](
+    reader: beam.BigQueryIO.TypedRead[T],
+    writer: beam.BigQueryIO.Write[T],
+    table: Table,
+    fn: (GenericRecord, TableSchema) => T
+  ): BigQueryTypedTable[T] =
+    BigQueryTypedTable(Reader(reader, table, fn), Writer(writer.to(table.spec), fn))
+
 }
 
+@deprecated
 final case class BigQueryTypedTable[T: Coder](
-  reader: beam.BigQueryIO.TypedRead[T],
-  writer: beam.BigQueryIO.Write[T],
-  table: Table,
-  fn: (GenericRecord, TableSchema) => T
+  reader: BigQueryTypedTable.Reader[T],
+  writer: BigQueryTypedTable.Writer[T]
 ) extends BigQueryIO[T] {
   override type ReadP = Unit
   override type WriteP = BigQueryTypedTable.WriteParam
 
-  override def testId: String = s"BigQueryIO(${table.spec})"
+  override def testId: String = s"BigQueryIO(${reader.table.spec})"
 
-  override protected def read(sc: ScioContext, params: ReadP): SCollection[T] = {
-    val io = reader.from(table.ref).withCoder(CoderMaterializer.beam(sc, Coder[T]))
-    sc.applyTransform(s"Read BQ table ${table.spec}", io)
-  }
+  override protected def read(sc: ScioContext, params: ReadP): SCollection[T] =
+    reader.read(sc, params)
 
-  override protected def write(data: SCollection[T], params: WriteP): Tap[T] = {
-    var transform = writer.to(table.ref)
-    if (params.schema != null) {
-      transform = transform.withSchema(params.schema)
-    }
-    if (params.createDisposition != null) {
-      transform = transform.withCreateDisposition(params.createDisposition)
-    }
-    if (params.writeDisposition != null) {
-      transform = transform.withWriteDisposition(params.writeDisposition)
-    }
-    if (params.tableDescription != null) {
-      transform = transform.withTableDescription(params.tableDescription)
-    }
-    if (params.timePartitioning != null) {
-      transform = transform.withTimePartitioning(params.timePartitioning.asJava)
-    }
-    transform = params.extendedErrorInfo match {
-      case Disabled => transform
-      case Enabled  => transform.withExtendedErrorInfo()
-    }
+  override protected def write(data: SCollection[T], params: WriteP): Tap[T] =
+    writer.write(data, params)
 
-    val wr = data.applyInternal(transform)
-    params.insertErrorTransform(params.extendedErrorInfo.coll(data.context, wr))
-
-    tap(())
-  }
-
-  override def tap(read: ReadP): Tap[T] = BigQueryTypedTap(table, fn)
+  override def tap(read: ReadP): Tap[T] =
+    writer.tap(read)
 }
 
 /** Get an IO for a BigQuery table. */
@@ -497,97 +580,6 @@ object TableRowJsonIO {
     numShards: Int = WriteParam.DefaultNumShards,
     compression: Compression = WriteParam.DefaultCompression
   )
-}
-
-final case class BigQueryDynamicTable[T: Coder](
-  writer: beam.BigQueryIO.Write[T],
-  dynamicDestination: DynamicDestinations[T, TableDestination]
-)(
-) extends ScioIO[T] {
-
-  override val tapT: TapT.Aux[T, Nothing] = EmptyTapOf[T]
-  override type ReadP = Nothing // WriteOnly
-  override type WriteP = BigQueryDynamicTable.WriteParam
-
-  override protected def read(sc: ScioContext, params: ReadP): SCollection[T] =
-    throw new UnsupportedOperationException("BigQueryDynamicTable is read-only")
-
-  override protected def write(self: SCollection[T], params: WriteP): Tap[Nothing] = {
-    if (self.context.isTest) {
-      throw new NotImplementedError(
-        "BigQuery with dynamic table destinations cannot be used in a test context"
-      )
-    } else {
-      var transform = writer.to(dynamicDestination)
-
-      if (params.createDisposition != null) {
-        transform = transform.withCreateDisposition(params.createDisposition)
-      }
-      if (params.writeDisposition != null) {
-        transform = transform.withWriteDisposition(params.writeDisposition)
-      }
-
-      transform = params.extendedErrorInfo match {
-        case Disabled => transform
-        case Enabled  => transform.withExtendedErrorInfo()
-      }
-
-      val wr = self.applyInternal(transform)
-
-      params.insertErrorTransform(params.extendedErrorInfo.coll(self.context, wr))
-    }
-    EmptyTap
-  }
-  override def tap(params: Nothing): Tap[Nothing] = EmptyTap
-}
-
-object BigQueryDynamicTable {
-  trait WriteParam {
-    val writeDisposition: WriteDisposition
-    val createDisposition: CreateDisposition
-    val extendedErrorInfo: ExtendedErrorInfo
-    val insertErrorTransform: SCollection[extendedErrorInfo.Info] => Unit
-  }
-
-  object WriteParam extends Writes.WriteParamDefauls {
-    @inline final def apply(
-      wd: WriteDisposition,
-      cd: CreateDisposition,
-      ei: ExtendedErrorInfo
-    )(it: SCollection[ei.Info] => Unit): WriteParam = new WriteParam {
-      val writeDisposition: WriteDisposition = wd
-      val createDisposition: CreateDisposition = cd
-      val extendedErrorInfo: ei.type = ei
-      val insertErrorTransform: SCollection[extendedErrorInfo.Info] => Unit = it
-    }
-
-    @inline final def apply(
-      wd: WriteDisposition = DefaultWriteDisposition,
-      cd: CreateDisposition = DefaultCreateDisposition
-    ): WriteParam = apply(wd, cd, DefaultExtendedErrorInfo)(defaultInsertErrorTransform)
-  }
-
-  def apply[T <: HasAnnotation: Coder](
-    writerFn: T => TableRow,
-    dynamicDestination: DynamicDestinations[T, TableDestination]
-  ): BigQueryDynamicTable[T] = {
-    val wFn = ClosureCleaner.clean(writerFn)
-    val writer = beam.BigQueryIO
-      .write[T]()
-      .withFormatFunction(Functions.serializableFn(wFn))
-
-    BigQueryDynamicTable(writer, dynamicDestination)
-  }
-
-  def apply[T <: TableRow: Coder](
-    dynamicDestination: DynamicDestinations[T, TableDestination]
-  ): BigQueryDynamicTable[T] = {
-    val writer = beam.BigQueryIO
-      .write[T]()
-      .withFormatFunction(Functions.serializableFn(identity))
-
-    BigQueryDynamicTable(writer, dynamicDestination)
-  }
 }
 
 object BigQueryTyped {
@@ -731,7 +723,7 @@ object BigQueryTyped {
     }
 
     override def tap(read: ReadP): Tap[T] =
-      BigQueryTypedTap[T](table, underlying.fn)
+      underlying.tap(read)
   }
 
   object Table {
@@ -850,11 +842,17 @@ object BigQueryTyped {
 
       data
         .setSchema(Schema[T])
-        .write(underlying.copy(writer = underlying.writer.useBeamSchema()))(ps)
+        .write(
+          underlying.copy(writer =
+            underlying.writer.copy(writer = underlying.writer.writer.useBeamSchema())
+          )
+        )(
+          ps
+        )
       tap(())
     }
 
-    override def tap(read: ReadP): Tap[T] = BigQueryTypedTap[T](table, underlying.fn)
+    override def tap(read: ReadP): Tap[T] = underlying.tap(read)
   }
 
   /** Get a typed SCollection for a BigQuery table using the storage API. */

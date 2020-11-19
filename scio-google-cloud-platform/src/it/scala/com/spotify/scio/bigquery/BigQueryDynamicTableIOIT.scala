@@ -33,7 +33,7 @@ import org.scalatest.matchers.should.Matchers
 object BigQueryDynamicTableIOIT {
   val projectId = "data-integration-test"
   val datasetId = "bigquery_dynamic_it"
-  val tempLocation: String = ItUtils.gcpTempLocation("bigquery_dynamic_it")
+  val tempLocation: String = "gs://data-integration-test-eu/temp"
 
   def tableRef(prefix: String, name: String): TableReference =
     new TableReference()
@@ -84,9 +84,9 @@ class BigQueryDynamicTableIOIT extends AnyFlatSpec with Matchers {
     val prefix = UUID.randomUUID().toString.replaceAll("-", "")
     val sc = ScioContext(options)
 
-    val tableFn: ValueInSingleWindow[Record] => TableDestination = {
-      v: ValueInSingleWindow[Record] =>
-        val mod = v.getValue.key % 2
+    val tableFn: ValueInSingleWindow[TableRow] => TableDestination = {
+      v: ValueInSingleWindow[TableRow] =>
+        val mod = v.getValue.get("key").toString.toInt % 2
         new TableDestination(tableRef(prefix, mod.toString), s"key % 10 == $mod")
     }
     val destination = DynamicDestinationsUtil.tableFn(tableFn, Record.schema)

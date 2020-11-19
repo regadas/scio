@@ -23,7 +23,6 @@ import com.spotify.scio.bigquery.BigQueryTyped.BeamSchema.{WriteParam => TypedWr
 import com.spotify.scio.bigquery.TableRowJsonIO.{WriteParam => TableRowJsonWriteParam}
 import com.spotify.scio.bigquery.types.BigQueryType.HasAnnotation
 import com.spotify.scio.bigquery.{
-  BigQueryDynamicTable,
   BigQueryTable,
   BigQueryTyped,
   TableRow,
@@ -96,11 +95,11 @@ final class SCollectionTableRowOps[T <: TableRow](private val self: SCollection[
   def saveAsBigQueryTable(
     writeDisposition: WriteDisposition,
     createDisposition: CreateDisposition
-  )(dynamicDestination: DynamicDestinations[TableRow, TableDestination]): ClosedTap[Nothing] = {
-    val param = BigQueryDynamicTable.WriteParam(writeDisposition, createDisposition)
+  )(dynamicDestination: DynamicDestinations[TableRow, TableDestination]): ClosedTap[TableRow] = {
+    val param = BigQueryTypedTable.WriteParam(wd = writeDisposition, cd = createDisposition)
     self
       .covary[TableRow]
-      .write(BigQueryDynamicTable(dynamicDestination))(param)
+      .write(BigQueryTypedTable.Writer(dynamicDestination))(param)
   }
 }
 
@@ -214,11 +213,11 @@ final class SCollectionTypedOps[T <: HasAnnotation](private val self: SCollectio
     createDisposition: CreateDisposition
   )(
     dynamicDestination: DynamicDestinations[T, TableDestination]
-  )(implicit tt: TypeTag[T], coder: Coder[T]): ClosedTap[Nothing] = {
+  )(implicit tt: TypeTag[T], coder: Coder[T]): ClosedTap[T] = {
     val bqt = BigQueryType[T]
     val writeFn: T => TableRow = bqt.toTableRow
-    val param = BigQueryDynamicTable.WriteParam(writeDisposition, createDisposition)
-    self.write(BigQueryDynamicTable(writeFn, dynamicDestination))(param)
+    val param = BigQueryTypedTable.WriteParam(wd = writeDisposition, cd = createDisposition)
+    self.write(BigQueryTypedTable.Writer(writeFn, bqt.fromTableRow, dynamicDestination))(param)
   }
 }
 
